@@ -8,5 +8,5 @@ namespace fs = std::filesystem;
 namespace Services
 {
 	std::string GetSavesString();
-	std::string GetBlueprintsString();
+	std::string GetBlueprintsString(fs::path _Path);
 }

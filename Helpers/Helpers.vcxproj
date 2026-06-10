@@ -20,10 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Errors.hpp" />
-    <ClInclude Include="include\Logger.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="src\Logger.lib" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\notused.cpp" />

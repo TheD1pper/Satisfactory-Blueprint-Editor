@@ -12,5 +12,5 @@
 
 int main()
 {
-	std::print("{}", Services::GetBlueprintsString());
+	std::print("{}", Services::GetBlueprintsString("Exp 1.2"));
 } 

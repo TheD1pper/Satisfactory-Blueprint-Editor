@@ -16,7 +16,7 @@ namespace Parser
 		Path = _Path;
 	}
 	
-	uint32_t InputFile::Read()
+	Result<uint32_t> InputFile::Read()
 	{
 		uint32_t value = 0;
 

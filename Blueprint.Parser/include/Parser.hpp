@@ -4,6 +4,8 @@
 #include <fstream>
 #include <optional>
 
+#include "Errors.hpp"
+
 namespace fs = std::filesystem;
 
 namespace Parser
@@ -16,7 +18,7 @@ namespace Parser
 	public:
 		InputFile(fs::path _Path);
 
-		uint32_t Read();
+		Result<uint32_t> Read();
 	};
 
 	fs::path GetLocalAppdata();

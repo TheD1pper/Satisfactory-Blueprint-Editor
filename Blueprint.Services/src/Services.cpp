@@ -24,14 +24,17 @@ namespace Services
 		return Message;
 	}
 
-	std::string GetBlueprintsString()
+	std::string GetBlueprintsString(fs::path _Path)
 	{
-		auto Blueprints = Parser::GetFolderContents(Parser::BlueprintFolder);
+		auto Blueprints = Parser::GetFolderContents(Parser::BlueprintFolder / _Path);
 		std::string Message;
-		for (int i{ 0 }; i < Blueprints.size(); i++)
+		int i = 1;
+		while (i < Blueprints.size())
 		{
 			if (Blueprints[i].extension().string() == ".sbp")
-				Message = Message + std::format("{}) {}\n", i, Blueprints[i].filename().string());
+				Message = Message + std::format("{}) {}\n", i/2, Blueprints[i].filename().replace_extension("").string());
+			i++;
+			
 		}
 		return Message;
 	}
