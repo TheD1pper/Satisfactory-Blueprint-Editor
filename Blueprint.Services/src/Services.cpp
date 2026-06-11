@@ -28,13 +28,14 @@ namespace Services
 	{
 		auto Blueprints = Parser::GetFolderContents(Parser::BlueprintFolder / _Path);
 		std::string Message;
-		int i = 1;
-		while (i < Blueprints.size())
+		int index = 0;
+		for(const auto& Blueprint : Blueprints)
 		{
-			if (Blueprints[i].extension().string() == ".sbp")
-				Message = Message + std::format("{}) {}\n", i/2, Blueprints[i].filename().replace_extension("").string());
-			i++;
-			
+			if (Blueprint.extension().string() == ".sbp")
+			{
+				index++;
+				Message = Message + std::format("{}) {}\n", index, Blueprint.filename().replace_extension("").string());
+			}
 		}
 		return Message;
 	}
