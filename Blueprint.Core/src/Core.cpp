@@ -8,5 +8,10 @@
 
 namespace Core
 {
-
+	bool BinaryString::isUtf8()
+	{
+		if (Length > 0)
+			return true;
+		return false;
+	}
 }
