@@ -12,5 +12,8 @@
 
 int main()
 {
-	std::print("{}", Services::GetBlueprintsString("Exp 1.2"));
+	std::print("{}", Services::GetSavesString());
+	std::string BlueprintPath;
+	std::cin >> BlueprintPath;
+	std::print("{}", Services::GetBlueprintsString(BlueprintPath));
 } 
