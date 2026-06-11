@@ -8,6 +8,11 @@
 #include "Parser.hpp"
 #include "Errors.hpp"
 
+// If you are having any issues related to data types please refer to:
+// 1) https://satisfactory.wiki.gg/wiki/Blueprint (Blueprint file format)
+// 2) https://satisfactory.wiki.gg/wiki/Save_files (Save file format)
+// You can find explained information about the data types from UE5 here
+
 namespace Parser
 {
 	InputFile::InputFile(fs::path _Path)
