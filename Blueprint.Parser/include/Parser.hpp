@@ -21,6 +21,7 @@ namespace Parser
 		Result<uint32_t> Read();
 	};
 
+	void CreateBlueprintsFolder();
 	fs::path GetLocalAppdata();
 	fs::path GetBlueprintFolder();
 	std::vector<fs::path> GetFolderContents(const fs::path& path);

@@ -33,6 +33,12 @@ namespace Parser
 		return value;
 	}
 
+	void CreateBlueprintsFolder()
+	{
+		if (!fs::exists(BlueprintFolder))
+			fs::create_directories(BlueprintFolder);
+	}
+
 	fs::path GetLocalAppdata()
 	{
 		char* buf = nullptr;
