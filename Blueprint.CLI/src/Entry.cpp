@@ -12,6 +12,7 @@
 
 int main()
 {
+	Services::Initialization();
 	std::print("{}", Services::GetSavesString());
 	std::string BlueprintPath;
 	std::cin >> BlueprintPath;

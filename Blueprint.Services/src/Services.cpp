@@ -13,6 +13,11 @@
 
 namespace Services
 {
+	void Initialization()
+	{
+		Parser::CreateBlueprintsFolder();
+	}
+
 	std::string GetSavesString()
 	{
 		auto Blueprints = Parser::GetFolderContents(Parser::BlueprintFolder);
