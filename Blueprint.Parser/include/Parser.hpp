@@ -17,12 +17,18 @@ namespace Parser
 		std::ifstream Input;
 
 	public:
+		Result<Core::BlueprintHeader> ReadHeader();
 		uint64_t GetBytesRead() const;
 
 	private:
 		template <typename T> Result<T> Read();
 		void SkipBytes(std::streamsize _Bytes);
 		std::istream& ReadBytes(char* _String, uint64_t _Count);
+
+
+	public:
+		InputBlueprint() = default;
+		InputBlueprint(fs::path& _Path);
 
 	};
 }
