@@ -15,10 +15,17 @@ namespace ErrorHandling
 
     enum class Binary
     {
-        BadRead
+        QuantityCantBeZero,
+        BadRead,
+        EmptyString
     };
 
-    using ErrorCode = std::variant<Binary>;
+    enum class Blueprint
+    {
+        WrongHeaderVersion
+    };
+
+    using ErrorCode = std::variant<Binary, Blueprint>;
 
     class Error
     {
