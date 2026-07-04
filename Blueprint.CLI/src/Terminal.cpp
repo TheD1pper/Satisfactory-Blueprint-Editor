@@ -4,6 +4,7 @@
 #include <ctime>
 #include <array>
 
+#include "Services.hpp"
 #include "Terminal.hpp"
 
 namespace Cli
@@ -13,15 +14,8 @@ namespace Cli
 		system("cls");
 	}
 
-	
-	[[nodiscard]] std::string WelcomeMessage()
+	void LoadBlueprint()
 	{
-		srand(time(NULL));
-		std::array<std::string, 3> Messages{{"Satisfactory Blueprint Editor is up and running.\nWhat are your plans sir?\n",
-			"Welcome to Satisfactory Blueprint Editor!\nWhat do you want to do?\n",
-			"Satisfactory Blueprint Editor has launched succesfully!\nI'm waiting for your command.\n"}};
-		int RandomIndex = rand() % Messages.size();
-		return Messages[RandomIndex];
-
+		Services::ReadHeader();
 	}
 }

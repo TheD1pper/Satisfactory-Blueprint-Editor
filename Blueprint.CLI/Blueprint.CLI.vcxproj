@@ -103,7 +103,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Blueprint.Services\include;$(SolutionDir)Blueprint.CLI\include;$(SolutionDir)Helpers\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Blueprint.CLI\include;$(SolutionDir)Blueprint.Services\include;$(SolutionDir)Blueprint.Parser\include;$(SolutionDir)Blueprint.Core\include;$(SolutionDir)Helpers\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,6 +131,12 @@
     <ClCompile Include="src\Terminal.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Blueprint.Core\Blueprint.Core.vcxproj">
+      <Project>{d2058e36-a58a-4c57-9d71-cb77f12ae79c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Blueprint.Parser\Blueprint.Parser.vcxproj">
+      <Project>{c4f44996-d2c4-4b24-8603-339e54b33b45}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Blueprint.Services\Blueprint.Services.vcxproj">
       <Project>{6a4d39b9-7c13-4712-b8b1-84533df60bac}</Project>
     </ProjectReference>

@@ -132,10 +132,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\ActorHeader.hpp" />
+    <ClCompile Include="include\ComponentHeader.hpp" />
+    <ClCompile Include="include\BasicDataTypes.hpp" />
+    <ClCompile Include="src\BasicDataTypes.cpp" />
     <ClCompile Include="src\Core.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core.hpp" />
+    <ClInclude Include="include\ObjectHeader.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

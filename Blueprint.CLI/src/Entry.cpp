@@ -5,5 +5,6 @@
 
 int main()
 {
-	
+	Cli::LoadBlueprint();
+	std::print("Exiting program");
 } 

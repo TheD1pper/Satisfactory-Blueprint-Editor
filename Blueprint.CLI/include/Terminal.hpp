@@ -3,5 +3,5 @@
 namespace Cli
 {
 	void ClearTerminal();
-	[[nodiscard]] std::string WelcomeMessage();
+	void LoadBlueprint();
 }
