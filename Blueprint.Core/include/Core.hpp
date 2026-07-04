@@ -37,6 +37,14 @@ namespace Core
 		Size3D Size{};
 		std::vector<CostEntry> CostEntries; 
 		std::vector<ContentEntry> ContentEntries;
+
+	public:
+		BlueprintHeader() = default;
+		BlueprintHeader(BlueprintHeader& _Header) = default;
+		BlueprintHeader(BlueprintHeader&& other) noexcept = default;
+
+	public:
+		void Print();
 	};
 
 	class Blueprint
