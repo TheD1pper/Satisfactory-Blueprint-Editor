@@ -24,7 +24,6 @@ namespace Core
 		Uint32 UEPackageSignature{};
 		Uint64 CompressedSize{};
 		Uint64 UncompressedSize{};
-		Uint32 SizeOfObjects{}; // In number of bytes, including the number of objects but excluding this field
 
 	};
 
@@ -61,6 +60,7 @@ namespace Core
 		BlueprintBody Body;
 
 	public:
+		Blueprint() = default; // Default constructor
 		Blueprint(BlueprintHeader& _Header, BlueprintBody& _Body) :
 			Header(std::move(_Header)),
 			Body(std::move(_Body)) {

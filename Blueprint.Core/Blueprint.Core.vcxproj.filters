@@ -30,12 +30,21 @@
     <ClCompile Include="src\BasicDataTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\FsUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BlueprintHeader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ObjectHeader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FsUtils.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
