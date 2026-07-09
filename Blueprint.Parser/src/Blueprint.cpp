@@ -1,11 +1,12 @@
 #include <print>
 #include <array>
+#include <queue>
 
 #include "Parser.hpp"
 #include "BasicDataTypes.hpp"
 
 namespace Parser
-{
+{	
 	Result<Core::BlueprintHeader> InputBlueprint::ReadHeader()
 	{
 		Core::BlueprintHeader Draft;
@@ -152,41 +153,38 @@ namespace Parser
 	{
 		Core::BlueprintBody Draft;
 
-		// Before reading the rest of the file you need to find the start of the body
-		// the documentation is wrong and there is metadata between the header and the body
-		// you need to save it in a buffer and write it when saving compiling the file
-		// what you need to do is read and save the data until you have hit the anchor
-		// save to separate containers the 4 bytes before the anchor (UE engine magic number)
-		// once you have done that you have hit the header of the body, congratulations
-		// I wish you luck trying to parse this thing
-
 		std::streamoff AnchorAddress{}; 
-		// Find anchor address
 		{
 			std::array<Core::Byte, 4> SlidingWindow{ {0,0,0,0} };
-			Core::Byte Next{};
+			std::queue<Core::Byte> Bytes;
+			Result<Core::Byte> Next{};
 
 			while (SlidingWindow != std::array<Core::Byte, 4>{0x22, 0x22, 0x22, 0x22})
 			{
+				Next = *Read<Core::Byte>();
+				if (!Next.has_value())
+					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read byte when searching for body anchor"));
+				
+				Bytes.push(*Next);
 				SlidingWindow[0] = SlidingWindow[1];
 				SlidingWindow[1] = SlidingWindow[2];
 				SlidingWindow[2] = SlidingWindow[3];
-				SlidingWindow[3] = Next;
+				SlidingWindow[3] = *Next;
+			}
+
+			if (SlidingWindow != std::array<Core::Byte, 4>{0x22, 0x22, 0x22, 0x22})
+				return std::unexpected(Eh::Error(Eh::Blueprint::MissingBodyAnchor, "Could not find body anchor"));
+
+			for (int i = 0; i < SlidingWindow.size() + 4; i++) // Pop the constant bytes in the queue, they are not needed for saving
+				Bytes.pop();
+
+			for (int i = 0; i < 4; ++i) // cast the array into one variable
+			{
+				Draft.UEPackageSignature |= static_cast<Core::Uint32>(Bytes.front()) << (8 * i);
+				Bytes.pop();
 			}
 			AnchorAddress = Input.tellg();
 		}
-
-		auto UEPackageSignature = Read<Core::Uint32>();
-		if (!UEPackageSignature.has_value())
-			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad Unreal Engine package signature read"));
-		Draft.UEPackageSignature = *UEPackageSignature;
-
-		auto ValidityCheck = Read<Core::Uint32>();
-		if (!ValidityCheck.has_value())
-			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad validity check read"));
-		if (*ValidityCheck != 0x22222222)
-			return std::unexpected(Eh::Error(Eh::Binary::CheckFalied, "First check unsuccessful"));
-
 		auto MaximumChunkSize = Read<Core::Uint32>();
 		if (!MaximumChunkSize.has_value() || MaximumChunkSize != MaxChunkSize)
 			return std::unexpected(Eh::Error(Eh::Binary::CheckFalied, "Bad maximum chunk size (value need to be exactly 131 072)"));
@@ -215,7 +213,9 @@ namespace Parser
 				Draft.UncompressedSize = *UncompressedSize;
 			}
 		}
+
 		return Draft;
+
 	}
 
 
