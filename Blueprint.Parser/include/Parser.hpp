@@ -5,6 +5,7 @@
 
 #include "Core.hpp"
 #include "Errors.hpp"
+#include "Compressor.hpp"
 
 namespace fs = std::filesystem;
 
