@@ -34,7 +34,7 @@ namespace Core
         return Utf8;
 	}
 
-    std::u16string BinaryString::Utf16ToUtf8(std::string_view _String)
+    std::u16string BinaryString::Utf8ToUtf16(std::string_view _String)
     {
         if (_String.empty())
             return {};
@@ -59,4 +59,13 @@ namespace Core
 
         return Utf16;
     }
+
+ 
+    std::string BinaryString::String() const
+    {
+        return Content;
+    }
+    
+
+    
 }

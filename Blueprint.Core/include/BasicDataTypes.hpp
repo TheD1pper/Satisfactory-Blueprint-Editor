@@ -2,15 +2,38 @@
 
 #include <string>
 #include <cstdint>
+#include <vector>
 
 namespace Core
 {
-	using Byte = char;
+	using Byte = uint8_t;
 	using Int = int;
+	using Uint16 = uint16_t;
 	using Uint32 = uint32_t;
 	using Uint64 = uint64_t;
 	using Float = float;
 	using Double = double;
+
+	enum class Encoding
+	{
+		Utf8, Utf16
+	};
+
+	class BinaryString
+	{
+	public:
+		Encoding Utf{};
+		std::string Content;
+
+	public:
+		std::u16string Utf8ToUtf16(std::string_view _String);
+		std::string Utf16ToUtf8(std::u16string_view _String);
+
+	public:
+		std::string String() const;
+	};
+
+	using String = BinaryString;
 
 	struct Size3D
 	{
@@ -44,21 +67,30 @@ namespace Core
 		Float Z{};
 	};
 
-	enum class Encoding
+	struct FPackageFileVersion
 	{
-		Utf8, Utf16
+		Int FileVersionUE4{};
+		Int FileVersionUE5{};
 	};
 
-	class BinaryString
+	struct FEngineVersion
 	{
-	public:
-		Encoding Utf{};
-		std::string Content;
-
-	public:
-		std::string Utf16ToUtf8(std::u16string_view _String);
-		std::u16string Utf16ToUtf8(std::string_view _String);
+		Uint16 Major{};
+		Uint16 Minor{};
+		Uint16 Patch{};
+		Uint32 ChangeList{};
+		String Branch{};
 	};
 
-	using String = BinaryString;
+	class UnknownData
+	{
+	private:
+		std::vector<Core::Byte> Bytes;
+
+	public:
+
+
+	};
+
+	
 }
