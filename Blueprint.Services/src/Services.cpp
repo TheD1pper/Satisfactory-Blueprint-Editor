@@ -51,7 +51,6 @@ namespace Services
 				}
 			}
 		}
-		/*
 		auto r_Body = Input.ReadBody();
 		if (!r_Body.has_value() && r_Header.has_value())
 		{
@@ -88,14 +87,18 @@ namespace Services
 				case Eh::Blueprint::WrongHeaderVersion:
 					std::cerr << std::format("{} {} {}\n", err.GetLogMessage(), err.GetSource().file_name(), err.GetSource().line());
 					break;
+
+				case Eh::Blueprint::MissingBodyAnchor:
+					std::cerr << std::format("{} {} {}\n", err.GetLogMessage(), err.GetSource().file_name(), err.GetSource().line());
+					break;
 				}
 			}
-		} */
+		} 
 
 		if(r_Header.has_value())
 			LoadedBlueprint->Header = *r_Header;
-		//if(r_Body.has_value())
-			//LoadedBlueprint->Body = *r_Body;
+		if(r_Body.has_value())
+			LoadedBlueprint->Body = *r_Body;
 		
 	}
 }
