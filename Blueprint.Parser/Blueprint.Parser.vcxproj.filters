@@ -18,12 +18,18 @@
     <ClInclude Include="include\Parser.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Compressor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Blueprint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Compressor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
