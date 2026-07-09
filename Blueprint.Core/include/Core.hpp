@@ -9,21 +9,21 @@ namespace Core
 {
 	struct CostEntry
 	{
-		String ClassName;
-		Uint32 Quantity;
+		String ClassName{};
+		Uint32 Quantity{};
 	};
 
 	struct ContentEntry
 	{
-		String ClassName;
+		String ClassName{};
 	};
 
 	class BlueprintBody
 	{
-	private:
-		Uint32 BodySize{}; // In number of bytes, excluding itself
-		Uint32 ObjectHeadersSize{}; 
-		std::vector<ObjectHeader> ObjectHeaders;
+	public:
+		Uint32 UEPackageSignature{};
+		Uint64 CompressedSize{};
+		Uint64 UncompressedSize{};
 		Uint32 SizeOfObjects{}; // In number of bytes, including the number of objects but excluding this field
 
 	};
@@ -37,6 +37,11 @@ namespace Core
 		Size3D Size{};
 		std::vector<CostEntry> CostEntries; 
 		std::vector<ContentEntry> ContentEntries;
+
+		Core::Uint32 SaveObjectDataVersion{};
+		FPackageFileVersion PackageFileVersion{};
+		Core::Int LicenseeVersion{};
+		FEngineVersion EngineVersion{};
 
 	public:
 		BlueprintHeader() = default;
