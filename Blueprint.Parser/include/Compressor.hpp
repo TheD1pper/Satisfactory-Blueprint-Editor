@@ -6,6 +6,7 @@
 
 #include "BasicDataTypes.hpp"
 #include "Errors.hpp"
+#include "Parser.hpp"
 
 namespace Parser
 {
@@ -15,7 +16,7 @@ namespace Parser
 	{
 	public:
 		Result<ByteVector> Compress(const ByteVector& _Input);
-		Result<ByteVector> Decompress(const ByteVector& _Input, const size_t& DecompressedSize);
+		Result<ByteVector> Decompress(const ByteVector& _Input, const size_t& UncompressedSize);
 	};
 	extern Zlib Z;
 }

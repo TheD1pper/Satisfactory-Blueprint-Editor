@@ -17,10 +17,10 @@ namespace Parser
 		return Output;
 	}
 
-	Result<ByteVector> Zlib::Decompress(const ByteVector& _Input, const size_t& DecompressedSize)
+	Result<ByteVector> Zlib::Decompress(const ByteVector& _Input, const size_t& UncompressedSize)
 	{
-		ByteVector Output(DecompressedSize);
-		uLongf Size = static_cast<uLongf>(DecompressedSize);
+		ByteVector Output(UncompressedSize);
+		uLongf Size = static_cast<uLongf>(UncompressedSize);
 
 		if (uncompress(Output.data(), &Size, _Input.data(), static_cast<uLong>(_Input.size())) != Z_OK)
 			return std::unexpected(Eh::Error(Eh::Compression::Fail, "Decompression failed"));
