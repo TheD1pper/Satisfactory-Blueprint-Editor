@@ -15,9 +15,10 @@ namespace ErrorHandling
 
     enum class Binary
     {
-        QuantityCantBeZero,
         BadRead,
-        EmptyString
+        QuantityCantBeZero,
+        EmptyString,
+        CheckFalied
     };
 
     enum class Blueprint
