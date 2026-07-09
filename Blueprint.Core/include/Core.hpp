@@ -44,12 +44,14 @@ namespace Core
 		FEngineVersion EngineVersion{};
 
 	public:
-		BlueprintHeader() = default;
-		BlueprintHeader(BlueprintHeader& _Header) = default;
-		BlueprintHeader(BlueprintHeader&& other) noexcept = default;
+		BlueprintHeader(); // Constructor
+		BlueprintHeader(const BlueprintHeader& _Header); // Copy constructor
+		BlueprintHeader(BlueprintHeader&& _Header) noexcept; // Move constructor
+		~BlueprintHeader(); // Destructor
 
 	public:
-		void Print();
+		void operator=(const BlueprintHeader& _Header); // Copy assigment operator
+		void operator=(BlueprintHeader& _Header) noexcept; // Move operator
 	};
 
 	class Blueprint
