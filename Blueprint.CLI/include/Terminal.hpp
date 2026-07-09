@@ -1,7 +1,14 @@
 #pragma once
 
+#include <vector>
+
+#include "FsUtils.hpp"
+#include "Core.hpp"
+
 namespace Cli
 {
 	void ClearTerminal();
-	void LoadBlueprint();
+	void ListAllDirectories(const fs::path& _Path);
+	void ListAllDirectories(const std::vector<fs::path>& _Contents);
+	void PrintHeader(const Core::BlueprintHeader& _Header);
 }
