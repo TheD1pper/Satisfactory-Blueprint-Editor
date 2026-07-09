@@ -27,7 +27,12 @@ namespace ErrorHandling
         MissingBodyAnchor
     };
 
-    using ErrorCode = std::variant<Binary, Blueprint>;
+    enum class Compression
+    {
+        Fail
+    };
+
+    using ErrorCode = std::variant<Binary, Blueprint, Compression>;
 
     class Error
     {
