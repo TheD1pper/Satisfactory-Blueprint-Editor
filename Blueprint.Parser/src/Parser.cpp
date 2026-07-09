@@ -1,4 +1,5 @@
 #include <iostream>
+#include <zlib.h>
 #include <print>
 
 #include "Parser.hpp"
@@ -6,9 +7,29 @@
 
 namespace Parser
 {
-	InputBlueprint::InputBlueprint(fs::path& _Path)
+	InputBlueprint::InputBlueprint(fs::path _Path)
 	{
 		Input = std::move(std::ifstream(std::move(_Path)));
+	}
+
+	template <>
+	Result<Core::Byte> InputBlueprint::Read()
+	{
+		Core::Byte Value{};
+
+		if (!ReadBytes(reinterpret_cast<char*>(&Value), 1))
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad Byte read"));
+		return Value;
+	}
+
+	template <>
+	Result<Core::Uint16> InputBlueprint::Read()
+	{
+		Core::Uint16 Value{};
+
+		if (!ReadBytes(reinterpret_cast<char*>(&Value), 2))
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad Uint16 read"));
+		return Value;
 	}
 
 	template <>

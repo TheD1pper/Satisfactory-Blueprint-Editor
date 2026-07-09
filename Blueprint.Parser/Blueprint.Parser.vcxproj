@@ -130,6 +130,7 @@
     <ClInclude Include="include\Parser.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Blueprint.cpp" />
     <ClCompile Include="src\Parser.cpp" />
   </ItemGroup>
   <ItemGroup>
