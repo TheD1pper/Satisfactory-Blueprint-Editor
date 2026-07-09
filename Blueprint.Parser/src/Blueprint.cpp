@@ -1,6 +1,7 @@
 #include <print>
 #include <array>
 #include <queue>
+#include <iostream>
 
 #include "Parser.hpp"
 #include "BasicDataTypes.hpp"
@@ -161,7 +162,8 @@ namespace Parser
 
 			while (SlidingWindow != std::array<Core::Byte, 4>{0x22, 0x22, 0x22, 0x22})
 			{
-				Next = *Read<Core::Byte>();
+				auto Next = Read<Core::Byte>();
+
 				if (!Next.has_value())
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read byte when searching for body anchor"));
 				
@@ -178,7 +180,7 @@ namespace Parser
 			for (int i = 0; i < SlidingWindow.size() + 4; i++) // Pop the constant bytes in the queue, they are not needed for saving
 				Bytes.pop();
 
-			for (int i = 0; i < 4; ++i) // cast the array into one variable
+			for (int i = 0; i < 4; i++) // cast the array into one variable
 			{
 				Draft.UEPackageSignature |= static_cast<Core::Uint32>(Bytes.front()) << (8 * i);
 				Bytes.pop();
@@ -202,21 +204,29 @@ namespace Parser
 			auto ComprossedSize = Read<Core::Uint64>();
 			if (!ComprossedSize.has_value())
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad compressed size read"));
+			Draft.CompressedSize = *ComprossedSize;
 
 			auto UncompressedSize = Read<Core::Uint64>();
 			if (!UncompressedSize.has_value())
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad uncompressed size read"));
+			Draft.UncompressedSize = *UncompressedSize;
 
-			if (i == 1)
+			
+		}
+
+		ByteVector CompressedBody(Draft.CompressedSize);
+		for(uint64_t i = 0; i< Draft.CompressedSize; i++)
+		{
+			auto Byte = Read<Core::Byte>();
+			if (!Byte.has_value())
 			{
-				Draft.CompressedSize = *ComprossedSize;
-				Draft.UncompressedSize = *UncompressedSize;
+				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read one of the compressed body bytes " + GetBytesRead()));
 			}
+			CompressedBody[i] = *Byte;
 		}
 
 		return Draft;
-
-	}
+	}	
 
 
 }
