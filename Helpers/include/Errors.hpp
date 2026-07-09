@@ -23,7 +23,8 @@ namespace ErrorHandling
 
     enum class Blueprint
     {
-        WrongHeaderVersion
+        WrongHeaderVersion,
+        MissingBodyAnchor
     };
 
     using ErrorCode = std::variant<Binary, Blueprint>;
