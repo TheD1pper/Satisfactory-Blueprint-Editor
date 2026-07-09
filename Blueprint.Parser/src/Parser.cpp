@@ -9,7 +9,7 @@ namespace Parser
 {
 	InputBlueprint::InputBlueprint(fs::path _Path)
 	{
-		Input = std::move(std::ifstream(std::move(_Path)));
+		Input = std::move(std::ifstream(std::move(_Path), std::ios::binary));
 	}
 
 	template <>
