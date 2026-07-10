@@ -221,12 +221,10 @@ namespace Parser
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read one of the compressed body bytes " + GetBytesRead()));
 			CompressedBody[i] = *byte;
 		}
-		auto r_UncompressedBody = Z.Decompress(CompressedBody, Draft.UncompressedSize);
+		auto r_UncompressedBody = Z.Decompress(std::move(CompressedBody), Draft.UncompressedSize);
 		if (!r_UncompressedBody.has_value())
 			return std::unexpected(Eh::Error(Eh::Compression::Fail, r_UncompressedBody.error().GetLogMessage()));
 		ByteVector UncompressedBody = *r_UncompressedBody;
-		CompressedBody = {};
-
 		return Draft;
 	}	
 
