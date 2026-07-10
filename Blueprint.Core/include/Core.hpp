@@ -42,6 +42,10 @@ namespace Core
 		Core::Int LicenseeVersion{};
 		FEngineVersion EngineVersion{};
 
+		Uint32 UEPackageSignature{};
+		Uint64 CompressedSize{};
+		Uint64 UncompressedSize{};
+
 	public:
 		BlueprintHeader(); // Constructor
 		BlueprintHeader(const BlueprintHeader& _Header); // Copy constructor
