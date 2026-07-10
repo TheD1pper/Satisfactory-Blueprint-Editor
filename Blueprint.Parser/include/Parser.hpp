@@ -37,4 +37,19 @@ namespace Parser
 		InputBlueprint(fs::path _Path);
 
 	};
+
+	class BinaryOutput
+	{
+	private:
+		std::ofstream Output;
+		std::streamsize BytesWritten = 0;
+
+	public:
+		bool Write(std::string& _Data);
+		inline std::streamsize GetBytesWritten() const;
+
+	public:
+		BinaryOutput() = default;
+		BinaryOutput(fs::path _Path);
+	};
 }

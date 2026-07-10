@@ -125,4 +125,22 @@ namespace Parser
 		BytesRead += Input.gcount();
 		return Input;
 	}
+
+	bool BinaryOutput::Write(std::string& _Data)
+	{
+		BytesWritten += _Data.size();
+		if(!Output.write(_Data.data(), _Data.size()))
+			return false;
+		return true;
+	}
+
+	inline std::streamsize BinaryOutput::GetBytesWritten() const
+	{
+		return BytesWritten;
+	}
+
+	BinaryOutput::BinaryOutput(fs::path _Path)
+	{
+		Output = std::ofstream(_Path, std::ios::binary);
+	}
 }
