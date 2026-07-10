@@ -210,8 +210,7 @@ namespace Parser
 			if (!UncompressedSize.has_value())
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad uncompressed size read"));
 			Draft.UncompressedSize = *UncompressedSize;
-
-			
+			Draft.UncompressedSize = *UncompressedSize;
 		}
 
 		ByteVector CompressedBody(Draft.CompressedSize);
@@ -219,9 +218,7 @@ namespace Parser
 		{
 			auto Byte = Read<Core::Byte>();
 			if (!Byte.has_value())
-			{
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read one of the compressed body bytes " + GetBytesRead()));
-			}
 			CompressedBody[i] = *Byte;
 		}
 
