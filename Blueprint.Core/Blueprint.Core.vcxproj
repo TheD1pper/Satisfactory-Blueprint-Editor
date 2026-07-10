@@ -132,18 +132,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\CompositeDataTypes.hpp" />
+    <ClCompile Include="src\ActorHeader.cpp" />
+    <ClCompile Include="src\BlueprintBody.cpp" />
     <ClCompile Include="src\BlueprintHeader.cpp" />
-    <ClCompile Include="include\ActorHeader.hpp" />
-    <ClCompile Include="include\ComponentHeader.hpp" />
     <ClCompile Include="include\BasicDataTypes.hpp" />
     <ClCompile Include="src\BasicDataTypes.cpp" />
+    <ClCompile Include="src\ComponentHeader.cpp" />
+    <ClCompile Include="src\CompositeDataTypes.cpp" />
     <ClCompile Include="src\Core.cpp" />
     <ClCompile Include="src\FsUtils.cpp" />
+    <ClCompile Include="src\ObjectReference.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\FsUtils.hpp" />
     <ClInclude Include="include\Core.hpp" />
-    <ClInclude Include="include\ObjectHeader.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
