@@ -214,6 +214,9 @@ namespace Parser
 			
 		}
 
+		std::println("==== Starting compressed body read ====");
+			Draft.UncompressedSize = *UncompressedSize;
+
 		ByteVector CompressedBody(Draft.CompressedSize);
 		for(uint64_t i = 0; i< Draft.CompressedSize; i++)
 		{
