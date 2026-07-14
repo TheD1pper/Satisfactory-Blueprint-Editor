@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "BasicDataTypes.hpp"
-#include "ObjectHeader.hpp"
 
 namespace Core
 {
@@ -25,6 +24,22 @@ namespace Core
 		Uint64 CompressedSize{};
 		Uint64 UncompressedSize{};
 
+		// ===== Decompressed variables =====
+
+		Uint32 UncompressedBodySize{};
+		Uint32 ObjectHeadersSize{};
+		//std::vector<ObjectHeader> ObjectHeder;
+		Uint32 ObjectsSize;
+		//std::vector<Object> Objects;
+
+	public:
+		//BlueprintBody(); // Constructor
+		//BlueprintBody(const BlueprintBody& _Body); // Copy contructor
+		//BlueprintBody(BlueprintBody&& _Body) noexcept;
+		//~BlueprintBody(); // Destructor
+
+		//void operator=(const BlueprintBody& _Body); // Copy assigment operator
+		//void operator=(BlueprintBody& _Body); // Move operator
 	};
 
 	class BlueprintHeader

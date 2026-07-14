@@ -59,13 +59,4 @@ namespace Core
 
         return Utf16;
     }
-
- 
-    std::string BinaryString::String() const
-    {
-        return Content;
-    }
-    
-
-    
 }

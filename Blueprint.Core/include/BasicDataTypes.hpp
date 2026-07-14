@@ -11,6 +11,7 @@ namespace Core
 	using Uint16 = uint16_t;
 	using Uint32 = uint32_t;
 	using Uint64 = uint64_t;
+	using Int64 = int64_t;
 	using Float = float;
 	using Double = double;
 
@@ -28,12 +29,10 @@ namespace Core
 	public:
 		std::u16string Utf8ToUtf16(std::string_view _String);
 		std::string Utf16ToUtf8(std::u16string_view _String);
-
-	public:
-		std::string String() const;
 	};
 
 	using String = BinaryString;
+	using ByteVector = std::vector<Byte>;
 
 	struct Size3D
 	{
@@ -81,16 +80,4 @@ namespace Core
 		Uint32 ChangeList{};
 		String Branch{};
 	};
-
-	class UnknownData
-	{
-	private:
-		std::vector<Core::Byte> Bytes;
-
-	public:
-
-
-	};
-
-	
 }
