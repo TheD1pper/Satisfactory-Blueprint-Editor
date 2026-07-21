@@ -13,7 +13,7 @@ namespace Core::Property
 			{ElementType::FluidBox, "FluidBox"},
 			{ElementType::InventoryItem, "InventoryItem"},
 			{ElementType::RailroadTrackPosition, "RailroadTrackPosition"},
-			{ElementType::DataTime, "DataTime"},
+			{ElementType::DateTime, "DataTime"},
 			{ElementType::ClientIdentityInfo, "ClientIdentityInfo"}
 		};
 	}
