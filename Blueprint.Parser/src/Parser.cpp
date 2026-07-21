@@ -67,7 +67,7 @@ namespace Parser
 	{
 		auto r_Length = Read<Core::Int>();
 
-		if (!r_Length.has_value())
+		if (!r_Length)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad string length read"));
 
 		Core::Int SignedLength = r_Length.value();
