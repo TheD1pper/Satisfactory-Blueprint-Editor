@@ -6,12 +6,13 @@
 
 namespace Core::Property
 {
-	class Property
-	{
-	public:
-		String Name;
-		Payload Value;
-		Uint32 Index{};
-		PropertyType Type{};
-	};
+    class Property
+    {
+    public:
+        String Name;
+        PropertyType Type{};
+        Uint32 Index{};
+
+        Payload Value;
+    };
 }

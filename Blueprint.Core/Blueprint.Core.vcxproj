@@ -147,7 +147,6 @@
     <ClInclude Include="include\Properties\ArrayTypes.hpp" />
     <ClInclude Include="include\FsUtils.hpp" />
     <ClInclude Include="include\Core.hpp" />
-    <ClInclude Include="include\Properties\InventoryItem.hpp" />
     <ClInclude Include="include\Properties\MapProperty.hpp" />
     <ClInclude Include="include\Properties\MapTypes.hpp" />
     <ClInclude Include="include\Properties\Property.hpp" />

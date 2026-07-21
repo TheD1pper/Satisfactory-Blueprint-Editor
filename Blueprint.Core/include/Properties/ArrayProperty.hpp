@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "PropertyEnums.hpp"
 #include "BasicDataTypes.hpp"
 #include "ArrayTypes.hpp"
@@ -10,8 +12,8 @@ namespace Core::Property
 	{
 	public:
 		String Name{};
-
+		String OriginalTypeName{};
 		Array::ElementType Type{};
-		Array::Type Value{};
+		std::vector<Array::Type> Value{};
 	};
 }

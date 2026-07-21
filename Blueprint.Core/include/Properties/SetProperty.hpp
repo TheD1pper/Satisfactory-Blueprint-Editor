@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "PropertyEnums.hpp"
 #include "BasicDataTypes.hpp"
 #include "SetTypes.hpp"
@@ -12,6 +14,6 @@ namespace Core::Property
 		String Name{};
 
 		Set::ElementType Type{};
-		Set::Type Value{};
+		std::vector<Set::Type> Value{};
 	};
 }

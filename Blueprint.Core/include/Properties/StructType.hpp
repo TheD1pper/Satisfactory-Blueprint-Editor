@@ -27,6 +27,15 @@ namespace Core::Property::Struct
 		Float Value{};
 	};
 
+	class InventoryItem
+	{
+	public:
+		String ItemName;
+		Uint32 HasProperty{};
+		String ItemType;
+		PropertyList Properties;
+	};
+
 	class LinearColor
 	{
 	public:
@@ -67,7 +76,7 @@ namespace Core::Property::Struct
 		Int64 Value{};
 	};
 
-	class ClientIndentity
+	class ClientIdentity
 	{
 	public:
 		String UUID;
@@ -79,5 +88,5 @@ namespace Core::Property::Struct
 		PropertyList Value{};
 	};
 
-	using Type = std::variant<Box, FluidBox, LinearColor, Quat, RailroadTrackPosition, Vector, DateTime, ClientIndentity>;
+	using Type = std::variant<Box, FluidBox, InventoryItem, LinearColor, Quat, RailroadTrackPosition, Vector, DateTime, ClientIdentity, Generic>;
 }

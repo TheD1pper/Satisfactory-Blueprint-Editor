@@ -35,44 +35,16 @@ namespace Core::Property
 	{
 		enum class ElementType : uint8_t
 		{
-			LinearColor,
 			Vector,
-			SpawnData,
-			BlueprintCategoryRecord,
-			BlueprintSubCategoryRecord,
-			DroneTripInformation,
-			FactoryCustomizationColorSlot,
-			FeetOffset,
-			FGCachedConnectedWire,
-			FGDroneFuelRuntimeData,
-			GCheckmarkUnlockData,
-			GlobalColorPreset,
-			HardDriveData,
-			HighlightedMarkerPair,
-			Hotbar,
-			InventoryStack,
-			ItemAmount,
-			MapMarker,
-			MessageData,
-			MiniGameResult,
-			PhaseCost,
-			PrefabIconElementSaveData,
-			PrefabTextElementSaveData,
-			ProjectAssemblyLaunchSequenceValue,
-			ResearchData,
-			ResearchTime,
-			ResourceSinkHistory,
-			ScannableObjectData,
-			ScannableResourcePair,
-			SchematicCost,
-			ShoppingListBlueprintEntry,
-			ShoppingListClassEntry,
-			ShoppingListRecipeEntry,
-			SplinePointData,
-			SplitterSortRule,
-			SubCategoryMaterialDefault,
-			TimeTableStop,
-			WireInstance
+			LinearColor,
+			Quat,
+			Box,
+			FluidBox,
+			InventoryItem,
+			RailroadTrackPosition,
+			DateTime,
+			ClientIdentityInfo,
+			Generic // Every non-defined type here is generic
 		};
 
 		const extern std::unordered_map<ElementType, std::string_view> ElementMap;
@@ -121,7 +93,7 @@ namespace Core::Property
 			FluidBox,
 			InventoryItem,
 			RailroadTrackPosition,
-			DataTime,
+			DateTime,
 			ClientIdentityInfo,
 			Generic // Every non-defined type here is generic
 		};

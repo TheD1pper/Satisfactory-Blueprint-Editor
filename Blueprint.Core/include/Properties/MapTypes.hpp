@@ -52,4 +52,11 @@ namespace Core::Property::Map
 
 	using KeyVariant = std::variant<ObjectKey, IntKey, StructKey>;
 	using ValueVariant = std::variant<ByteValue, IntValue, Int64Value, StructValue>;
+
+	struct Entry
+	{
+		KeyVariant Key;
+		ValueVariant Value{};
+	};
+
 }

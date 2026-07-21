@@ -90,6 +90,6 @@ namespace Core::Property
 	};
 
 	using Payload = std::variant<BoolProperty, ByteProperty, EnumProperty, FloatProperty,
-		DoubleProperty, IntProperty, Int8Property, Uint32Property, Int64Property, NameProperty,
+		DoubleProperty, IntProperty, Int8Property, Uint32Property, Int64Property,
 		NameProperty, ObjectProperty, SoftObjectProperty, StrProperty>;
 }

@@ -71,9 +71,6 @@
     <ClInclude Include="include\ComplexDataTypes.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Properties\InventoryItem.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Properties\StructProperty.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
