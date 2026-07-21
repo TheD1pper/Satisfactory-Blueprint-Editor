@@ -14,6 +14,10 @@ namespace Core::Property
 		String Name{};
 		String OriginalTypeName{};
 		Array::ElementType Type{};
+<<<<<<< HEAD
 		std::vector<Array::Type> Value{};
+=======
+		Array::Type Value{};
+>>>>>>> 63ee77f610a7fa36879ae5f530119235f8b461ae
 	};
 }
