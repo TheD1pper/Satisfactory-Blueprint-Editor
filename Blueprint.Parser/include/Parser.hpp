@@ -23,9 +23,6 @@ namespace Parser
 		Result<Core::BlueprintHeader> ReadHeader();
 		Result<Core::BlueprintBody> ReadBody();
 		uint64_t GetBytesRead() const;
-
-
-	private:
 		template <typename T> Result<T> Read();
 		void SkipBytes(std::streamsize _Bytes);
 		std::istream& ReadBytes(char* _String, uint64_t _Count);
