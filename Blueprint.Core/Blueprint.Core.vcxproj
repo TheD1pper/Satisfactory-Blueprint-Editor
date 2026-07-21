@@ -138,10 +138,28 @@
     <ClCompile Include="src\BasicDataTypes.cpp" />
     <ClCompile Include="src\Core.cpp" />
     <ClCompile Include="src\FsUtils.cpp" />
+    <ClCompile Include="src\Properties\PropertyEnums.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\ComplexDataTypes.h" />
+    <ClInclude Include="include\ComplexDataTypes.hpp" />
+    <ClInclude Include="include\Properties\ArrayProperty.hpp" />
+    <ClInclude Include="include\Properties\ArrayTypes.hpp" />
     <ClInclude Include="include\FsUtils.hpp" />
     <ClInclude Include="include\Core.hpp" />
+    <ClInclude Include="include\Properties\InventoryItem.hpp" />
+    <ClInclude Include="include\Properties\MapProperty.hpp" />
+    <ClInclude Include="include\Properties\MapTypes.hpp" />
+    <ClInclude Include="include\Properties\Property.hpp" />
+    <ClInclude Include="include\Properties\PropertyEnums.hpp" />
+    <ClInclude Include="include\Properties\PropertyList.hpp" />
+    <ClInclude Include="include\Properties\PropertyPayloads.hpp" />
+    <ClInclude Include="include\Properties\SetTypes.hpp" />
+    <ClInclude Include="include\Properties\StructProperty.hpp" />
+    <ClInclude Include="include\Properties\StructType.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\Properties\SetProperty.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
