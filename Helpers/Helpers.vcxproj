@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Benchmark.hpp" />
     <ClInclude Include="include\Errors.hpp" />
   </ItemGroup>
   <ItemGroup>
