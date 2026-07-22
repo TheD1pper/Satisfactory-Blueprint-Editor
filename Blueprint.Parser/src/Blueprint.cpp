@@ -159,7 +159,7 @@ namespace Parser
 
 		std::streamoff AnchorAddress{}; 
 		{
-			BENCH_SCOPE("Anchor lookout");
+			BENCH_SCOPE("Anchor lookup");
 			std::array<Core::Byte, 4> SlidingWindow{ {0,0,0,0} };
 			std::queue<Core::Byte> Bytes;
 			Result<Core::Byte> Next{};

@@ -103,7 +103,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Blueprint.Parser\include;$(SolutionDir)Helpers\include;C:\dev\Serious\Satisfactory-Blueprint-Editor\Blueprint.Core\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Blueprint.Parser\include;$(SolutionDir)Blueprint.Core\include;$(SolutionDir)Blueprint.Helpers\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,7 +119,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Blueprint.Parser\include;C:\dev\Serious\Satisfactory-Blueprint-Editor\Helpers\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Blueprint.Parser\include;$(SolutionDir)Blueprint.Core\include;$(SolutionDir)Blueprint.Helpers\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,7 +139,7 @@
     <ProjectReference Include="..\Blueprint.Core\Blueprint.Core.vcxproj">
       <Project>{d2058e36-a58a-4c57-9d71-cb77f12ae79c}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Helpers\Helpers.vcxproj">
+    <ProjectReference Include="..\Blueprint.Helpers\Blueprint.Helpers.vcxproj">
       <Project>{2fd0cf4a-7d92-40bc-83ec-dcbbc6721484}</Project>
     </ProjectReference>
   </ItemGroup>

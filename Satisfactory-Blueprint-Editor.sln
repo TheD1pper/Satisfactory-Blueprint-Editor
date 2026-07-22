@@ -11,7 +11,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Blueprint.Services", "Bluep
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Blueprint.Core", "Blueprint.Core\Blueprint.Core.vcxproj", "{D2058E36-A58A-4C57-9D71-CB77F12AE79C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Helpers", "Helpers\Helpers.vcxproj", "{2FD0CF4A-7D92-40BC-83EC-DCBBC6721484}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Helpers", "Blueprint.Helpers\Blueprint.Helpers.vcxproj", "{2FD0CF4A-7D92-40BC-83EC-DCBBC6721484}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -12,10 +12,10 @@ namespace Services
 	void LoadBlueprint(const fs::path& _Path)
 	{
 		Parser::InputBlueprint Input(_Path);
+		Result<Core::BlueprintHeader> r_Header;
+
 		Benchmark::Instrumentor::Get().BeginSession("Blueprint loading");
 		BENCH_FUNC();
-
-		Result<Core::BlueprintHeader> r_Header;
 		{
 			BENCH_SCOPE("Header read");
 			r_Header = Input.ReadHeader();

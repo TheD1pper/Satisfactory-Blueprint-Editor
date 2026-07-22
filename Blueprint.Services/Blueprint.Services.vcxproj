@@ -103,7 +103,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Blueprint.Services\include;$(SolutionDir)Blueprint.Core\include;$(SolutionDir)Blueprint.Parser\include;$(SolutionDir)Helpers\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Blueprint.Services\include;$(SolutionDir)Blueprint.Parser\include;$(SolutionDir)Blueprint.Core\include;$(SolutionDir)Blueprint.Helpers\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,7 +119,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Blueprint.Services\include;$(SolutionDir)Blueprint.Parser\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Blueprint.Services\include;$(SolutionDir)Blueprint.Parser\include;$(SolutionDir)Blueprint.Core\include;$(SolutionDir)Blueprint.Helpers\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,11 +130,11 @@
     <ProjectReference Include="..\Blueprint.Core\Blueprint.Core.vcxproj">
       <Project>{d2058e36-a58a-4c57-9d71-cb77f12ae79c}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Blueprint.Helpers\Blueprint.Helpers.vcxproj">
+      <Project>{2fd0cf4a-7d92-40bc-83ec-dcbbc6721484}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Blueprint.Parser\Blueprint.Parser.vcxproj">
       <Project>{c4f44996-d2c4-4b24-8603-339e54b33b45}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Helpers\Helpers.vcxproj">
-      <Project>{2fd0cf4a-7d92-40bc-83ec-dcbbc6721484}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
