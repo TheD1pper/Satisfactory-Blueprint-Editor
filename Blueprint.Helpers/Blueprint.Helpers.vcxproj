@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="include\Benchmark.hpp" />
     <ClInclude Include="include\Errors.hpp" />
+    <ClInclude Include="include\FsUtils.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\notused.cpp" />
@@ -29,7 +30,7 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{2fd0cf4a-7d92-40bc-83ec-dcbbc6721484}</ProjectGuid>
-    <RootNamespace>Helpers</RootNamespace>
+    <RootNamespace>Blueprint.Helpers</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>Blueprint.Helpers</ProjectName>
   </PropertyGroup>

@@ -137,7 +137,6 @@
     <ClCompile Include="include\BasicDataTypes.hpp" />
     <ClCompile Include="src\BasicDataTypes.cpp" />
     <ClCompile Include="src\Core.cpp" />
-    <ClCompile Include="src\FsUtils.cpp" />
     <ClCompile Include="src\Properties\PropertyEnums.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,7 +144,6 @@
     <ClInclude Include="include\ComplexDataTypes.hpp" />
     <ClInclude Include="include\Properties\ArrayProperty.hpp" />
     <ClInclude Include="include\Properties\ArrayTypes.hpp" />
-    <ClInclude Include="include\FsUtils.hpp" />
     <ClInclude Include="include\Core.hpp" />
     <ClInclude Include="include\Properties\MapProperty.hpp" />
     <ClInclude Include="include\Properties\MapTypes.hpp" />

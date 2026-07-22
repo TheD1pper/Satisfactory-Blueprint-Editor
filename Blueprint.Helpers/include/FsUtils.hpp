@@ -1,31 +1,34 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
+#pragma once
 
-#include "FsUtils.hpp"
+#include <filesystem>
+#include <fstream>
+
+#include "Errors.hpp"
 
 #pragma warning(disable : 4996) // Disable level 3 warning for getenv() use
 
+namespace fs = std::filesystem;
+
 namespace FsUtils
 {
-	bool Exists(const fs::path& _Path)
+	inline bool Exists(const fs::path& _Path)
 	{
 		return fs::exists(_Path);
 	}
 
-	bool IsFile(const fs::path& _Path)
+	inline bool IsFile(const fs::path& _Path)
 	{
 		return fs::is_regular_file(_Path);
 	}
 
-	bool isDirectory(const fs::path& _Path)
+	inline bool isDirectory(const fs::path& _Path)
 	{
 		return fs::is_directory(_Path);
 	}
 
-	bool FileCreate(const fs::path& _Path)
+	inline bool FileCreate(const fs::path& _Path)
 	{
-		if(!Exists(_Path))
+		if (!Exists(_Path))
 		{
 			std::ofstream oFile(_Path);
 			oFile.write("", 0);
@@ -35,32 +38,34 @@ namespace FsUtils
 		return false;
 	}
 
-	bool Destroy(const fs::path& _Target)
+	inline bool Destroy(const fs::path& _Target)
 	{
 		return fs::remove(_Target);
 	}
 
-	bool DirectoryCreate(const fs::path _Path)
+	inline bool DirectoryCreate(const fs::path _Path)
 	{
 		return fs::create_directory(_Path);
 	}
 
-	bool DirectoryCreateR(const fs::path _Path)
+	inline bool DirectoryCreateR(const fs::path _Path)
 	{
 		return fs::create_directories(_Path);
 	}
 
-	fs::path ResolveAppdata()
+	inline fs::path ResolveAppdata()
 	{
 		return getenv("localappdata");
 	}
 
-	fs::path GetBlueprintsPath()
+	inline fs::path Appdata = ResolveAppdata();
+
+	inline fs::path GetBlueprintsPath()
 	{
 		return Appdata.string() + "\\FactoryGame\\Saved\\SaveGames\\blueprints";
 	}
 
-	std::vector<fs::path> ScanDirectory(const fs::path& _Target)
+	inline std::vector<fs::path> ScanDirectory(const fs::path& _Target)
 	{
 		std::vector<fs::path> Entries;
 		for (const auto& Entry : fs::directory_iterator(_Target))
@@ -68,7 +73,5 @@ namespace FsUtils
 		return Entries;
 	}
 
-	const fs::path Appdata = ResolveAppdata();
-	const fs::path BlueprintsPath = GetBlueprintsPath();
+	inline fs::path BlueprintsPath = GetBlueprintsPath();
 }
-
