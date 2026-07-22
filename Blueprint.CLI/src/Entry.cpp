@@ -4,6 +4,7 @@
 #include "Terminal.hpp"
 #include "Services.hpp"
 #include "Parser.hpp"
+#include "Benchmark.hpp"
 
 int main()
 {
