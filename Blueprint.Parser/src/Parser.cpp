@@ -7,11 +7,7 @@
 
 namespace Parser
 {
-	InputBlueprint::InputBlueprint(fs::path _Path)
-	{
-		Input = std::move(std::ifstream(std::move(_Path), std::ios::binary));
-	}
-
+#pragma region Read implementations
 	template <>
 	Result<uint8_t> InputBlueprint::Read()
 	{
@@ -106,6 +102,11 @@ namespace Parser
 
 		return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad string length read"));
 	}
+#pragma endregion Read() implementations of basic data types
+
+#pragma region Complex implementations
+
+#pragma endregion Read() implementations of complex data types
 
 	uint64_t InputBlueprint::GetBytesRead() const
 	{
@@ -137,6 +138,11 @@ namespace Parser
 	inline std::streamsize BinaryOutput::GetBytesWritten() const
 	{
 		return BytesWritten;
+	}
+
+	InputBlueprint::InputBlueprint(fs::path _Path)
+	{
+		Input = std::move(std::ifstream(std::move(_Path), std::ios::binary));
 	}
 
 	BinaryOutput::BinaryOutput(fs::path _Path)
