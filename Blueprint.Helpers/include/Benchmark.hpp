@@ -43,7 +43,7 @@ namespace Benchmark
         {
         }
 
-        inline void BeginSession(const std::string& _Name, const std::string& _Filepath = DefaultSavePath.string() + "benchmark.json")
+        inline void BeginSession(const std::string& _Name, const std::filesystem::path& _Filepath = DefaultSavePath / "benchmark.json")
         {
             OutputStream.open(_Filepath);
             WriteHeader();

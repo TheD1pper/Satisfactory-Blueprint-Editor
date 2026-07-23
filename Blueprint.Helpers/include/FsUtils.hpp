@@ -2,10 +2,12 @@
 
 #include <filesystem>
 #include <fstream>
+#include <ShlObj.h>
+#include <Windows.h>
 
 #include "Errors.hpp"
 
-#pragma warning(disable : 4996) // Disable level 3 warning for getenv() use
+#pragma warning(disable : 4996) // Disable warning for getenv() use
 
 namespace fs = std::filesystem;
 
@@ -41,6 +43,7 @@ namespace FsUtils
 	inline bool Destroy(const fs::path& _Target)
 	{
 		return fs::remove(_Target);
+
 	}
 
 	inline bool DirectoryCreate(const fs::path _Path)
@@ -53,16 +56,46 @@ namespace FsUtils
 		return fs::create_directories(_Path);
 	}
 
-	inline fs::path ResolveAppdata()
+	inline fs::path ResolveProgramFiles()
 	{
-		return getenv("localappdata");
+		const char* GetenvResult = getenv("programfiles");
+		if (GetenvResult && *GetenvResult)
+			return fs::path(GetenvResult);
+
+		return fs::path("");
 	}
 
-	inline fs::path Appdata = ResolveAppdata();
+	inline fs::path ResolveAppdata()
+	{
+		const char* GetenvResult = getenv("appdata");
+		if (GetenvResult && *GetenvResult)
+			return fs::path(GetenvResult);
+
+		return fs::path("");
+	}
+
+	inline fs::path ResolveLocalAppdata()
+	{
+		const char* GetenvResult = getenv("localappdata");
+		if (GetenvResult && *GetenvResult)
+			return fs::path(GetenvResult);
+
+		return fs::path("");
+	}
+
+	inline fs::path GetSBELocalFolder()
+	{
+		return ResolveLocalAppdata() / "SatisfactoryBlueprintEditor";
+	}
 
 	inline fs::path GetBlueprintsPath()
 	{
-		return Appdata.string() + "\\FactoryGame\\Saved\\SaveGames\\blueprints";
+		return ResolveLocalAppdata() / "FactoryGame\\Saved\\SaveGames\\blueprints";
+	};
+	
+	inline fs::path GetBenchmarkFolder()
+	{
+		return GetSBELocalFolder() / "tracing";
 	}
 
 	inline std::vector<fs::path> ScanDirectory(const fs::path& _Target)
@@ -73,5 +106,5 @@ namespace FsUtils
 		return Entries;
 	}
 
-	inline fs::path BlueprintsPath = GetBlueprintsPath();
+	
 }

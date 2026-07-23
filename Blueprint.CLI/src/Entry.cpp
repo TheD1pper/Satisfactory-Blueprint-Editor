@@ -8,9 +8,9 @@
 
 int main()
 {
-	FsUtils::DirectoryCreateR(FsUtils::Appdata.string() + "\\SatisfactoryBlueprintEditor\\tracing\\");
-	Benchmark::DefaultSavePath = FsUtils::Appdata.string() + "\\SatisfactoryBlueprintEditor\\tracing\\";
-	Services::LoadBlueprint(FsUtils::BlueprintsPath.string() + "\\Exp 1.2\\Residual Fuel.sbp");
+	FsUtils::DirectoryCreateR(FsUtils::GetBenchmarkFolder());
+	Benchmark::OverwriteSavePath(FsUtils::GetBenchmarkFolder());
+	Services::LoadBlueprint(FsUtils::GetBlueprintsPath() / "Exp 1.2/Loop.sbp");
 	Cli::PrintHeader(Services::LoadedBlueprint->Header);
 	
 } 
