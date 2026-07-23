@@ -14,10 +14,7 @@ namespace Core::Property
 		String Name{};
 
 		Set::ElementType Type{};
-<<<<<<< HEAD
 		std::vector<Set::Type> Value{};
-=======
 		Set::Type Value{};
->>>>>>> 63ee77f610a7fa36879ae5f530119235f8b461ae
 	};
 }

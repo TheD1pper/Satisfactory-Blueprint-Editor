@@ -37,7 +37,7 @@ namespace Core::Property
 	class DoubleProperty
 	{
 	public:
-		Double Value{};
+		double Value{};
 	};
 
 	class IntProperty
@@ -61,7 +61,7 @@ namespace Core::Property
 	class Int64Property
 	{
 	public:
-		Int64 Value{};
+		int64_t Value{};
 	};
 
 	class NameProperty

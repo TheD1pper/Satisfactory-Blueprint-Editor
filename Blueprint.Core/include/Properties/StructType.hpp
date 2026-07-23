@@ -11,13 +11,13 @@ namespace Core::Property::Struct
 	class Box
 	{
 	public:
-		Double MaxX{};
-		Double MaxY{};
-		Double MaxZ{};
+		double MaxX{};
+		double MaxY{};
+		double MaxZ{};
 
-		Double MinX{};
-		Double MinY{};
-		Double MinZ{};
+		double MinX{};
+		double MinY{};
+		double MinZ{};
 		uint8_t IsValid{};
 	};
 
@@ -48,10 +48,10 @@ namespace Core::Property::Struct
 	class Quat
 	{
 	public:
-		Double X{};
-		Double Y{};
-		Double Z{};
-		Double W{};
+		double X{};
+		double Y{};
+		double Z{};
+		double W{};
 	};
 
 	class RailroadTrackPosition
@@ -65,15 +65,15 @@ namespace Core::Property::Struct
 	class Vector
 	{
 	public:
-		Double X{};
-		Double Y{};
-		Double Z{};
+		double X{};
+		double Y{};
+		double Z{};
 	};
 
 	class DateTime
 	{
 	public:
-		Int64 Value{};
+		int64_t Value{};
 	};
 
 	class ClientIdentity
