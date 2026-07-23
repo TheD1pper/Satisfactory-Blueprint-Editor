@@ -11,7 +11,7 @@ namespace Core::Property
     public:
         String Name;
         PropertyType Type{};
-        Uint32 Index{};
+        uint32_t Index{};
 
         Payload Value;
     };

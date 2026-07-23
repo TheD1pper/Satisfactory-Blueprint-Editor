@@ -6,15 +6,6 @@
 
 namespace Core
 {
-	using Byte = uint8_t;
-	using Int = int;
-	using Uint16 = uint16_t;
-	using Uint32 = uint32_t;
-	using Uint64 = uint64_t;
-	using Int64 = int64_t;
-	using Float = float;
-	using Double = double;
-
 	enum class Encoding
 	{
 		Utf8, Utf16
@@ -32,52 +23,52 @@ namespace Core
 	};
 
 	using String = BinaryString;
-	using ByteVector = std::vector<Byte>;
+	using ByteVector = std::vector<uint8_t>;
 
 	struct Size3D
 	{
 	public:
-		Uint32 X{};
-		Uint32 Y{};
-		Uint32 Z{};
+		uint32_t X{};
+		uint32_t Y{};
+		uint32_t Z{};
 	};
 
 	struct Rotation3D
 	{
 	public:
-		Float X{};
-		Float Y{};
-		Float Z{};
+		float X{};
+		float Y{};
+		float Z{};
 	};
 
 	struct Position3D
 	{
 	public:
-		Float X{};
-		Float Y{};
-		Float Z{};
+		float X{};
+		float Y{};
+		float Z{};
 	};
 
 	struct Scale3D
 	{
 	public:
-		Float X{};
-		Float Y{};
-		Float Z{};
+		float X{};
+		float Y{};
+		float Z{};
 	};
 
 	struct FPackageFileVersion
 	{
-		Int FileVersionUE4{};
-		Int FileVersionUE5{};
+		int FileVersionUE4{};
+		int FileVersionUE5{};
 	};
 
 	struct FEngineVersion
 	{
-		Uint16 Major{};
-		Uint16 Minor{};
-		Uint16 Patch{};
-		Uint32 ChangeList{};
+		uint16_t Major{};
+		uint16_t Minor{};
+		uint16_t Patch{};
+		uint32_t ChangeList{};
 		String Branch{};
 	};
 }

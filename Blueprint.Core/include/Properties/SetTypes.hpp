@@ -9,13 +9,13 @@ namespace Core::Property::Set
 {
 	struct Uint32Type
 	{
-		Uint32 Value{};
+		uint32_t Value{};
 	};
 
 	struct StructType
 	{
-		Uint64 ValueA{};
-		Uint64 ValueB{};
+		uint64_t ValueA{};
+		uint64_t ValueB{};
 	};
 
 	struct ObjectType

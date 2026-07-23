@@ -10,7 +10,7 @@
 
 namespace Parser
 {
-	using ByteVector = std::vector<Core::Byte>;
+	using ByteVector = std::vector<uint8_t>;
 
 	class Zlib
 	{

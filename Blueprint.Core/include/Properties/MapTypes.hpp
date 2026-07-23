@@ -16,14 +16,14 @@ namespace Core::Property::Map
 
 	struct IntKey
 	{
-		Int Value{};
+		int Value{};
 	};
 
 	struct StructKey
 	{
-		Int Value0{};
-		Int Value2{};
-		Int Value3{};
+		int Value0{};
+		int Value2{};
+		int Value3{};
 	};
 #pragma endregion Possible types of keys of the MapProperty
 
@@ -31,12 +31,12 @@ namespace Core::Property::Map
 
 	struct ByteValue
 	{
-		Byte Value{};
+		uint8_t Value{};
 	};
 
 	struct IntValue
 	{
-		Int Value{};
+		int Value{};
 	};
 
 	struct Int64Value

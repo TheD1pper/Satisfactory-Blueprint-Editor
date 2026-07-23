@@ -9,7 +9,7 @@ namespace Core
 	struct CostEntry
 	{
 		String ClassName{};
-		Uint32 Quantity{};
+		uint32_t Quantity{};
 	};
 
 	struct ContentEntry
@@ -20,16 +20,16 @@ namespace Core
 	class BlueprintBody
 	{
 	public:
-		Uint32 UEPackageSignature{};
-		Uint64 CompressedSize{};
-		Uint64 UncompressedSize{};
+		uint32_t UEPackageSignature{};
+		uint64_t CompressedSize{};
+		uint64_t UncompressedSize{};
 
 		// ===== Decompressed variables =====
 
-		Uint32 UncompressedBodySize{};
-		Uint32 ObjectHeadersSize{};
+		uint32_t UncompressedBodySize{};
+		uint32_t ObjectHeadersSize{};
 		//std::vector<ObjectHeader> ObjectHeder;
-		Uint32 ObjectsSize;
+		uint32_t ObjectsSize;
 		//std::vector<Object> Objects;
 
 	public:
@@ -45,21 +45,21 @@ namespace Core
 	class BlueprintHeader
 	{
 	public:
-		Uint32 HeaderVersion{};
-		Uint32 SaveVersion{};
-		Uint32 BuildVersion{};
+		uint32_t HeaderVersion{};
+		uint32_t SaveVersion{};
+		uint32_t BuildVersion{};
 		Size3D Size{};
 		std::vector<CostEntry> CostEntries; 
 		std::vector<ContentEntry> ContentEntries;
 
-		Core::Uint32 SaveObjectDataVersion{};
+		uint32_t SaveObjectDataVersion{};
 		FPackageFileVersion PackageFileVersion{};
-		Core::Int LicenseeVersion{};
+		int LicenseeVersion{};
 		FEngineVersion EngineVersion{};
 
-		Uint32 UEPackageSignature{};
-		Uint64 CompressedSize{};
-		Uint64 UncompressedSize{};
+		uint32_t UEPackageSignature{};
+		uint64_t CompressedSize{};
+		uint64_t UncompressedSize{};
 
 	public:
 		BlueprintHeader(); // Constructor

@@ -10,7 +10,7 @@ namespace Core::Property::Array
 {
 	struct ByteType
 	{
-		Byte Value{};
+		uint8_t Value{};
 	};
 
 	struct EnumType
@@ -37,7 +37,7 @@ namespace Core::Property::Array
 
 	struct IntType
 	{
-		Int Value{};
+		int Value{};
 	};
 
 	struct Int64Type
@@ -47,13 +47,13 @@ namespace Core::Property::Array
 
 	struct FloatType
 	{
-		Float Value{};
+		float Value{};
 	};
 
 	struct SoftObjectType
 	{
 		ObjectReference Reference;
-		Uint32 Number{};
+		uint32_t Number{};
 	};
 
 	struct StructType

@@ -11,14 +11,14 @@ namespace Core::Property
 	class BoolProperty
 	{
 	public:
-		Byte Value{};
+		uint8_t Value{};
 	};
 
 	class ByteProperty
 	{
 	public:
 		bool HasValue{};
-		Byte Value;
+		uint8_t Value;
 	};
 
 	class EnumProperty
@@ -31,7 +31,7 @@ namespace Core::Property
 	class FloatProperty
 	{
 	public:
-		Float Value{};
+		float Value{};
 	};
 
 	class DoubleProperty
@@ -43,19 +43,19 @@ namespace Core::Property
 	class IntProperty
 	{
 	public:
-		Int Value{};
+		int Value{};
 	};
 
 	class Int8Property
 	{
 	public:
-		Byte Value{};
+		uint8_t Value{};
 	};
 
 	class Uint32Property
 	{
 	public:
-		Uint32 Value{};
+		uint32_t Value{};
 	};
 
 	class Int64Property
@@ -80,7 +80,7 @@ namespace Core::Property
 	{
 	public:
 		ObjectReference Path;
-		Uint32 Value;
+		uint32_t Value;
 	};
 
 	class StrProperty

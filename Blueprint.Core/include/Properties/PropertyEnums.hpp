@@ -13,7 +13,7 @@ namespace Core::Property
 	{
 		Array,
 		Bool,
-		Byte,
+		uint8_t,
 		Double,
 		Enum,
 		Float,
@@ -28,7 +28,7 @@ namespace Core::Property
 		Str,
 		Struct,
 		Text,
-		Uint32
+		uint32_t
 	};
 
 	namespace Array
@@ -61,7 +61,7 @@ namespace Core::Property
 
 		enum class ValueType : uint8_t
 		{
-			Byte,
+			uint8_t,
 			Int,
 			Int64,
 			Struct
@@ -74,7 +74,7 @@ namespace Core::Property
 	{
 		enum class ElementType : uint8_t
 		{
-			Uint32,
+			uint32_t,
 			Struct,
 			Object
 		};

@@ -27,7 +27,7 @@ namespace Core::Property
 		};
 
 		const std::unordered_map<ValueType, std::string_view> ValueMap{
-			{ValueType::Byte, "ByteProperty"},
+			{ValueType::uint8_t, "ByteProperty"},
 			{ValueType::Int, "IntProperty"},
 			{ValueType::Int64, "Int64Property"},
 			{ValueType::Struct, "StructProperty"}
@@ -37,7 +37,7 @@ namespace Core::Property
 	namespace Set
 	{
 		const std::unordered_map<ElementType, std::string_view> ElementMap{
-			{ElementType::Uint32, "Uint32Property"},
+			{ElementType::uint32_t, "Uint32Property"},
 			{ElementType::Struct, "StructProperty"},
 			{ElementType::Object, "ObjectProperty"}
 		};

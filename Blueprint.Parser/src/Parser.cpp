@@ -13,9 +13,9 @@ namespace Parser
 	}
 
 	template <>
-	Result<Core::Byte> InputBlueprint::Read()
+	Result<uint8_t> InputBlueprint::Read()
 	{
-		Core::Byte Value{};
+		uint8_t Value{};
 
 		if (!ReadBytes(reinterpret_cast<char*>(&Value), 1))
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad Byte read"));
@@ -23,9 +23,9 @@ namespace Parser
 	}
 
 	template <>
-	Result<Core::Uint16> InputBlueprint::Read()
+	Result<uint16_t> InputBlueprint::Read()
 	{
-		Core::Uint16 Value{};
+		uint16_t Value{};
 
 		if (!ReadBytes(reinterpret_cast<char*>(&Value), 2))
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad Uint16 read"));
@@ -33,9 +33,9 @@ namespace Parser
 	}
 
 	template <>
-	Result<Core::Int> InputBlueprint::Read()
+	Result<int> InputBlueprint::Read()
 	{
-		Core::Int Value{};
+		int Value{};
 
 		if (!ReadBytes(reinterpret_cast<char*>(&Value), 4))
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad Int read"));
@@ -43,9 +43,9 @@ namespace Parser
 	}
 	
 	template <>
-	Result<Core::Uint32> InputBlueprint::Read()
+	Result<uint32_t> InputBlueprint::Read()
 	{
-		Core::Uint32 Value{};
+		uint32_t Value{};
 
 		if (!ReadBytes(reinterpret_cast<char*>(&Value), 4))
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad Uint32 read"));
@@ -53,9 +53,9 @@ namespace Parser
 	}
 
 	template <>
-	Result<Core::Uint64> InputBlueprint::Read()
+	Result<uint64_t> InputBlueprint::Read()
 	{
-		Core::Uint64 Value{};
+		uint64_t Value{};
 
 		if (!ReadBytes(reinterpret_cast<char*>(&Value), 8))
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad Uint64 read"));
@@ -65,12 +65,12 @@ namespace Parser
 	template <>
 	Result<Core::String> InputBlueprint::Read()
 	{
-		auto r_Length = Read<Core::Int>();
+		auto r_Length = Read<int>();
 
 		if (!r_Length)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad string length read"));
 
-		Core::Int SignedLength = r_Length.value();
+		int SignedLength = r_Length.value();
 
 		if (SignedLength == 0)
 			return std::unexpected(Eh::Error(Eh::Binary::EmptyString, "Empty string"));

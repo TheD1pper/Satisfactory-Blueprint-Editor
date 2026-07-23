@@ -18,20 +18,20 @@ namespace Core::Property::Struct
 		Double MinX{};
 		Double MinY{};
 		Double MinZ{};
-		Byte IsValid{};
+		uint8_t IsValid{};
 	};
 
 	class FluidBox
 	{
 	public:
-		Float Value{};
+		float Value{};
 	};
 
 	class InventoryItem
 	{
 	public:
 		String ItemName;
-		Uint32 HasProperty{};
+		uint32_t HasProperty{};
 		String ItemType;
 		PropertyList Properties;
 	};
@@ -39,10 +39,10 @@ namespace Core::Property::Struct
 	class LinearColor
 	{
 	public:
-		Float Red{};
-		Float Green{};
-		Float Blue{};
-		Float Alpha{};	
+		float Red{};
+		float Green{};
+		float Blue{};
+		float Alpha{};	
 	};
 
 	class Quat
@@ -58,8 +58,8 @@ namespace Core::Property::Struct
 	{
 	public:
 		ObjectReference Reference; 
-		Float Offset{};
-		Float Forward{};
+		float Offset{};
+		float Forward{};
 	};
 
 	class Vector
