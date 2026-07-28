@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "BasicDataTypes.hpp"
+#include "ComplexDataTypes.hpp"
 
 namespace Core
 {
@@ -10,11 +11,6 @@ namespace Core
 	{
 		String ClassName{};
 		uint32_t Quantity{};
-	};
-
-	struct ContentEntry
-	{
-		String ClassName{};
 	};
 
 	class BlueprintBody
@@ -28,9 +24,9 @@ namespace Core
 
 		uint32_t UncompressedBodySize{};
 		uint32_t ObjectHeadersSize{};
-		//std::vector<ObjectHeader> ObjectHeder;
+		std::vector<ObjectHeader> ObjectHeader;
 		uint32_t ObjectsSize;
-		//std::vector<Object> Objects;
+		std::vector<Object> Objects;
 
 	public:
 		//BlueprintBody(); // Constructor

@@ -11,13 +11,11 @@ namespace Core
 		Utf8, Utf16
 	};
 
-	class BinaryString
+	struct BinaryString
 	{
-	public:
 		Encoding Utf{};
 		std::string Content;
 
-	public:
 		std::u16string Utf8ToUtf16(std::string_view _String);
 		std::string Utf16ToUtf8(std::u16string_view _String);
 	};
@@ -27,7 +25,6 @@ namespace Core
 
 	struct Size3D
 	{
-	public:
 		uint32_t X{};
 		uint32_t Y{};
 		uint32_t Z{};
@@ -35,15 +32,21 @@ namespace Core
 
 	struct Rotation3D
 	{
-	public:
 		float X{};
 		float Y{};
 		float Z{};
 	};
 
+	struct Rotation4D
+	{
+		float X{};
+		float Y{};
+		float Z{};
+		float W{};
+	};
+
 	struct Position3D
 	{
-	public:
 		float X{};
 		float Y{};
 		float Z{};
@@ -51,7 +54,6 @@ namespace Core
 
 	struct Scale3D
 	{
-	public:
 		float X{};
 		float Y{};
 		float Z{};
@@ -70,5 +72,16 @@ namespace Core
 		uint16_t Patch{};
 		uint32_t ChangeList{};
 		String Branch{};
+	};
+
+	struct ObjectReference
+	{
+		String Level;
+		String Path;
+	};
+
+	struct ContentEntry
+	{
+		String ClassName;
 	};
 }
