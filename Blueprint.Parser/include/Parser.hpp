@@ -4,8 +4,9 @@
 #include <filesystem>
 
 #include "Core.hpp"
-#include "Errors.hpp"
 #include "Compressor.hpp"
+
+import Helpers.Errors;
 
 namespace fs = std::filesystem;
 

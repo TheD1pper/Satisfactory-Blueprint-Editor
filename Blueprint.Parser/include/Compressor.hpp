@@ -5,8 +5,9 @@
 #include <string>
 
 #include "BasicDataTypes.hpp"
-#include "Errors.hpp"
 #include "Parser.hpp"
+
+import Helpers.Errors;
 
 namespace Parser
 {
