@@ -1,8 +1,9 @@
 #pragma once
 
+import Helpers.FsUtils;
+
 #include <vector>
 
-#include "FsUtils.hpp"
 #include "Core.hpp"
 
 namespace Cli
