@@ -4,7 +4,9 @@ import Helpers.FsUtils;
 
 #include <vector>
 
-#include "Core.hpp"
+import Helpers.FsUtils;
+
+import Core.Data;
 
 namespace Cli
 {

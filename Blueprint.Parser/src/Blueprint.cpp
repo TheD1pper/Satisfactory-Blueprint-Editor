@@ -4,11 +4,13 @@
 #include <iostream>
 
 #include "Parser.hpp"
-#include "BasicDataTypes.hpp"
 #include "BenchmarkMacros.hpp"
 
 import Helpers.Benchmark;
 import Helpers.Errors;
+import Core.Data;
+
+import Core.Data;
 
 namespace Parser
 {	

@@ -133,30 +133,23 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\BlueprintHeader.cpp" />
-    <ClCompile Include="include\BasicDataTypes.hpp" />
+    <ClCompile Include="modules\Core.Data.ixx" />
     <ClCompile Include="src\BasicDataTypes.cpp" />
-    <ClCompile Include="src\Core.cpp" />
+    <ClCompile Include="src\BlueprintHeader.cpp" />
+    <ClCompile Include="modules\Core.Property.ixx" />
+    <ClCompile Include="modules\Properties\Enums.ixx" />
+    <ClCompile Include="modules\Properties\List.ixx" />
+    <ClCompile Include="modules\Properties\StructTypes.ixx" />
+    <ClCompile Include="modules\Properties\StructProperty.ixx" />
+    <ClCompile Include="modules\Properties\ArrayTypes.ixx" />
+    <ClCompile Include="modules\Properties\ArrayProperty.ixx" />
+    <ClCompile Include="modules\Properties\MapTypes.ixx" />
+    <ClCompile Include="modules\Properties\MapProperty.ixx" />
+    <ClCompile Include="modules\Properties\SetTypes.ixx" />
+    <ClCompile Include="modules\Properties\SetProperty.ixx" />
+    <ClCompile Include="modules\Properties\Payloads.ixx" />
     <ClCompile Include="src\Properties\PropertyEnums.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\ComplexDataTypes.h" />
-    <ClInclude Include="include\ComplexDataTypes.hpp" />
-    <ClInclude Include="include\Properties\ArrayProperty.hpp" />
-    <ClInclude Include="include\Properties\ArrayTypes.hpp" />
-    <ClInclude Include="include\Core.hpp" />
-    <ClInclude Include="include\Properties\MapProperty.hpp" />
-    <ClInclude Include="include\Properties\MapTypes.hpp" />
-    <ClInclude Include="include\Properties\Property.hpp" />
-    <ClInclude Include="include\Properties\PropertyEnums.hpp" />
-    <ClInclude Include="include\Properties\PropertyList.hpp" />
-    <ClInclude Include="include\Properties\PropertyPayloads.hpp" />
-    <ClInclude Include="include\Properties\SetTypes.hpp" />
-    <ClInclude Include="include\Properties\StructProperty.hpp" />
-    <ClInclude Include="include\Properties\StructType.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="include\Properties\SetProperty.hpp" />
+    <ClCompile Include="src\Properties\PropertyRecursion.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

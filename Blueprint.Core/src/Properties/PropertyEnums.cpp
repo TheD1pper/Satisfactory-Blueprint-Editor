@@ -1,6 +1,9 @@
-#include <string_view>
+module;
 
-#include "Properties/PropertyEnums.hpp"
+#include <string_view>
+#include <unordered_map>
+
+module Core.Property;
 
 namespace Core::Property
 {
@@ -13,7 +16,7 @@ namespace Core::Property
 			{ElementType::FluidBox, "FluidBox"},
 			{ElementType::InventoryItem, "InventoryItem"},
 			{ElementType::RailroadTrackPosition, "RailroadTrackPosition"},
-			{ElementType::DateTime, "DataTime"},
+			{ElementType::DateTime, "DateTime"},
 			{ElementType::ClientIdentityInfo, "ClientIdentityInfo"}
 		};
 	}
@@ -27,7 +30,7 @@ namespace Core::Property
 		};
 
 		const std::unordered_map<ValueType, std::string_view> ValueMap{
-			{ValueType::uint8_t, "ByteProperty"},
+			{ValueType::Byte, "ByteProperty"},
 			{ValueType::Int, "IntProperty"},
 			{ValueType::Int64, "Int64Property"},
 			{ValueType::Struct, "StructProperty"}
@@ -37,7 +40,7 @@ namespace Core::Property
 	namespace Set
 	{
 		const std::unordered_map<ElementType, std::string_view> ElementMap{
-			{ElementType::uint32_t, "Uint32Property"},
+			{ElementType::UInt32, "Uint32Property"},
 			{ElementType::Struct, "StructProperty"},
 			{ElementType::Object, "ObjectProperty"}
 		};

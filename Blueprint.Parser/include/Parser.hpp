@@ -3,10 +3,10 @@
 #include <fstream>
 #include <filesystem>
 
-#include "Core.hpp"
 #include "Compressor.hpp"
-
 import Helpers.Errors;
+import Core.Data;
+
 
 namespace fs = std::filesystem;
 

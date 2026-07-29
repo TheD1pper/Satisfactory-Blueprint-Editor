@@ -4,8 +4,10 @@
 #include <vector>
 #include <string>
 
-#include "BasicDataTypes.hpp"
 #include "Parser.hpp"
+
+import Helpers.Errors;
+import Core.Data;
 
 import Helpers.Errors;
 
