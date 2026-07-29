@@ -1,3 +1,5 @@
+module;
+
 #include <Windows.h>
 #include <iostream>
 #include <string>
@@ -6,9 +8,10 @@
 #include <array>
 
 #include "Services.hpp"
-#include "Terminal.hpp"
 #include "FsUtils.hpp"
 #include "BasicDataTypes.hpp"
+
+module Cli.Terminal;
 
 namespace Cli
 {

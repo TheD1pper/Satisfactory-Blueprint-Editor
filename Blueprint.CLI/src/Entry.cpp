@@ -1,10 +1,12 @@
 #include <print>
 #include <iostream>
 
-#include "Terminal.hpp"
 #include "Services.hpp"
 #include "Parser.hpp"
 #include "Benchmark.hpp"
+#include "FsUtils.hpp"
+
+import Cli.Terminal;
 
 int main()
 {

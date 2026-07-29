@@ -21,10 +21,8 @@
     <ClCompile Include="src\Terminal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\Terminal.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="modules\Terminal.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
