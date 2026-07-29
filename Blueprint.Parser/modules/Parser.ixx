@@ -1,15 +1,16 @@
-#pragma once
+module;
 
 #include <fstream>
 #include <filesystem>
 
 #include "Core.hpp"
 #include "Errors.hpp"
-#include "Compressor.hpp"
 
-namespace fs = std::filesystem;
+export module Parser.BinaryIO;
 
-namespace Parser
+export namespace fs = std::filesystem;
+
+export namespace Parser
 {
 	int constexpr MaxChunkSize = 0x00020000;
 
