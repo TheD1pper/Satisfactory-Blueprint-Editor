@@ -3,8 +3,9 @@
 
 #include "Terminal.hpp"
 #include "Services.hpp"
-#include "Parser.hpp"
 #include "Benchmark.hpp"
+
+import Parser.BinaryIO;
 
 int main()
 {

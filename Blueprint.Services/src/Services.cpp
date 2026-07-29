@@ -2,8 +2,10 @@
 #include <print>
 
 #include "Services.hpp"
-#include "Parser.hpp"
+#include "Errors.hpp"
 #include "Benchmark.hpp"
+
+import Parser.BinaryIO;
 
 namespace Services
 {
