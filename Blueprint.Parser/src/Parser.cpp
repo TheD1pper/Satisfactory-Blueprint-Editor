@@ -1,9 +1,14 @@
+module;
+
 #include <iostream>
 #include <zlib.h>
 #include <print>
 
-#include "Parser.hpp"
+#include "Core.hpp"
+#include "Errors.hpp"
 #include "BasicDataTypes.hpp"
+
+module Parser.BinaryIO;
 
 namespace Parser
 {

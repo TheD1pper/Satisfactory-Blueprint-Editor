@@ -1,11 +1,18 @@
+module;
+
 #include <print>
 #include <array>
 #include <queue>
 #include <iostream>
 
-#include "Parser.hpp"
+#include "Core.hpp"
+#include "Errors.hpp"
 #include "BasicDataTypes.hpp"
 #include "Benchmark.hpp"
+
+module Parser.BinaryIO;
+
+import Parser.Compression;
 
 namespace Parser
 {	
@@ -217,7 +224,7 @@ namespace Parser
 			Draft.UncompressedSize = *UncompressedSize;
 		}
 
-			ByteVector CompressedBody(Draft.CompressedSize);
+		Core::ByteVector CompressedBody(Draft.CompressedSize);
 		{
 			BENCH_SCOPE("Compressed body read");
 			for (uint64_t i = 0; i < Draft.CompressedSize; i++)
@@ -231,15 +238,14 @@ namespace Parser
 
 		Result<Core::ByteVector> r_UncompressedBody;
 		{
+			Zlib Z;
 			BENCH_SCOPE("Decompression");
 			r_UncompressedBody = Z.Decompress(std::move(CompressedBody), Draft.UncompressedSize);
 			if (!r_UncompressedBody)
 				return std::unexpected(Eh::Error(Eh::Compression::Fail, r_UncompressedBody.error().GetLogMessage()));
 		}
 		
-		ByteVector UncompressedBody = *r_UncompressedBody;
+		Core::ByteVector UncompressedBody = *r_UncompressedBody;
 		return Draft;
 	}	
-
-
 }
