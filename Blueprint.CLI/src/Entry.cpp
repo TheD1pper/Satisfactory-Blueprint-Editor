@@ -2,9 +2,10 @@
 #include <iostream>
 
 #include "Terminal.hpp"
-#include "Services.hpp"
 #include "Parser.hpp"
 #include "Benchmark.hpp"
+
+import Services.Load;
 
 int main()
 {
