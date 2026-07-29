@@ -1,19 +1,18 @@
-#pragma once
+module;
 
 #include <cstdint>
-#include <string>
 #include <string_view>
 #include <unordered_map>
 
-#include "BasicDataTypes.hpp"
+export module Core.Property:Enums;
 
-namespace Core::Property
+export namespace Core::Property
 {
 	enum class PropertyType : uint8_t
 	{
 		Array,
 		Bool,
-		uint8_t,
+		Byte,
 		Double,
 		Enum,
 		Float,
@@ -28,7 +27,7 @@ namespace Core::Property
 		Str,
 		Struct,
 		Text,
-		uint32_t
+		UInt32
 	};
 
 	namespace Array
@@ -61,20 +60,21 @@ namespace Core::Property
 
 		enum class ValueType : uint8_t
 		{
-			uint8_t,
+			Byte,
 			Int,
 			Int64,
 			Struct
 		};
 
 		const extern std::unordered_map<KeyType, std::string_view> KeyMap;
+		const extern std::unordered_map<ValueType, std::string_view> ValueMap;
 	}
 
 	namespace Set
 	{
 		enum class ElementType : uint8_t
 		{
-			uint32_t,
+			UInt32,
 			Struct,
 			Object
 		};

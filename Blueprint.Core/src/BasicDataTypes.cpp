@@ -1,6 +1,10 @@
-#include <Windows.h>
+module;
 
-#include "BasicDataTypes.hpp"
+#include <Windows.h>
+#include <string>
+#include <string_view>
+
+module Core.Data;
 
 namespace Core
 {

@@ -1,4 +1,9 @@
-#include "Core.hpp"
+module;
+
+#include <type_traits>
+#include <utility>
+
+module Core.Data;
 
 namespace Core
 {
