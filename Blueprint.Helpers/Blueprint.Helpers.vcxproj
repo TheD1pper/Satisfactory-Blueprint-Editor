@@ -19,11 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Benchmark.hpp" />
-    <ClInclude Include="include\Errors.hpp" />
-    <ClInclude Include="include\FsUtils.hpp" />
+    <ClInclude Include="include\BenchmarkMacros.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="modules\Benchmark.ixx" />
+    <ClCompile Include="modules\Errors.ixx" />
+    <ClCompile Include="modules\FsUtils.ixx" />
     <ClCompile Include="src\notused.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

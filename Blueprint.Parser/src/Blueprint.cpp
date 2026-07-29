@@ -5,7 +5,10 @@
 
 #include "Parser.hpp"
 #include "BasicDataTypes.hpp"
-#include "Benchmark.hpp"
+#include "BenchmarkMacros.hpp"
+
+import Helpers.Benchmark;
+import Helpers.Errors;
 
 namespace Parser
 {	

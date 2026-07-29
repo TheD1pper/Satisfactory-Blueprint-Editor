@@ -1,3 +1,5 @@
+import Helpers.FsUtils;
+
 #include <Windows.h>
 #include <iostream>
 #include <string>
@@ -7,7 +9,6 @@
 
 #include "Services.hpp"
 #include "Terminal.hpp"
-#include "FsUtils.hpp"
 #include "BasicDataTypes.hpp"
 
 namespace Cli

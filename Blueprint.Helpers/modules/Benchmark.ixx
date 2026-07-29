@@ -1,9 +1,11 @@
-#pragma once
+module;
 
-#include <chrono>
-#include <fstream>
-#include <thread>
-#include <filesystem>
+export module Helpers.Benchmark;
+
+import <chrono>;
+import <fstream>;
+import <thread>;
+import <filesystem>;
 
 // Slightly modified header-only version of the benchmarker by the one and only The Cherno!
 // Love you Cherno <3
@@ -23,14 +25,14 @@ namespace Benchmark
         std::string Name;
     };
 
-    inline std::filesystem::path DefaultSavePath{};
+    std::filesystem::path DefaultSavePath{};
 
-    inline void OverwriteSavePath(const std::filesystem::path& _Path)
+    export void OverwriteSavePath(const std::filesystem::path& _Path)
     {
         DefaultSavePath = _Path;
     }
 
-    class Instrumentor
+    export class Instrumentor
     {
     private:
         InstrumentationSession* CurrentSession;
@@ -38,19 +40,19 @@ namespace Benchmark
         int ProfileCount;
 
     public:
-        inline Instrumentor()
+        Instrumentor()
             : CurrentSession(nullptr), ProfileCount(0)
         {
         }
 
-        inline void BeginSession(const std::string& _Name, const std::filesystem::path& _Filepath = DefaultSavePath / "benchmark.json")
+        void BeginSession(const std::string& _Name, const std::filesystem::path& _Filepath = DefaultSavePath / "benchmark.json")
         {
             OutputStream.open(_Filepath);
             WriteHeader();
             CurrentSession = new InstrumentationSession{ _Name };
         }
 
-        inline void EndSession()
+        void EndSession()
         {
             WriteFooter();
             OutputStream.close();
@@ -59,7 +61,7 @@ namespace Benchmark
             ProfileCount = 0;
         }
 
-        inline void WriteProfile(const ProfileResult& _Result)
+        void WriteProfile(const ProfileResult& _Result)
         {
             if (ProfileCount++ > 0)
                 OutputStream << ",";
@@ -80,20 +82,21 @@ namespace Benchmark
             OutputStream.flush();
         }
 
-        inline void WriteHeader()
+        void WriteHeader()
         {
             OutputStream << "{\"otherData\": {},\"traceEvents\":[";
             OutputStream.flush();
         }
 
-        inline void WriteFooter()
+        void WriteFooter()
         {
             OutputStream << "]}";
             OutputStream.flush();
         }
 
-        inline ~Instrumentor()
+        ~Instrumentor()
         {
+            BeginSession("You forgot to call BeginSession");
             EndSession();
         }
 
@@ -106,7 +109,7 @@ namespace Benchmark
 #pragma endregion Everything related to json formatting
 
 #pragma region Timer
-    class InstrumentationTimer
+    export class InstrumentationTimer
     {
     private:
         std::string Name;
@@ -114,20 +117,20 @@ namespace Benchmark
         bool Stopped;
 
     public:
-        inline InstrumentationTimer(const std::string& _Name)
+        InstrumentationTimer(const std::string& _Name)
             : Name(_Name),
             Stopped(false)
         {
             StartTimepoint = std::chrono::high_resolution_clock::now();
         }
 
-        inline ~InstrumentationTimer()
+        ~InstrumentationTimer()
         {
             if (!Stopped)
                 Stop();
         }
 
-        inline void Stop()
+        void Stop()
         {
             auto endTimepoint = std::chrono::high_resolution_clock::now();
 
@@ -141,20 +144,5 @@ namespace Benchmark
         }
     };
 
-#define TRACING 1
-#if TRACING
-#define CONCAT_IMPL(x, y) x##y
-#define CONCAT(x, y) CONCAT_IMPL(x, y)
-
-#define BENCH_FUNC() \
-    Benchmark::InstrumentationTimer CONCAT(FunctionTimer, __LINE__)(__FUNCSIG__)
-#define BENCH_SCOPE(_Name) \
-    Benchmark::InstrumentationTimer CONCAT(ScopeTimer, __LINE__)(_Name)
-
-#else
-#define BENCH_FUNC()
-#define BENCH_SCOPE(_Name)
-#endif
-
-#pragma endregion Timing stuff and etc idk
+#pragma endregion The timer class
 }

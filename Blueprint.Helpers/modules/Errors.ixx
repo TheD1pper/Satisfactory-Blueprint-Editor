@@ -1,19 +1,21 @@
-#pragma once
+module;
 
-#include <string>
-#include <expected>
-#include <variant>
-#include <source_location>
-#include <type_traits>
+export module Helpers.Errors;
+
+import <string>;
+import <expected>;
+import <variant>;
+import <source_location>;
+import <type_traits>;
 
 namespace ErrorHandling
 {
-    template<typename T>
+    export template<typename T>
     concept EnumType = std::is_enum_v<T>;
 
     using Sl = std::source_location;
 
-    enum class Binary
+    export enum class Binary
     {
         BadRead,
         QuantityCantBeZero,
@@ -21,20 +23,20 @@ namespace ErrorHandling
         CheckFalied
     };
 
-    enum class Blueprint
+    export enum class Blueprint
     {
         WrongHeaderVersion,
         MissingBodyAnchor
     };
 
-    enum class Compression
+    export enum class Compression
     {
         Fail
     };
 
-    using ErrorCode = std::variant<Binary, Blueprint, Compression>;
+    export using ErrorCode = std::variant<Binary, Blueprint, Compression>;
 
-    class Error
+    export class Error
     {
     private:
         Sl Source;
@@ -75,7 +77,7 @@ namespace ErrorHandling
     };
 }
 
-template<typename T>
+export template<typename T>
 using Result = std::expected<T, ErrorHandling::Error>;
 
-namespace Eh = ErrorHandling;
+export namespace Eh = ErrorHandling;

@@ -4,7 +4,9 @@
 #include "Terminal.hpp"
 #include "Services.hpp"
 #include "Parser.hpp"
-#include "Benchmark.hpp"
+#include "BenchmarkMacros.hpp"
+
+import Helpers.Benchmark;
 
 int main()
 {
