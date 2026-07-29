@@ -3,7 +3,8 @@
 #include <vector>
 
 #include "FsUtils.hpp"
-#include "Core.hpp"
+
+import Core.Data;
 
 namespace Cli
 {

@@ -3,7 +3,8 @@
 #include <print>
 
 #include "Parser.hpp"
-#include "BasicDataTypes.hpp"
+
+import Core.Data;
 
 namespace Parser
 {

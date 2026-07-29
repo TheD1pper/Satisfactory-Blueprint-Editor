@@ -8,7 +8,8 @@
 #include "Services.hpp"
 #include "Terminal.hpp"
 #include "FsUtils.hpp"
-#include "BasicDataTypes.hpp"
+
+import Core.Data;
 
 namespace Cli
 {

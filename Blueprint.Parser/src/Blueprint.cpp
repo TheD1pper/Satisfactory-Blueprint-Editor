@@ -4,8 +4,9 @@
 #include <iostream>
 
 #include "Parser.hpp"
-#include "BasicDataTypes.hpp"
 #include "Benchmark.hpp"
+
+import Core.Data;
 
 namespace Parser
 {	
