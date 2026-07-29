@@ -1,14 +1,15 @@
+module;
+
 #include <iostream>
 #include <print>
 
-#include "Services.hpp"
 #include "Parser.hpp"
 #include "Benchmark.hpp"
 
+module Services.Load;
+
 namespace Services
 {
-	std::unique_ptr<Core::Blueprint> LoadedBlueprint = std::make_unique<Core::Blueprint>();
-
 	void LoadBlueprint(const fs::path& _Path)
 	{
 		Parser::InputBlueprint Input(_Path);

@@ -18,10 +18,8 @@
     <ClCompile Include="src\Services.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\Services.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="modules\Services.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
