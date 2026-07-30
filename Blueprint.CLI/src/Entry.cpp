@@ -1,13 +1,14 @@
 #include <print>
 #include <iostream>
 
-#include "Terminal.hpp"
 #include "BenchmarkMacros.hpp"
 
 import Helpers.Benchmark;
+import Helpers.FsUtils;
 import Core.Data;
 import Parser.BinaryIO;
 import Services.Load;
+import Cli.Terminal;
 
 int main()
 {

@@ -1,4 +1,4 @@
-import Helpers.FsUtils;
+module;
 
 #include <Windows.h>
 #include <iostream>
@@ -7,11 +7,10 @@ import Helpers.FsUtils;
 #include <ctime>
 #include <array>
 
-#include "Terminal.hpp"
+module Cli.Terminal;
 
 import Helpers.FsUtils;
 import Core.Data;
-
 import Services.Load;
 
 namespace Cli

@@ -103,7 +103,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)Blueprint.Services\modules;$(SolutionDir)Blueprint.Parser\include;$(SolutionDir)Blueprint.Core\include;$(SolutionDir)Blueprint.Helpers\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)modules;$(SolutionDir)Blueprint.Services\include;$(SolutionDir)Blueprint.Parser\include;$(SolutionDir)Blueprint.Core\include;$(SolutionDir)Blueprint.Helpers\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="src\Entry.cpp" />
     <ClCompile Include="src\Terminal.cpp" />
+    <ClCompile Include="modules\Terminal.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Blueprint.Core\Blueprint.Core.vcxproj">
@@ -143,9 +144,6 @@
     <ProjectReference Include="..\Blueprint.Services\Blueprint.Services.vcxproj">
       <Project>{6a4d39b9-7c13-4712-b8b1-84533df60bac}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\Terminal.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
