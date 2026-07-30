@@ -1,7 +1,11 @@
+module;
+
 #include <iostream>
 #include <print>
 
 #include "BenchmarkMacros.hpp"
+
+module Services.Load;
 
 import Helpers.Benchmark;
 import Helpers.FsUtils;
@@ -11,8 +15,6 @@ import Parser.BinaryIO;
 
 namespace Services
 {
-	std::unique_ptr<Core::Blueprint> LoadedBlueprint = std::make_unique<Core::Blueprint>();
-
 	void LoadBlueprint(const fs::path& _Path)
 	{
 		Parser::InputBlueprint Input(_Path);

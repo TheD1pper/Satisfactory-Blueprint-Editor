@@ -2,13 +2,12 @@
 #include <iostream>
 
 #include "Terminal.hpp"
-#include "Services.hpp"
 #include "BenchmarkMacros.hpp"
 
 import Helpers.Benchmark;
+import Core.Data;
 import Parser.BinaryIO;
-
-import Parser.BinaryIO;
+import Services.Load;
 
 int main()
 {

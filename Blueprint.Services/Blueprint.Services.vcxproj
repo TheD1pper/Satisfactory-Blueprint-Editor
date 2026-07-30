@@ -138,10 +138,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="modules\Services.ixx" />
     <ClCompile Include="src\Services.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\Services.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

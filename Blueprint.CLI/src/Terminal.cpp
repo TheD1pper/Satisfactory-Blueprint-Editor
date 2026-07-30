@@ -7,11 +7,12 @@ import Helpers.FsUtils;
 #include <ctime>
 #include <array>
 
-#include "Services.hpp"
 #include "Terminal.hpp"
 
 import Helpers.FsUtils;
 import Core.Data;
+
+import Services.Load;
 
 namespace Cli
 {
