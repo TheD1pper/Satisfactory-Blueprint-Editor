@@ -103,7 +103,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Blueprint.Helpers\include;$(SolutionDir)Blueprint.Helpers\modules;$(SolutionDir)Blueprint.Core\modules;$(ProjectDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)modules;$(SolutionDir)Blueprint.Core\modules;$(SolutionDir)Blueprint.Helpers\modules;$(SolutionDir)Blueprint.Helpers\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,7 +119,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Blueprint.Helpers\include;$(SolutionDir)Blueprint.Helpers\modules;$(SolutionDir)Blueprint.Core\modules;$(ProjectDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)modules;$(SolutionDir)Blueprint.Core\modules;$(SolutionDir)Blueprint.Helpers\modules;$(SolutionDir)Blueprint.Helpers\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
