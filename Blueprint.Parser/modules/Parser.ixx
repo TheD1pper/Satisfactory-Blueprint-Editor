@@ -1,20 +1,20 @@
-#pragma once
+module;
 
 #include <fstream>
 #include <filesystem>
 
-#include "Compressor.hpp"
+export module Parser.BinaryIO;
+
+export namespace fs = std::filesystem;
+
 import Helpers.Errors;
 import Core.Data;
 
-
-namespace fs = std::filesystem;
-
-namespace Parser
+export namespace Parser
 {
 	int constexpr MaxChunkSize = 0x00020000;
 
-	class InputBlueprint
+	export class InputBlueprint
 	{
 	private:
 		uint64_t BytesRead = 0;
@@ -34,10 +34,9 @@ namespace Parser
 	public:
 		InputBlueprint() = default;
 		InputBlueprint(fs::path _Path);
-
 	};
 
-	class BinaryOutput
+	export class BinaryOutput
 	{
 	private:
 		std::ofstream Output;

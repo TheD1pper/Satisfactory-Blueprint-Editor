@@ -3,10 +3,12 @@
 
 #include "Terminal.hpp"
 #include "Services.hpp"
-#include "Parser.hpp"
 #include "BenchmarkMacros.hpp"
 
 import Helpers.Benchmark;
+import Parser.BinaryIO;
+
+import Parser.BinaryIO;
 
 int main()
 {

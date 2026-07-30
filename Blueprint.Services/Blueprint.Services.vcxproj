@@ -103,7 +103,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Blueprint.Services\include;$(SolutionDir)Blueprint.Parser\include;$(SolutionDir)Blueprint.Core\include;$(SolutionDir)Blueprint.Helpers\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Blueprint.Helpers\modules;$(SolutionDir)Blueprint.Helpers\include;$(SolutionDir)Blueprint.Core\modules;$(SolutionDir)Blueprint.Parser\modules;$(ProjectDir)modules</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,7 +119,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Blueprint.Services\include;$(SolutionDir)Blueprint.Parser\include;$(SolutionDir)Blueprint.Core\include;$(SolutionDir)Blueprint.Helpers\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Blueprint.Helpers\modules;$(SolutionDir)Blueprint.Helpers\include;$(SolutionDir)Blueprint.Core\modules;$(SolutionDir)Blueprint.Parser\modules;$(ProjectDir)modules</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

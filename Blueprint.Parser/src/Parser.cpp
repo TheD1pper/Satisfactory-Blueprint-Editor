@@ -1,9 +1,14 @@
+module;
+
 #include <iostream>
 #include <zlib.h>
 #include <print>
 
-#include "Parser.hpp"
+module Parser.BinaryIO;
 
+import Helpers.Benchmark;
+import Helpers.Errors;
+import Helpers.FsUtils;
 import Core.Data;
 
 namespace Parser

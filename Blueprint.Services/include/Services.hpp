@@ -2,7 +2,8 @@
 
 #include <memory>
 
-#include "Parser.hpp"
+import Core.Data;
+import Parser.BinaryIO;
 
 namespace Services
 {
