@@ -11,7 +11,6 @@ module Cli.Terminal;
 
 import Helpers.FsUtils;
 import Core.Data;
-import Services.Load;
 
 namespace Cli
 {
