@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Services.cpp">
+    <ClCompile Include="src\BlueprintManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="modules\Services.ixx">
+    <ClCompile Include="modules\BlueprintManager.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

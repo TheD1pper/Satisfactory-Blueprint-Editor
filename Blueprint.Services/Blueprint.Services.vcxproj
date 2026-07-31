@@ -138,8 +138,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="modules\Services.ixx" />
-    <ClCompile Include="src\Services.cpp" />
+    <ClCompile Include="modules\BlueprintManager.ixx" />
+    <ClCompile Include="src\BlueprintManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
