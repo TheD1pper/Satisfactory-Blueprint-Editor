@@ -5,7 +5,7 @@ module;
 
 export module Parser.BinaryIO;
 
-export namespace fs = std::filesystem;
+namespace fs = std::filesystem;
 
 import Helpers.Errors;
 import Core.Data;
