@@ -14,7 +14,8 @@ import :StructProperty;
 export namespace Core::Property
 {
 	struct BoolProperty
-	{		uint8_t Value{};
+	{	
+		uint8_t Value{};
 	};
 
 	struct ByteProperty
