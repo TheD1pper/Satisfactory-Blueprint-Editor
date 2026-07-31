@@ -61,28 +61,25 @@ namespace Parser
 				return std::unexpected(Eh::Error(Eh::Binary::QuantityCantBeZero, "Number of cost entries can't be zero"));
 			SkipBytes(4); // Ignore 4 empty bytes
 
-			std::vector<Core::CostEntry> CostEntries;
-			CostEntries.reserve(NumberOfCostEntries);
+			Draft.CostEntries.reserve(NumberOfCostEntries);
 			for (uint32_t i = 0; i < NumberOfCostEntries; i++)
 			{
 				auto r_String = Read<Core::String>();
 				if (!r_String)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad cost entry class name read, iteration: " + static_cast<int>(i)));
 
-				Core::CostEntry Draft;
-				Draft.ClassName = *r_String;
+				Core::CostEntry Entry;
+				Entry.ClassName = *r_String;
 
 				auto r_Quantity = Read<uint32_t>();
 				if (!r_Quantity)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad cost entry quantity read"));
-				Draft.Quantity = *r_Quantity;
+				Entry.Quantity = *r_Quantity;
 				if (i != NumberOfCostEntries - 1)
 					SkipBytes(4); // Ignore 4 empty bytes
 
-				CostEntries.emplace_back(Draft);
+				Draft.CostEntries.emplace_back(Entry);
 			}
-
-			Draft.CostEntries = std::move(CostEntries);
 
 			auto r_NumberOfContentEntries = Read<uint32_t>();
 			if (!r_NumberOfContentEntries)
@@ -93,21 +90,18 @@ namespace Parser
 				return std::unexpected(Eh::Error(Eh::Binary::QuantityCantBeZero, "Number of content entries can't be zero"));
 			SkipBytes(4); // Ignore 4 empty bytes
 
-			std::vector<Core::ContentEntry> ContentEntries;
-			ContentEntries.reserve(NumberOfContentEntries);
-
+			Draft.ContentEntries.reserve(NumberOfContentEntries);
 			for (uint32_t i = 0; i < NumberOfContentEntries; i++)
 			{
-				Core::ContentEntry Draft;
+				Core::ContentEntry Entry;
 				auto r_String = Read<Core::String>();
 				if (!r_String)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad content entry class name read"));
-				Draft.ClassName = *r_String;
-				ContentEntries.emplace_back(Draft);
+				Entry.ClassName = *r_String;
+				Draft.ContentEntries.emplace_back(Entry);
 				if (i != NumberOfContentEntries - 1)
 					SkipBytes(4);
 			}
-			Draft.ContentEntries = std::move(ContentEntries);
 
 			if (Draft.SaveVersion >= 53)
 			{
@@ -160,13 +154,18 @@ namespace Parser
 
 		return Draft;
 	}
-
+	 
 	Result<Core::BlueprintBody> InputBlueprint::ReadBody()
 	{
 		Core::BlueprintBody Draft;
 
 		std::streamoff AnchorAddress{}; 
 		{
+			// Between every blueprint header and body there's metadata that doesn't have a variable describing the size of it
+			// Because of that you need to find a constant that you can "anchor" to to read the rest of the body
+			// Every blueprint file has a couple of constants like 0x22222222, 0x03000000, 0x00020100
+			// Only the first anchor is looked up, a failsafe can be added to limit the probability of the anchor recurring 
+
 			BENCH_SCOPE("Anchor lookup");
 			std::array<uint8_t, 4> SlidingWindow{ {0,0,0,0} };
 			std::queue<uint8_t> Bytes;
