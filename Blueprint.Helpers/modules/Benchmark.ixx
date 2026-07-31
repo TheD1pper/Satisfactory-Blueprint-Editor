@@ -7,8 +7,8 @@ import <fstream>;
 import <thread>;
 import <filesystem>;
 
-// Slightly modified header-only version of the benchmarker by the one and only The Cherno!
-// Love you Cherno <3
+// Slightly modified module version of the benchmarker by the one and only The Cherno!
+// Love you lad <3
 
 namespace Benchmark
 {
@@ -96,7 +96,6 @@ namespace Benchmark
 
         ~Instrumentor()
         {
-            BeginSession("You forgot to call BeginSession");
             EndSession();
         }
 
