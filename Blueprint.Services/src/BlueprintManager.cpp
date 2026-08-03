@@ -30,9 +30,7 @@ namespace Services
 				BENCH_SCOPE("Header read");
 				r_Header = Input.ReadHeader();
 				if (!r_Header)
-				{
 					return std::unexpected(r_Header.error());
-				}
 			}
 
 			Result<Core::BlueprintBody> r_Body;
@@ -40,9 +38,7 @@ namespace Services
 				BENCH_SCOPE("Body read");
 				r_Body = Input.ReadBody();
 				if (!r_Body)
-				{
 					return std::unexpected(r_Body.error());
-				}
 			}
 
 			{
