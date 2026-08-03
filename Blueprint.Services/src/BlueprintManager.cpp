@@ -15,8 +15,6 @@ import Parser.BinaryIO;
 
 namespace Services
 {
-	// Can return the blueprint name in the future
-	// Replace paths as keys for blueprint names 
 	Result<std::string> BlueprintManager::Load(const fs::path& _Path)
 	{
 		Benchmark::Instrumentor::Get().BeginSession("Blueprint loading");
@@ -24,6 +22,8 @@ namespace Services
 
 		Parser::InputBlueprint Input(_Path);
 		Core::Blueprint Blueprint{};
+
+		const std::string BlueprintName = _Path.filename().replace_extension("").string();
 
 		{
 			BENCH_SCOPE("Blueprint read");
@@ -43,30 +43,31 @@ namespace Services
 					return std::unexpected(r_Body.error());
 			}
 
+			Blueprint.Name = BlueprintName;
 			Blueprint.Header = std::move(*r_Header);
 			Blueprint.Body = std::move(*r_Body);
-			m_Table.emplace(_Path.filename().string(), std::move(Blueprint));
+			m_Table.emplace(Blueprint.Name, std::move(Blueprint));
 		}
 
-		return _Path.string();
+		return BlueprintName;
 	}
 
-	void BlueprintManager::Drop(const fs::path& _Key)
+	void BlueprintManager::Drop(const std::string& _Key)
 	{
-		m_Table.erase(_Key.filename().string());
+		m_Table.erase(_Key);
 	}
 
-	bool BlueprintManager::Contains(const fs::path& _Key)
+	bool BlueprintManager::Contains(const std::string& _Key)
 	{
-		return m_Table.contains(_Key.filename().string());
+		return m_Table.contains(_Key);
 	}
 
-	Core::Blueprint& BlueprintManager::operator[](const fs::path& _Key)
+	Core::Blueprint& BlueprintManager::operator[](const std::string& _Key)
 	{
-		return m_Table[_Key.filename().string()];
+		return m_Table[_Key];
 	}
 
-	Result<void> BlueprintManager::Write(const fs::path& _Key, const fs::path& _Path)
+	Result<void> BlueprintManager::Write(const std::string& _Key, const fs::path& _Path)
 	{
 		assert(1 == 1);
 		return {};

@@ -21,10 +21,10 @@ namespace Services
 		std::unordered_map<std::string, Core::Blueprint> m_Table;
 
 	public:
-		Core::Blueprint& operator[](const fs::path& _Key);
+		Core::Blueprint& operator[](const std::string& _Key);
 		Result<std::string> Load(const fs::path& _Path);
-		void Drop(const fs::path& _Key);
-		Result<void> Write(const fs::path& _Key, const fs::path& _Path);
-		bool Contains(const fs::path& _Path);
+		void Drop(const std::string& _Key);
+		Result<void> Write(const std::string& _Key, const fs::path& _Path);
+		bool Contains(const std::string& _Path);
 	};
 }
