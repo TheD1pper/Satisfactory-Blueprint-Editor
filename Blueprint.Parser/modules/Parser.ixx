@@ -29,6 +29,7 @@ export namespace Parser
 		template <typename T> Result<T> Read();
 		void SkipBytes(std::streamsize _Bytes);
 		std::istream& ReadBytes(char* _String, uint64_t _Count);
+		fs::path GetPath();
 
 	private:
 

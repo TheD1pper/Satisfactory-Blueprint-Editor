@@ -153,6 +153,11 @@ namespace Parser
 		return Input;
 	}
 
+	fs::path InputBlueprint::GetPath()
+	{
+		return Path;
+	}
+
 	bool BinaryOutput::Write(std::string& _Data)
 	{
 		BytesWritten += _Data.size();
