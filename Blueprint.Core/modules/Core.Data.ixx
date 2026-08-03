@@ -189,12 +189,14 @@ export namespace Core
 	class Blueprint
 	{
 	public:
+		std::string Name;
 		BlueprintHeader Header;
 		BlueprintBody Body;
 
 	public:
 		Blueprint() = default; // Default constructor
-		inline Blueprint(BlueprintHeader& _Header, BlueprintBody& _Body) :
+		inline Blueprint(BlueprintHeader&& _Header, BlueprintBody&& _Body, std::string&& _Name) :
+			Name(std::move(_Name)),
 			Header(std::move(_Header)),
 			Body(std::move(_Body)) {
 		}
