@@ -18,6 +18,7 @@ export namespace Parser
 	{
 	private:
 		uint64_t BytesRead = 0;
+		fs::path Path{};
 		std::ifstream Input;
 
 	public:
@@ -33,7 +34,7 @@ export namespace Parser
 
 	public:
 		InputBlueprint() = default;
-		InputBlueprint(fs::path _Path);
+		InputBlueprint(const fs::path& _Path);
 	};
 
 	export class BinaryOutput

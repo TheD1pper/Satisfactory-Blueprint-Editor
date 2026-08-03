@@ -166,9 +166,10 @@ namespace Parser
 		return BytesWritten;
 	}
 
-	InputBlueprint::InputBlueprint(fs::path _Path)
+	InputBlueprint::InputBlueprint(const fs::path& _Path)
 	{
-		Input = std::move(std::ifstream(std::move(_Path), std::ios::binary));
+		Path = _Path;
+		Input = std::move(std::ifstream(Path, std::ios::binary));
 	}
 
 	BinaryOutput::BinaryOutput(fs::path _Path)
