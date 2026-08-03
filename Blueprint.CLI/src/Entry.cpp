@@ -20,7 +20,7 @@ int main()
 		std::print("Could not load the blueprint ({})", r_Load.error().GetLogMessage());
 	else
 	{
-		Cli::PrintHeader(BpManager[0].Header);
-		BpManager.Unload(0);
+		Cli::PrintHeader(BpManager[*r_Load].Header);
+		BpManager.Drop(*r_Load);
 	}
 } 

@@ -10,6 +10,9 @@ import Helpers.Benchmark;
 import Helpers.Errors;
 import Helpers.FsUtils;
 import Core.Data;
+import Core.Property;
+
+using namespace Core::Property;
 
 namespace Parser
 {
@@ -110,9 +113,27 @@ namespace Parser
 	}
 #pragma endregion Read() implementations of basic data types
 
-#pragma region Complex implementations
+#pragma region Property implementations
 
-#pragma endregion Read() implementations of complex data types
+	template<>
+	Result<Property> InputBlueprint::Read()
+	{
+		Property Draft;
+
+		auto r_Name = Read<Core::String>();
+		if (!r_Name)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read property name"));
+		Draft.Name = *r_Name;
+
+		auto r_StringType = Read <Core::String>();
+		if (r_StringType)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read property type"));
+		
+
+		return Draft;
+	}
+
+#pragma endregion Read() implementations of properties
 
 	uint64_t InputBlueprint::GetBytesRead() const
 	{
@@ -123,7 +144,6 @@ namespace Parser
 	{
 		BytesRead += _Bytes;
 		Input.ignore(_Bytes);
-
 	}
 
 	std::istream& InputBlueprint::ReadBytes(char* _String, uint64_t _Count)
