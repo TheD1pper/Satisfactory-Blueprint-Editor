@@ -15,6 +15,11 @@ namespace ErrorHandling
 
     using Sl = std::source_location;
 
+    export enum class Property
+    {
+        NotFound
+    };
+
     export enum class Binary
     {
         BadRead,
@@ -34,7 +39,7 @@ namespace ErrorHandling
         Fail
     };
 
-    export using ErrorCode = std::variant<Binary, Blueprint, Compression>;
+    export using ErrorCode = std::variant<Binary, Blueprint, Compression, Property>;
 
     export class Error
     {
