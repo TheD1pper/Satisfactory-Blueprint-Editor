@@ -21,8 +21,10 @@ namespace Services
 	{
 		Benchmark::Instrumentor::Get().BeginSession("Blueprint loading");
 		BENCH_FUNC();
+
 		Parser::InputBlueprint Input(_Path);
 		Core::Blueprint Blueprint{};
+
 		{
 			BENCH_SCOPE("Blueprint read");
 			Result<Core::BlueprintHeader> r_Header;
@@ -41,12 +43,9 @@ namespace Services
 					return std::unexpected(r_Body.error());
 			}
 
-			{
-				BENCH_SCOPE("Data assigment");
-				Blueprint.Header = std::move(*r_Header);
-				Blueprint.Body = std::move(*r_Body);
-				m_Table.emplace(_Path.filename().string(), std::move(Blueprint));
-			}
+			Blueprint.Header = std::move(*r_Header);
+			Blueprint.Body = std::move(*r_Body);
+			m_Table.emplace(_Path.filename().string(), std::move(Blueprint));
 		}
 
 		return _Path.string();
