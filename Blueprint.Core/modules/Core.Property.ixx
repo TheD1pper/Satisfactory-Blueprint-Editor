@@ -4,6 +4,10 @@ module;
 
 export module Core.Property;
 
+import <concepts>;
+import <string_view>;
+
+import Helpers.Errors;
 import Core.Data;
 
 export import :Enums;
@@ -24,6 +28,7 @@ export namespace Core::Property
 	//   Property     ->> Payload  (may hold a StructProperty/ArrayProperty/MapProperty/SetProperty)
 	//   StructProperty ->> PropertyList (Struct::Generic / InventoryItem hold a nested PropertyList)
 	//   PropertyList = std::vector<Property>, closing the cycle back to Property.
+
 	class Property
 	{
 	public:
@@ -33,4 +38,22 @@ export namespace Core::Property
 
 		Payload Value;
 	};
+
+	/// <summary>
+	/// Iterates through the array looking for the associated string. When strings match returns the enumeration
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="_Str">- String to convert</param>
+	/// <returns>std::expected with Eh::Property or one of enum types</returns>
+	template<typename T> requires TypeEnums<T>
+	Result<T> StrToEnum(const std::string_view& _Str);
+
+	/// <summary>
+	/// Iterates through the array looking for the associated enum. When strings match returns the string
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="_Enum">- Enum to convert</param>
+	/// <returns>std::expected with Eh::Property or std::string_view</returns>
+	template<typename T> requires TypeEnums<T>
+	Result<std::string_view> EnumToStr(const T& _Enum);
 }

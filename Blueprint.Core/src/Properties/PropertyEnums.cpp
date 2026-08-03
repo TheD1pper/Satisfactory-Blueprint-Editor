@@ -1,62 +1,160 @@
 module;
 
-#include <string_view>
-#include <unordered_map>
 
 module Core.Property;
 
+import <string_view>;
+import <array>;
+
+import Helpers.Errors;
+
 namespace Core::Property
 {
-	namespace Array
+#pragma region StrToEnum() 
+	template<>
+	Result<PropertyType> StrToEnum(const std::string_view& _Str)
 	{
-		const std::unordered_map<ElementType, std::string_view> ElementMap{
-			{ElementType::Vector, "Vector"},
-			{ElementType::LinearColor, "LinearColor"},
-			{ElementType::Quat, "Quat"},
-			{ElementType::FluidBox, "FluidBox"},
-			{ElementType::InventoryItem, "InventoryItem"},
-			{ElementType::RailroadTrackPosition, "RailroadTrackPosition"},
-			{ElementType::DateTime, "DateTime"},
-			{ElementType::ClientIdentityInfo, "ClientIdentityInfo"}
-		};
+		for (const auto& Pair : PropertyArray)
+		{
+			if (_Str == Pair.StringType)
+				return Pair.EnumType;
+		}
+
+		return std::unexpected(Eh::Error(Eh::Property::NotFound, "associated enum not found"));
 	}
 
-	namespace Map
+	template<>
+	Result<Array::ElementType> StrToEnum(const std::string_view& _Str)
 	{
-		const std::unordered_map<KeyType, std::string_view> KeyMap{
-			{KeyType::Object, "ObjectProperty"},
-			{KeyType::Int, "IntProperty"},
-			{KeyType::Struct, "StructProperty"}
-		};
+		for (const auto& Pair : Array::ElementArray)
+		{
+			if (_Str == Pair.StringType)
+				return Pair.EnumType;
+		}
 
-		const std::unordered_map<ValueType, std::string_view> ValueMap{
-			{ValueType::Byte, "ByteProperty"},
-			{ValueType::Int, "IntProperty"},
-			{ValueType::Int64, "Int64Property"},
-			{ValueType::Struct, "StructProperty"}
-		};
+		return std::unexpected(Eh::Error(Eh::Property::NotFound, "associated enum not found"));
 	}
 
-	namespace Set
+	template<>
+	Result<Map::KeyType> StrToEnum(const std::string_view& _Str)
 	{
-		const std::unordered_map<ElementType, std::string_view> ElementMap{
-			{ElementType::UInt32, "Uint32Property"},
-			{ElementType::Struct, "StructProperty"},
-			{ElementType::Object, "ObjectProperty"}
-		};
+		for (const auto& Pair : Map::KeyArray)
+		{
+			if (_Str == Pair.StringType)
+				return Pair.EnumType;
+		}
+
+		return std::unexpected(Eh::Error(Eh::Property::NotFound, "associated enum not found"));
 	}
 
-	namespace Struct
+	template<>
+	Result<Map::ValueType> StrToEnum(const std::string_view& _Str)
 	{
-		const std::unordered_map<ElementType, std::string_view> TypedMap{
-			{ElementType::Vector, "Vector"},
-			{ElementType::LinearColor, "LinearColor"},
-			{ElementType::Quat, "Quat"},
-			{ElementType::FluidBox, "FluidBox"},
-			{ElementType::InventoryItem, "InventoryItem"},
-			{ElementType::RailroadTrackPosition, "RailroadTrackPosition"},
-			{ElementType::DateTime, "DateTime"},
-			{ElementType::ClientIdentityInfo, "ClientIdentityInfo"}
-		};
+		for (const auto& Pair : Map::ValueArray)
+		{
+			if (_Str == Pair.StringType)
+				return Pair.EnumType;
+		}
+
+		return std::unexpected(Eh::Error(Eh::Property::NotFound, "associated enum not found"));
 	}
+
+	template<>
+	Result<Set::ElementType> StrToEnum(const std::string_view& _Str)
+	{
+		for (const auto& Pair : Set::ElementArray)
+		{
+			if (_Str == Pair.StringType)
+				return Pair.EnumType;
+		}
+
+		return std::unexpected(Eh::Error(Eh::Property::NotFound, "associated enum not found"));
+	}
+
+	template<>
+	Result<Struct::ElementType> StrToEnum(const std::string_view& _Str)
+	{
+		for (const auto& Pair : Struct::TypedArray)
+		{
+			if (_Str == Pair.StringType)
+				return Pair.EnumType;
+		}
+
+		return std::unexpected(Eh::Error(Eh::Property::NotFound, "associated enum not found"));
+	}
+#pragma endregion implementations
+
+#pragma region EnumToStr()
+	template<>
+	Result<std::string_view> EnumToStr(const PropertyType& _Enum)
+	{
+		for (const auto& Pair : PropertyArray)
+		{
+			if (_Enum == Pair.EnumType)
+				return Pair.StringType;
+		}
+
+		return std::unexpected(Eh::Error(Eh::Property::NotFound, "associated enum not found"));
+	}
+
+	template<>
+	Result<std::string_view> EnumToStr(const Array::ElementType& _Enum)
+	{
+		for (const auto& Pair : Array::ElementArray)
+		{
+			if (_Enum == Pair.EnumType)
+				return Pair.StringType;
+		}
+
+		return std::unexpected(Eh::Error(Eh::Property::NotFound, "associated enum not found"));
+	}
+
+	template<>
+	Result<std::string_view> EnumToStr(const Map::KeyType& _Enum)
+	{
+		for (const auto& Pair : Map::KeyArray)
+		{
+			if (_Enum == Pair.EnumType)
+				return Pair.StringType;
+		}
+
+		return std::unexpected(Eh::Error(Eh::Property::NotFound, "associated enum not found"));
+	}
+
+	template<>
+	Result<std::string_view> EnumToStr(const Map::ValueType& _Enum)
+	{
+		for (const auto& Pair : Map::ValueArray)
+		{
+			if (_Enum == Pair.EnumType)
+				return Pair.StringType;
+		}
+
+		return std::unexpected(Eh::Error(Eh::Property::NotFound, "associated enum not found"));
+	}
+
+	template<>
+	Result<std::string_view> EnumToStr(const Set::ElementType& _Enum)
+	{
+		for (const auto& Pair : Set::ElementArray)
+		{
+			if (_Enum == Pair.EnumType)
+				return Pair.StringType;
+		}
+
+		return std::unexpected(Eh::Error(Eh::Property::NotFound, "associated enum not found"));
+	}
+
+	template<>
+	Result<std::string_view> EnumToStr(const Struct::ElementType& _Enum)
+	{
+		for (const auto& Pair : Struct::TypedArray)
+		{
+			if (_Enum == Pair.EnumType)
+				return Pair.StringType;
+		}
+
+		return std::unexpected(Eh::Error(Eh::Property::NotFound, "associated enum not found"));
+	}
+#pragma endregion implementations
 }
