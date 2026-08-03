@@ -15,108 +15,65 @@ import Parser.BinaryIO;
 
 namespace Services
 {
-	void BlueprintManager::ReAlloc(size_t _NewCapacity)
-	{
-		Core::Blueprint* NewData = new Core::Blueprint[_NewCapacity];
-
-		if (_NewCapacity < m_Size)
-			m_Size = _NewCapacity;
-
-		for (size_t i = 0; i < m_Size; i++)
-			NewData[i] = m_Data[i];
-
-		delete[] m_Data;
-		m_Data = NewData;
-	}
-
-	void BlueprintManager::Reserve(size_t _Query)
-	{
-		ReAlloc(m_Capacity + _Query);
-		m_Capacity += _Query;
-	}
-
-	void BlueprintManager::PushBack(const Core::Blueprint& _Blueprint)
-	{
-		if (m_Capacity == m_Size)
-			Reserve(1);
-
-		m_Size++;
-		m_Data[m_Size - 1] = _Blueprint;
-	}
-
-	size_t BlueprintManager::Size() const
-	{
-		return m_Size;
-	}
-
-	Core::Blueprint& BlueprintManager::operator[](size_t _Index)
-	{
-		assert(_Index < m_Size);
-		return m_Data[_Index];
-	}
-
-	const Core::Blueprint& BlueprintManager::operator[](size_t _Index) const
-	{
-		assert(_Index < m_Size);
-		return m_Data[_Index];
-	}
-
-	Core::Blueprint* BlueprintManager::Data()
-	{
-		return m_Data;
-	}
-
-	const Core::Blueprint* BlueprintManager::Data() const
-	{
-		return m_Data;
-	}
-
-	Result<void> BlueprintManager::Load(const fs::path& _Path)
+	// Can return the blueprint name in the future
+	// Replace paths as keys for blueprint names 
+	Result<std::string> BlueprintManager::Load(const fs::path& _Path)
 	{
 		Benchmark::Instrumentor::Get().BeginSession("Blueprint loading");
 		BENCH_FUNC();
-
 		Parser::InputBlueprint Input(_Path);
-		Result<Core::BlueprintHeader> r_Header;
+		Core::Blueprint Blueprint{};
 		{
-			BENCH_SCOPE("Header read");
-			r_Header = Input.ReadHeader();
-			if (!r_Header)
+			BENCH_SCOPE("Blueprint read");
+			Result<Core::BlueprintHeader> r_Header;
 			{
-				return std::unexpected(r_Header.error());
+				BENCH_SCOPE("Header read");
+				r_Header = Input.ReadHeader();
+				if (!r_Header)
+				{
+					return std::unexpected(r_Header.error());
+				}
+			}
+
+			Result<Core::BlueprintBody> r_Body;
+			{
+				BENCH_SCOPE("Body read");
+				r_Body = Input.ReadBody();
+				if (!r_Body)
+				{
+					return std::unexpected(r_Body.error());
+				}
+			}
+
+			{
+				BENCH_SCOPE("Data assigment");
+				Blueprint.Header = std::move(*r_Header);
+				Blueprint.Body = std::move(*r_Body);
+				m_Table.emplace(_Path.filename().string(), std::move(Blueprint));
 			}
 		}
 
-		Result<Core::BlueprintBody> r_Body;
-		{
-			BENCH_SCOPE("Body read");
-			r_Body = Input.ReadBody();
-			if (!r_Body)
-			{
-				return std::unexpected(r_Body.error());
-			}
-		}
+		return _Path.string();
+	}
 
-		{
-			BENCH_SCOPE("Data assigment");
-			PushBack({ *r_Header, *r_Body });
-		}
+	void BlueprintManager::Drop(const fs::path& _Key)
+	{
+		m_Table.erase(_Key.filename().string());
+	}
 
+	bool BlueprintManager::Contains(const fs::path& _Key)
+	{
+		return m_Table.contains(_Key.filename().string());
+	}
+
+	Core::Blueprint& BlueprintManager::operator[](const fs::path& _Key)
+	{
+		return m_Table[_Key.filename().string()];
+	}
+
+	Result<void> BlueprintManager::Write(const fs::path& _Key, const fs::path& _Path)
+	{
+		assert(1 == 1);
 		return {};
-	}
-
-	void BlueprintManager::Unload(size_t _Index)
-	{
-		m_Data[_Index] = {};
-	}
-
-	BlueprintManager::BlueprintManager()
-	{
-		Reserve(1);
-	}
-
-	BlueprintManager::~BlueprintManager()
-	{
-		delete[] m_Data;
 	}
 }

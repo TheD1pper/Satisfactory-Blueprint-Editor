@@ -4,6 +4,7 @@ export module Services.Manager;
 
 import <memory>;
 import <filesystem>;
+import <unordered_map>;
 
 import Helpers.Errors;
 import Core.Data;
@@ -13,32 +14,17 @@ namespace fs = std::filesystem;
 
 namespace Services
 {
+	// _Path is only temporary, switch to blueprint names from .sbpcfg files in near future
 	export class BlueprintManager
 	{
 	private:
-		Core::Blueprint* m_Data = new Core::Blueprint[0];
-		size_t m_Size{};
-		size_t m_Capacity{};
-
-	private:
-		void ReAlloc(size_t _NewCapacity);
-		void Reserve(size_t _Query);
-		void PushBack(const Core::Blueprint& _Blueprint);
+		std::unordered_map<std::string, Core::Blueprint> m_Table;
 
 	public:
-		size_t Size() const;
-		Core::Blueprint& operator[](size_t _Index);
-		const Core::Blueprint& operator[](size_t _Index) const;
-		Core::Blueprint* Data();
-		const Core::Blueprint* Data() const;
-
-	public:
-		[[nodiscard]]
-		Result<void> Load(const fs::path& _Path);
-		void Unload(size_t _Index);
-
-	public:
-		BlueprintManager();
-		~BlueprintManager();
+		Core::Blueprint& operator[](const fs::path& _Key);
+		Result<std::string> Load(const fs::path& _Path);
+		void Drop(const fs::path& _Key);
+		Result<void> Write(const fs::path& _Key, const fs::path& _Path);
+		bool Contains(const fs::path& _Path);
 	};
 }
