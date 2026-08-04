@@ -247,15 +247,47 @@ namespace Parser
 				return std::unexpected(Eh::Error(Eh::Compression::Fail, r_UncompressedBody.error().GetLogMessage()));
 		}
 
+		fs::path TempPath;
 		{
 			Core::ByteVector UncompressedBody = *r_UncompressedBody;
-			fs::path TempPath = FsUtils::GetTempFolder() / "Body.tmp";
+			TempPath = FsUtils::GetTempFolder() / "Body.tmp";
 			BinaryOutput TempOutput(TempPath);
 			TempPath.replace_filename(std::format("Body-{}.tmp", Draft.UncompressedSize));
 		
-			BENCH_SCOPE("Uncompressed body write");
+			BENCH_SCOPE("Cache uncompressed body");
 			if (!TempOutput.Write(UncompressedBody))
 				return std::unexpected(Eh::Error(Eh::Binary::BadWrite, "Could not write temporary body"));
+		}
+
+		// Switch the files
+		// Stop reading the finished file
+		// Start reading the cached uncompressed body
+
+		Input.close();
+		Input.open(TempPath);
+
+		if (!Input.is_open())
+			std::print("something went wrong\n");
+
+		auto UncompressedSize = Read<uint32_t>();
+		if(!UncompressedSize)
+			return std::unexpected(UncompressedSize.error());
+
+		auto ObjectHeadersSize = Read<uint32_t>();
+		if (!ObjectHeadersSize)
+			return std::unexpected(ObjectHeadersSize.error());
+
+		auto CountOfObjectHeaders = Read<uint32_t>();
+		if (!CountOfObjectHeaders)
+			return std::unexpected(CountOfObjectHeaders.error());
+
+		for (size_t i = 0; i < *CountOfObjectHeaders; i++)
+		{
+			auto ObjectHeader = Read<Core::ObjectHeader>();
+			if (!ObjectHeader)
+				return std::unexpected(ObjectHeader.error());
+
+			Draft.ObjectHeaders.push_back(std::move(*ObjectHeader));
 		}
 
 		return Draft;

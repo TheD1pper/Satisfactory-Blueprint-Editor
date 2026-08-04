@@ -10,7 +10,7 @@ export module Core.Data;
 
 export namespace Core
 {
-	enum class Encoding
+	enum class Encoding 
 	{
 		Utf8, Utf16
 	};
@@ -114,7 +114,7 @@ export namespace Core
 		String RootObject;
 		String InstanceName;
 		String ParentActorName;
-		uint32_t Unknowk;
+		uint32_t Unknown;
 	};
 
 	enum class ObjectHeaderType
@@ -152,7 +152,7 @@ export namespace Core
 
 		uint32_t UncompressedBodySize{};
 		uint32_t ObjectHeadersSize{};
-		std::vector<ObjectHeader> ObjectHeader;
+		std::vector<ObjectHeader> ObjectHeaders;
 		uint32_t ObjectsSize;
 		std::vector<Object> Objects;
 	};

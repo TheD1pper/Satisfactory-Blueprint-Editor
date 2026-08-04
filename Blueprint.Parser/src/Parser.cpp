@@ -47,7 +47,7 @@ namespace Parser
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad Int read"));
 		return Value;
 	}
-	
+
 	template<>
 	Result<float> InputBlueprint::Read()
 	{
