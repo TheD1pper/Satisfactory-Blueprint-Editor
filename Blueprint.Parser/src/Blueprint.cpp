@@ -5,6 +5,7 @@ module;
 #include <queue>
 #include <cstdint>
 #include <iostream>
+#include <format>
 
 #include "BenchmarkMacros.hpp"
 
@@ -12,6 +13,7 @@ module Parser.BinaryIO;
 
 import Helpers.Benchmark;
 import Helpers.Errors;
+import Helpers.FsUtils;
 import Core.Data;
 import Parser.Compression;
 
@@ -244,8 +246,18 @@ namespace Parser
 			if (!r_UncompressedBody)
 				return std::unexpected(Eh::Error(Eh::Compression::Fail, r_UncompressedBody.error().GetLogMessage()));
 		}
+
+		{
+			Core::ByteVector UncompressedBody = *r_UncompressedBody;
+			fs::path TempPath = FsUtils::GetTempFolder() / "Body.tmp";
+			BinaryOutput TempOutput(TempPath);
+			TempPath.replace_filename(std::format("Body-{}.tmp", Draft.UncompressedSize));
 		
-		Core::ByteVector UncompressedBody = *r_UncompressedBody;
+			BENCH_SCOPE("Uncompressed body write");
+			if (!TempOutput.Write(UncompressedBody))
+				return std::unexpected(Eh::Error(Eh::Binary::BadWrite, "Could not write temporary body"));
+		}
+
 		return Draft;
 	}	
 }

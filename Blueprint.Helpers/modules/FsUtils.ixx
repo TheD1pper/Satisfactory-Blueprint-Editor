@@ -84,7 +84,7 @@ namespace FsUtils
 	{
 		const char* GetenvResult = getenv("temp");
 		if (GetenvResult && *GetenvResult)
-			return fs::path(GetenvResult) / "SatisfactoryBlueprintEditor";
+			return fs::path(GetenvResult);
 		return fs::path("");
 	}
 

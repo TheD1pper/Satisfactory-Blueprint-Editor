@@ -46,6 +46,7 @@ export namespace Parser
 
 	public:
 		bool Write(std::string& _Data);
+		bool Write(Core::ByteVector _Data);
 		inline std::streamsize GetBytesWritten() const;
 
 	public:

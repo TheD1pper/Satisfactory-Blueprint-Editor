@@ -160,9 +160,19 @@ namespace Parser
 
 	bool BinaryOutput::Write(std::string& _Data)
 	{
-		BytesWritten += _Data.size();
 		if(!Output.write(_Data.data(), _Data.size()))
 			return false;
+
+		BytesWritten += _Data.size();
+		return true;
+	}
+
+	bool BinaryOutput::Write(Core::ByteVector _Data)
+	{
+		if(!Output.write(std::string(_Data.begin(), _Data.end()).c_str(), _Data.size()))
+			return false;
+
+		BytesWritten += _Data.size();
 		return true;
 	}
 
