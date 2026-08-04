@@ -163,8 +163,6 @@ export namespace Core
 		int LicenseeVersion{};
 		FEngineVersion EngineVersion{};
 
-		uint32_t UEPackageSignature{};
-
 	public:
 		BlueprintHeader(); // Constructor
 		BlueprintHeader(const BlueprintHeader& _Header); // Copy constructor
