@@ -22,6 +22,7 @@ namespace ErrorHandling
 
     export enum class Binary
     {
+        BadWrite,
         BadRead,
         QuantityCantBeZero,
         EmptyString,
