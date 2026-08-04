@@ -145,15 +145,7 @@ export namespace Core
 	struct BlueprintBody
 	{
 		uint32_t UEPackageSignature{};
-		uint64_t CompressedSize{};
-		uint64_t UncompressedSize{};
-
-		// ===== Decompressed variables =====
-
-		uint32_t UncompressedBodySize{};
-		uint32_t ObjectHeadersSize{};
 		std::vector<ObjectHeader> ObjectHeaders;
-		uint32_t ObjectsSize;
 		std::vector<Object> Objects;
 	};
 
@@ -172,8 +164,6 @@ export namespace Core
 		FEngineVersion EngineVersion{};
 
 		uint32_t UEPackageSignature{};
-		uint64_t CompressedSize{};
-		uint64_t UncompressedSize{};
 
 	public:
 		BlueprintHeader(); // Constructor
