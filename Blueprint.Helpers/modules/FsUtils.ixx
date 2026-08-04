@@ -80,6 +80,14 @@ namespace FsUtils
 		return fs::path("");
 	}
 
+	export fs::path ResolveTemp()
+	{
+		const char* GetenvResult = getenv("temp");
+		if (GetenvResult && *GetenvResult)
+			return fs::path(GetenvResult) / "SatisfactoryBlueprintEditor";
+		return fs::path("");
+	}
+
 	export fs::path GetSBELocalFolder()
 	{
 		return ResolveLocalAppdata() / "SatisfactoryBlueprintEditor";
@@ -93,6 +101,11 @@ namespace FsUtils
 	export fs::path GetBenchmarkFolder()
 	{
 		return GetSBELocalFolder() / "tracing";
+	}
+
+	export fs::path GetTempFolder()
+	{
+		return ResolveTemp() / "SatisfactoryBlueprintEditor";
 	}
 
 	export std::vector<fs::path> ScanDirectory(const fs::path& _Target)
