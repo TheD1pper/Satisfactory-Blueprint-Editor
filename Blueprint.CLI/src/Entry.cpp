@@ -12,6 +12,9 @@ import Cli.Terminal;
 
 int main()
 {
+	std::ios_base::sync_with_stdio(false);
+	std::cin.tie(nullptr);
+
 	Services::BlueprintManager BpManager;
 	FsUtils::DirectoryCreateR(FsUtils::GetBenchmarkFolder());
 	Benchmark::OverwriteSavePath(FsUtils::GetBenchmarkFolder());
