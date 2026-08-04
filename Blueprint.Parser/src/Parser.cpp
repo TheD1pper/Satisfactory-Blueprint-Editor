@@ -309,7 +309,6 @@ namespace Parser
 
 		if(*Type)
 		{
-			std::cerr << std::format("Actor\n");
 			Draft.Type = Core::ObjectHeaderType::Actor;
 			auto ActorHeader = Read<Core::ActorHeader>();
 			if (!ActorHeader)
@@ -318,7 +317,6 @@ namespace Parser
 		}
 		else
 		{
-			std::cerr << std::format("Component\n");
 			Draft.Type = Core::ObjectHeaderType::Component;
 			auto ComponentHeader = Read<Core::ComponentHeader>();
 			if (!ComponentHeader)
