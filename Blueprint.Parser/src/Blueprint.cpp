@@ -212,24 +212,20 @@ namespace Parser
 		if (!ValidityCheck3 || *ValidityCheck3 != 0x03000000)
 			return std::unexpected(Eh::Error(Eh::Binary::CheckFalied, "Third check went unsuccessful"));
 
-		for (int i = 0; i < 2; i++) // Loop needs to be iterated 2 times because the data repeats
-		{
-			auto ComprossedSize = Read<uint64_t>();
-			if (!ComprossedSize)
-				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad compressed size read"));
-			Draft.CompressedSize = *ComprossedSize;
+		auto CompressedSize = Read<uint64_t>();
+		if (!CompressedSize)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad compressed size read"));
 
-			auto UncompressedSize = Read<uint64_t>();
-			if (!UncompressedSize)
-				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad uncompressed size read"));
-			Draft.UncompressedSize = *UncompressedSize;
-			Draft.UncompressedSize = *UncompressedSize;
-		}
+		auto UncompressedSize = Read<uint64_t>();
+		if (!UncompressedSize)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad uncompressed size read"));
 
-		Core::ByteVector CompressedBody(Draft.CompressedSize);
+		SkipBytes(16); // Skip data that repeats
+
+		Core::ByteVector CompressedBody(*CompressedSize);
 		{
 			BENCH_SCOPE("Compressed body read");
-			for (uint64_t i = 0; i < Draft.CompressedSize; i++)
+			for (uint64_t i = 0; i < *CompressedSize; i++)
 			{
 				auto byte = Read<uint8_t>();
 				if (!byte)
@@ -242,7 +238,7 @@ namespace Parser
 		{
 			Zlib Z;
 			BENCH_SCOPE("Decompression");
-			r_UncompressedBody = Z.Decompress(std::move(CompressedBody), Draft.UncompressedSize);
+			r_UncompressedBody = Z.Decompress(std::move(CompressedBody), *UncompressedSize);
 			if (!r_UncompressedBody)
 				return std::unexpected(Eh::Error(Eh::Compression::Fail, r_UncompressedBody.error().GetLogMessage()));
 		}
@@ -252,7 +248,7 @@ namespace Parser
 			Core::ByteVector UncompressedBody = *r_UncompressedBody;
 			TempPath = FsUtils::GetTempFolder() / "Body.tmp";
 			BinaryOutput TempOutput(TempPath);
-			TempPath.replace_filename(std::format("Body-{}.tmp", Draft.UncompressedSize));
+			TempPath.replace_filename(std::format("Body-{}.tmp", *UncompressedSize));
 		
 			BENCH_SCOPE("Cache uncompressed body");
 			if (!TempOutput.Write(UncompressedBody))
@@ -269,7 +265,7 @@ namespace Parser
 		if (!Input.is_open())
 			std::print("something went wrong\n");
 
-		auto UncompressedSize = Read<uint32_t>();
+		UncompressedSize = Read<uint32_t>();
 		if(!UncompressedSize)
 			return std::unexpected(UncompressedSize.error());
 
