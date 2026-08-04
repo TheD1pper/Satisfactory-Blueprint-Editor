@@ -17,6 +17,7 @@ using namespace Core::Property;
 namespace Parser
 {
 #pragma region Read implementations
+
 	template <>
 	Result<uint8_t> InputBlueprint::Read()
 	{
@@ -44,6 +45,16 @@ namespace Parser
 
 		if (!ReadBytes(reinterpret_cast<char*>(&Value), 4))
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad Int read"));
+		return Value;
+	}
+	
+	template<>
+	Result<float> InputBlueprint::Read()
+	{
+		float Value{};
+
+		if (!ReadBytes(reinterpret_cast<char*>(&Value), 4))
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad float read"));
 		return Value;
 	}
 	
@@ -111,7 +122,212 @@ namespace Parser
 
 		return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad string length read"));
 	}
+
+	template<>
+	Result<Core::Rotation4D> InputBlueprint::Read()
+	{
+		Core::Rotation4D Draft;
+
+		for (size_t i = 0; i < 4; i++)
+		{
+			auto Rotation = Read<float>();
+			if (!Rotation)
+				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad rotation4D read"));
+
+			switch (i)
+			{
+			case 0:
+				Draft.X = *Rotation;
+				break;
+			case 1:
+				Draft.Y = *Rotation;
+				break;
+			case 2:
+				Draft.Z = *Rotation;
+				break;
+			case 3:
+				Draft.W = *Rotation;
+				break;
+			}
+		}
+
+		return std::move(Draft);
+	}
+
+	template<>
+	Result<Core::Position3D> InputBlueprint::Read()
+	{
+		Core::Position3D Draft;
+
+		for (size_t i = 0; i < 3; i++)
+		{
+			auto Position = Read<float>();
+			if (!Position)
+				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad position3D read"));
+
+			switch (i)
+			{
+			case 0:
+				Draft.X = *Position;
+				break;
+			case 1:
+				Draft.Y = *Position;
+				break;
+			case 2:
+				Draft.Z = *Position;
+				break;
+			}
+		}
+
+		return std::move(Draft);
+	}
+
+	template<>
+	Result<Core::Scale3D> InputBlueprint::Read()
+	{
+		Core::Scale3D Draft;
+
+		for (size_t i = 0; i < 3; i++)
+		{
+			auto Scale = Read<float>();
+			if (!Scale)
+				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad scale3D read"));
+
+			switch (i)
+			{
+			case 0:
+				Draft.X = *Scale;
+				break;
+			case 1:
+				Draft.Y = *Scale;
+				break;
+			case 2:
+				Draft.Z = *Scale;
+				break;
+			}
+		}
+
+		return std::move(Draft);
+	}
+
 #pragma endregion Read() implementations of basic data types
+
+#pragma region Complex implementations
+
+	template<>
+	Result<Core::ActorHeader> InputBlueprint::Read()
+	{
+		Core::ActorHeader Draft;
+
+		auto TypePath = Read<Core::String>();
+		if (!TypePath)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header type path"));
+		Draft.TypePath = *TypePath;
+
+		auto RootObject = Read<Core::String>();
+		if (!RootObject)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header root object"));
+		Draft.RootObject = *RootObject;
+
+		auto InstanceName = Read<Core::String>();
+		if (!InstanceName)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header instance name"));
+		Draft.InstanceName = *InstanceName;
+
+		auto Unknown = Read<uint32_t>();
+		if (!Unknown)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header unknown"));
+		Draft.Unknown = *Unknown;
+
+		auto Rotation = Read<Core::Rotation4D>();
+		if (!Rotation)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header rotation"));
+		Draft.Rotation = *Rotation;
+
+		auto Position = Read<Core::Position3D>();
+		if (!Position)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header position"));
+		Draft.Position = *Position;
+
+		auto Scale = Read<Core::Scale3D>();
+		if (!Scale)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header scale"));
+		Draft.Scale = *Scale;
+		
+		auto NeedTransform = Read<uint32_t>();
+		if (!NeedTransform)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header transform flag"));
+		Draft.NeedTransform = *NeedTransform;
+
+		auto IsPlaced = Read<uint32_t>();
+		if (!IsPlaced)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header placed flag"));
+		Draft.IsPlaced = *IsPlaced;
+
+		return Draft;
+	}
+
+	template<>
+	Result<Core::ComponentHeader> InputBlueprint::Read()
+	{
+		Core::ComponentHeader Draft;
+		auto TypePath = Read<Core::String>();
+		if (!TypePath)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read component header type path"));
+		Draft.TypePath = *TypePath;
+
+		auto RootObject = Read<Core::String>();
+		if (!RootObject)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header type path"));
+		Draft.RootObject = *RootObject;
+
+		auto InstanceName = Read<Core::String>();
+		if (!InstanceName)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header type path"));
+		Draft.InstanceName = *InstanceName;
+
+		auto Unknown = Read<uint32_t>();
+		if (!Unknown)	
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header type path"));
+		Draft.Unknown = *Unknown;
+
+		auto ParentActorName = Read<Core::String>();
+		if (!ParentActorName)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header type path"));
+		Draft.ParentActorName = *ParentActorName;
+
+		return std::move(Draft);
+	}
+
+	template<>
+	Result<Core::ObjectHeader> InputBlueprint::Read()
+	{
+		Core::ObjectHeader Draft;
+		auto Type = Read<uint32_t>();
+		if (!Type)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read object type"));
+
+		if(*Type)
+		{
+			std::cerr << std::format("Actor\n");
+			Draft.Type = Core::ObjectHeaderType::Actor;
+			auto ActorHeader = Read<Core::ActorHeader>();
+			if (!ActorHeader)
+				return std::unexpected(ActorHeader.error());
+			return Draft;
+		}
+		else
+		{
+			std::cerr << std::format("Component\n");
+			Draft.Type = Core::ObjectHeaderType::Component;
+			auto ComponentHeader = Read<Core::ComponentHeader>();
+			if (!ComponentHeader)
+				return std::unexpected(ComponentHeader.error());
+			return Draft;
+		}
+	}
+
+#pragma endregion Read() implementations of complex data types
 
 #pragma region Property implementations
 
@@ -135,6 +351,7 @@ namespace Parser
 
 #pragma endregion Read() implementations of properties
 
+#pragma region InputBlueprint
 	uint64_t InputBlueprint::GetBytesRead() const
 	{
 		return BytesRead;
@@ -152,7 +369,9 @@ namespace Parser
 		BytesRead += Input.gcount();
 		return Input;
 	}
+#pragma endregion class funcions implementations
 
+#pragma region OutputBlueprint
 	fs::path InputBlueprint::GetPath()
 	{
 		return Path;
@@ -191,4 +410,5 @@ namespace Parser
 	{
 		Output = std::ofstream(_Path, std::ios::binary);
 	}
+#pragma endregion class function implementations
 }
