@@ -8,6 +8,7 @@ import <unordered_map>;
 
 import Helpers.Errors;
 import Core.Data;
+import Core.Complex;
 import Parser.BinaryIO;
 
 namespace fs = std::filesystem;
