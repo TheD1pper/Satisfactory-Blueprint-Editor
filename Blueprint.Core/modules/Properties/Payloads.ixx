@@ -1,9 +1,9 @@
 module;
 
-#include <cstdint>
-#include <variant>
-
 export module Core.Property:Payloads;
+
+import <cstdint>;
+import <vector>;
 
 import Core.Data;
 import :ArrayProperty;

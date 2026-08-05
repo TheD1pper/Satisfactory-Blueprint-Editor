@@ -1,8 +1,8 @@
 module;
 
-#include <vector>
-
 export module Core.Property:MapProperty;
+
+import <vector>;
 
 import Core.Data;
 import :Enums;

@@ -1,9 +1,9 @@
 module;
 
-#include <cstdint>
-#include <variant>
-
 export module Core.Property:StructTypes;
+
+import <variant>;
+import <cstdint>;
 
 import Core.Data;
 import :List;

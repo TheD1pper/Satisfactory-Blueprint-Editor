@@ -1,8 +1,8 @@
 module;
 
-#include <optional>
-
 export module Core.Property:StructProperty;
+
+import <optional>;
 
 import Core.Data;
 import :Enums;

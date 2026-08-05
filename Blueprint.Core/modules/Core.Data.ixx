@@ -1,12 +1,12 @@
 module;
 
-#include <string>
-#include <string_view>
-#include <cstdint>
-#include <vector>
-#include <variant>
-
 export module Core.Data;
+
+import <variant>;
+import <vector>;
+import <cstdint>;
+import <string_view>;
+import <string>;
 
 export namespace Core
 {

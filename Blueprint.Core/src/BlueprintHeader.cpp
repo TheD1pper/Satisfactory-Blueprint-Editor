@@ -1,9 +1,10 @@
 module;
 
-#include <type_traits>
 #include <utility>
 
 module Core.Data;
+
+import <type_traits>;
 
 namespace Core
 {

@@ -1,9 +1,8 @@
 module;
 
-#include <cstdint>
-
 export module Core.Property;
 
+import <cstdint>;
 import <concepts>;
 import <string_view>;
 

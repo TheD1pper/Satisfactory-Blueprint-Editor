@@ -1,8 +1,8 @@
 module;
 
-#include <vector>
-
 export module Core.Property:SetProperty;
+
+import <vector>;
 
 import Core.Data;
 import :Enums;

@@ -1,9 +1,9 @@
 module;
 
-#include <cstdint>
-#include <variant>
-
 export module Core.Property:ArrayTypes;
+
+import <cstdint>;
+import <variant>;
 
 import Core.Data;
 import :StructTypes;

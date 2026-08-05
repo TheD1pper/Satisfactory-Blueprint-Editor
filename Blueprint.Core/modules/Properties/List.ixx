@@ -1,8 +1,8 @@
 module;
 
-#include <vector>
-
 export module Core.Property:List;
+
+import <vector>;
 
 namespace Core::Property
 {

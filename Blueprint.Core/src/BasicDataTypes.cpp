@@ -1,10 +1,11 @@
 module;
 
 #include <Windows.h>
-#include <string>
-#include <string_view>
 
 module Core.Data;
+
+import <string>;
+import <string_view>;
 
 namespace Core
 {

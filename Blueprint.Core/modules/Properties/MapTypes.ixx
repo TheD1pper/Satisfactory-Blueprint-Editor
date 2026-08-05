@@ -1,9 +1,9 @@
 module;
 
-#include <cstdint>
-#include <variant>
-
 export module Core.Property:MapTypes;
+
+import <cstdint>;
+import <variant>;
 
 import Core.Data;
 import :List;

@@ -1,6 +1,5 @@
 module;
 
-
 module Core.Property;
 
 import <string_view>;
