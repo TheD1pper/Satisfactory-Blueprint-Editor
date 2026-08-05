@@ -1,8 +1,8 @@
 module;
 
-#include <zlib.h>
-
 module Parser.Compression;
+
+import <zlib.h>;
 
 import Helpers.Errors;
 import Core.Data;

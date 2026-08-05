@@ -1,14 +1,14 @@
 module;
 
-#include <fstream>
-#include <filesystem>
-
 export module Parser.BinaryIO;
 
-namespace fs = std::filesystem;
+import <fstream>;
+import <filesystem>;
 
 import Helpers.Errors;
 import Core.Data;
+
+namespace fs = std::filesystem;
 
 export namespace Parser
 {

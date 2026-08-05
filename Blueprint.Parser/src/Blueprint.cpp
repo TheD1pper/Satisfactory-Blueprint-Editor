@@ -1,15 +1,15 @@
 module;
 
 #include <print>
-#include <array>
 #include <queue>
-#include <cstdint>
-#include <iostream>
 #include <format>
 
 #include "BenchmarkMacros.hpp"
 
 module Parser.BinaryIO;
+
+import <array>;
+import <cstdint>;
 
 import Helpers.Benchmark;
 import Helpers.Errors;
