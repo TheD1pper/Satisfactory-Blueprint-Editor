@@ -135,7 +135,6 @@
   <ItemGroup>
     <ClCompile Include="modules\Core.Data.ixx" />
     <ClCompile Include="src\BasicDataTypes.cpp" />
-    <ClCompile Include="src\BlueprintHeader.cpp" />
     <ClCompile Include="modules\Core.Property.ixx" />
     <ClCompile Include="modules\Properties\Enums.ixx" />
     <ClCompile Include="modules\Properties\List.ixx" />
@@ -149,7 +148,8 @@
     <ClCompile Include="modules\Properties\SetProperty.ixx" />
     <ClCompile Include="modules\Properties\Payloads.ixx" />
     <ClCompile Include="src\Properties\PropertyEnums.cpp" />
-    <ClCompile Include="src\Properties\PropertyRecursion.cpp" />
+    <ClCompile Include="modules\Core.Complex.ixx" />
+    <ClCompile Include="src\BlueprintHeader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

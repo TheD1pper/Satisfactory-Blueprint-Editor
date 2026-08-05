@@ -2,7 +2,7 @@ module;
 
 #include <utility>
 
-module Core.Data;
+module Core.Complex;
 
 import <type_traits>;
 
@@ -29,7 +29,7 @@ namespace Core
 
 	BlueprintHeader::BlueprintHeader(BlueprintHeader&& _Header) noexcept // Move constructor
 	{
-		HeaderVersion = std::move(_Header.LicenseeVersion);
+		HeaderVersion = std::move(_Header.HeaderVersion);
 		SaveVersion = std::move(_Header.SaveVersion);
 		BuildVersion = std::move(_Header.BuildVersion);
 		Size = std::move(_Header.Size);
@@ -63,7 +63,7 @@ namespace Core
 
 	void BlueprintHeader::operator=(BlueprintHeader& _Header) noexcept // Move operator
 	{
-		HeaderVersion = std::move(_Header.LicenseeVersion);
+		HeaderVersion = std::move(_Header.HeaderVersion);
 		SaveVersion = std::move(_Header.SaveVersion);
 		BuildVersion = std::move(_Header.BuildVersion);
 		Size = std::move(_Header.Size);
@@ -76,7 +76,7 @@ namespace Core
 	}
 
 
-	static_assert(std::is_copy_constructible_v <Core::BlueprintHeader>);
+	static_assert(std::is_copy_constructible_v<Core::BlueprintHeader>);
 	static_assert(std::is_copy_assignable_v<Core::BlueprintHeader>);
 	static_assert(std::is_move_constructible_v<Core::BlueprintHeader>);
 	static_assert(std::is_move_assignable_v<Core::BlueprintHeader>);

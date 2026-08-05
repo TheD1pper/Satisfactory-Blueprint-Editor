@@ -21,9 +21,6 @@
     <ClCompile Include="src\BasicDataTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BlueprintHeader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="modules\Core.Property.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -63,7 +60,10 @@
     <ClCompile Include="src\Properties\PropertyEnums.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Properties\PropertyRecursion.cpp">
+    <ClCompile Include="modules\Core.Complex.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BlueprintHeader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

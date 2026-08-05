@@ -2,7 +2,6 @@ module;
 
 export module Core.Data;
 
-import <variant>;
 import <vector>;
 import <cstdint>;
 import <string_view>;
@@ -122,71 +121,11 @@ export namespace Core
 		Actor, Component
 	};
 
-	struct ObjectHeader
-	{
-		ObjectHeaderType Type{};
-		std::variant<ActorHeader, ComponentHeader> Payload;
-	};
-
-	struct ActorObject
-	{
-		ObjectReference ParentReference;
-		std::vector<ObjectReference> Components;
-		ByteVector TrallingBytes;
-	};
-
-	struct ComponentObject
-	{
-		ByteVector TrallingBytes;
-	};
-
-	using Object = std::variant<ActorObject, ComponentObject>;
-
-	struct BlueprintBody
-	{
-		uint32_t UEPackageSignature{};
-		std::vector<ObjectHeader> ObjectHeaders;
-		std::vector<Object> Objects;
-	};
-
-	struct BlueprintHeader
-	{
-		uint32_t HeaderVersion{};
-		uint32_t SaveVersion{};
-		uint32_t BuildVersion{};
-		Size3D Size{};
-		std::vector<CostEntry> CostEntries;
-		std::vector<ContentEntry> ContentEntries;
-
-		uint32_t SaveObjectDataVersion{};
-		FPackageFileVersion PackageFileVersion{};
-		int LicenseeVersion{};
-		FEngineVersion EngineVersion{};
-
-	public:
-		BlueprintHeader(); // Constructor
-		BlueprintHeader(const BlueprintHeader& _Header); // Copy constructor
-		BlueprintHeader(BlueprintHeader&& _Header) noexcept; // Move constructor
-		~BlueprintHeader(); // Destructor
-
-	public:
-		void operator=(const BlueprintHeader& _Header); // Copy assigment operator
-		void operator=(BlueprintHeader& _Header) noexcept; // Move operator
-	};
-
-	class Blueprint
-	{
-	public:
-		std::string Name;
-		BlueprintHeader Header;
-		BlueprintBody Body;
-
-	public:
-		Blueprint() = default; // Default constructor
-		inline Blueprint(BlueprintHeader&& _Header, BlueprintBody&& _Body, std::string&& _Name) :
-			Name(std::move(_Name)),
-			Header(std::move(_Header)),
-			Body(std::move(_Body)) {
-		}
-	};
+	// ObjectHeader/ActorObject/ComponentObject/Object, and the Blueprint/BlueprintBody/
+	// BlueprintHeader types that assemble them, live in Core.Complex instead of here.
+	// ActorObject/ComponentObject need a Core::Property::PropertyList once their properties
+	// are parsed, and Core::Property already imports Core.Data (for Core::String etc.), so
+	// keeping them here would make Core.Data import Core.Property right back -> a cycle.
+	// Core.Complex sits downstream of both and closes that off.
+	// Tip for future self: NEVER DO CYCLIC TYPES AGAIN
 }
