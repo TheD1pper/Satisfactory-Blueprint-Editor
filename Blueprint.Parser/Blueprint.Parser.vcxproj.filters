@@ -21,6 +21,9 @@
     <ClCompile Include="src\Parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Property.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\Blueprint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

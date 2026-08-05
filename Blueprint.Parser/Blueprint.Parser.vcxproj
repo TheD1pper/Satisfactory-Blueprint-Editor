@@ -132,6 +132,7 @@
     <ClCompile Include="src\Blueprint.cpp" />
     <ClCompile Include="src\Compressor.cpp" />
     <ClCompile Include="src\Parser.cpp" />
+    <ClCompile Include="src\Property.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Blueprint.Core\Blueprint.Core.vcxproj">

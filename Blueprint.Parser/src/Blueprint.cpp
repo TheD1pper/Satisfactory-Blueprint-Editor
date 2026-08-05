@@ -15,10 +15,11 @@ import Helpers.Benchmark;
 import Helpers.Errors;
 import Helpers.FsUtils;
 import Core.Data;
+import Core.Complex;
 import Parser.Compression;
 
 namespace Parser
-{	
+{
 	Result<Core::BlueprintHeader> InputBlueprint::ReadHeader()
 	{
 		Core::BlueprintHeader Draft;
