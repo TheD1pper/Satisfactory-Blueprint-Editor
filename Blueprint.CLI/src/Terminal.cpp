@@ -1,13 +1,12 @@
 module;
 
 #include <Windows.h>
-#include <iostream>
-#include <string>
 #include <print>
-#include <ctime>
-#include <array>
 
 module Cli.Terminal;
+
+import <array>;
+import <string>;
 
 import Helpers.FsUtils;
 import Core.Data;

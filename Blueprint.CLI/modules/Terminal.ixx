@@ -1,9 +1,8 @@
 module;
 
-#include <vector>
-
 export module Cli.Terminal;
 
+import <vector>;
 import <filesystem>;
 
 import Helpers.FsUtils;
