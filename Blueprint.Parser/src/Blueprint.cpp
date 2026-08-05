@@ -265,25 +265,28 @@ namespace Parser
 		if (!Input.is_open())
 			std::print("something went wrong\n");
 
-		UncompressedSize = Read<uint32_t>();
-		if(!UncompressedSize)
-			return std::unexpected(UncompressedSize.error());
-
-		auto ObjectHeadersSize = Read<uint32_t>();
-		if (!ObjectHeadersSize)
-			return std::unexpected(ObjectHeadersSize.error());
-
-		auto CountOfObjectHeaders = Read<uint32_t>();
-		if (!CountOfObjectHeaders)
-			return std::unexpected(CountOfObjectHeaders.error());
-
-		for (size_t i = 0; i < *CountOfObjectHeaders; i++)
+		BENCH_SCOPE("Object headers read");
 		{
-			auto ObjectHeader = Read<Core::ObjectHeader>();
-			if (!ObjectHeader)
-				return std::unexpected(ObjectHeader.error());
+			UncompressedSize = Read<uint32_t>();
+			if (!UncompressedSize)
+				return std::unexpected(UncompressedSize.error());
 
-			Draft.ObjectHeaders.push_back(std::move(*ObjectHeader));
+			auto ObjectHeadersSize = Read<uint32_t>();
+			if (!ObjectHeadersSize)
+				return std::unexpected(ObjectHeadersSize.error());
+
+			auto CountOfObjectHeaders = Read<uint32_t>();
+			if (!CountOfObjectHeaders)
+				return std::unexpected(CountOfObjectHeaders.error());
+
+			for (size_t i = 0; i < *CountOfObjectHeaders; i++)
+			{
+				auto ObjectHeader = Read<Core::ObjectHeader>();
+				if (!ObjectHeader)
+					return std::unexpected(ObjectHeader.error());
+
+				Draft.ObjectHeaders.push_back(std::move(*ObjectHeader));
+			}
 		}
 
 		return Draft;
