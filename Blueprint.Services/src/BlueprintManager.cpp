@@ -1,7 +1,6 @@
 module;
 
 #include <cassert>
-#include <iostream>
 
 #include "BenchmarkMacros.hpp"
 
