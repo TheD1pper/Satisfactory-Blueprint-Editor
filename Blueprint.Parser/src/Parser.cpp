@@ -306,23 +306,35 @@ namespace Parser
 		auto Type = Read<uint32_t>();
 		if (!Type)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read object type"));
+		Draft.Type = static_cast<Core::ObjectHeaderType>(*Type);
 
-		if(*Type)
+		switch (*Type)
+		{
+		case 1:
 		{
 			Draft.Type = Core::ObjectHeaderType::Actor;
 			auto ActorHeader = Read<Core::ActorHeader>();
 			if (!ActorHeader)
 				return std::unexpected(ActorHeader.error());
-			return Draft;
+			Draft.Payload = std::move(*ActorHeader);
+			return std::move(Draft);
 		}
-		else
+			break;
+
+		
+		case 0:
 		{
 			Draft.Type = Core::ObjectHeaderType::Component;
 			auto ComponentHeader = Read<Core::ComponentHeader>();
 			if (!ComponentHeader)
 				return std::unexpected(ComponentHeader.error());
-			return Draft;
+			Draft.Payload = std::move(*ComponentHeader);
+			return std::move(Draft);
 		}
+			break;
+		}
+
+		return {};
 	}
 
 #pragma endregion Read() implementations of complex data types
