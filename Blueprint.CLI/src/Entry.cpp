@@ -24,6 +24,7 @@ int main()
 	else
 	{
 		Cli::PrintHeader(BpManager[*r_Load].Header);
+		Cli::PrintBody(BpManager[*r_Load].Body);
 		BpManager.Drop(*r_Load);
 	}
 } 
