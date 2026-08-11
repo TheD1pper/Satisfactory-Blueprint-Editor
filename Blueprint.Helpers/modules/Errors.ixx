@@ -24,6 +24,7 @@ namespace ErrorHandling
     {
         BadWrite,
         BadRead,
+        CantOpenFile,
         QuantityCantBeZero,
         EmptyString,
         CheckFalied
