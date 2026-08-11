@@ -374,7 +374,7 @@ namespace Parser
 #pragma endregion Read() implementations of complex data types
 
 	// Property/PropertyList and every Payload type's Read<>() specialization live in
-	// Property.cpp instead of here, to keep this file scoped to everything but property reads.
+	// Property.cpp instead of here, to keep this file scoped to everything but property
 
 #pragma region InputBlueprint
 	uint64_t InputBlueprint::GetBytesRead() const

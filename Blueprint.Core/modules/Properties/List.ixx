@@ -11,6 +11,7 @@ namespace Core::Property
 	// incomplete type is needed here: std::vector supports incomplete element types,
 	// which is exactly what lets PropertyList and Property recurse into each other
 	// (Property -> Payload -> StructProperty -> Struct::Generic -> PropertyList -> Property).
+
 	class Property;
 }
 
@@ -37,6 +38,7 @@ export namespace Core::Property
 	// and everything resolves fine internally. GetItems() hands back the underlying
 	// vector<Property>* as void*; AppendProperty/PropertyListAt/PropertyListBegin/End in
 	// Core.Property.ixx (declared after Property is complete) cast it back and do the real work.
+
 	class PropertyList
 	{
 	private:

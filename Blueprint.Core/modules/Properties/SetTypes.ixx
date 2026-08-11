@@ -16,6 +16,7 @@ export namespace Core::Property::Set
 
 	// Per the wiki: a "StructProperty" set element is just 2 Uint64s, not a full
 	// nested PropertyList (unlike ArrayProperty/MapProperty struct elements).
+
 	struct StructType
 	{
 		uint64_t ValueA{};

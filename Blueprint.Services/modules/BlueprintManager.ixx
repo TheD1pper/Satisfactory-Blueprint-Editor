@@ -15,7 +15,6 @@ namespace fs = std::filesystem;
 
 namespace Services
 {
-	// _Path is only temporary, switch to blueprint names from .sbpcfg files in near future
 	export class BlueprintManager
 	{
 	private:

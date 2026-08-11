@@ -42,6 +42,7 @@ export namespace Core::Property::Struct
 		// destructor/copy/move right here, before Property exists. Declaring them (without
 		// defaulting them yet) defers that instantiation to PropertyRecursion.cpp, a module
 		// implementation unit compiled after Property is complete.
+
 		InventoryItem();
 		~InventoryItem();
 		InventoryItem(const InventoryItem&);
@@ -93,11 +94,13 @@ export namespace Core::Property::Struct
 
 	// StructProperty payloads whose type name isn't one of the fixed types above
 	// (e.g. custom game structs like "InventoryStack") are just a plain PropertyList.
+
 	struct Generic
 	{
 		PropertyList Value{};
 
 		// See InventoryItem above for why these can't be left implicit.
+
 		Generic();
 		~Generic();
 		Generic(const Generic&);

@@ -1,4 +1,4 @@
-module;
+  module;
 
 module Parser.BinaryIO;
 
@@ -773,6 +773,7 @@ namespace Parser
 		// BoolProperty's value is inline in the tag (no separate payload at all), Byte/Enum
 		// carry an enum type name, Array/Set carry their element type name, Struct carries its
 		// struct type name, Map carries both a key and a value type name.
+
 		uint8_t BoolValue{};
 		Core::String ExtraTypeName{};
 		Core::String ExtraValueTypeName{};
