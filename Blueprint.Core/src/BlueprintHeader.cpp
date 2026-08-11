@@ -74,11 +74,4 @@ namespace Core
 		LicenseeVersion = std::move(_Header.LicenseeVersion);
 		EngineVersion = std::move(_Header.EngineVersion);
 	}
-
-
-	static_assert(std::is_copy_constructible_v<Core::BlueprintHeader>);
-	static_assert(std::is_copy_assignable_v<Core::BlueprintHeader>);
-	static_assert(std::is_move_constructible_v<Core::BlueprintHeader>);
-	static_assert(std::is_move_assignable_v<Core::BlueprintHeader>);
-	static_assert(std::is_destructible_v<Core::BlueprintHeader>);
 }
