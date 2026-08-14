@@ -371,6 +371,44 @@ namespace Parser
 		return Draft;
 	}
 
+	template<>
+	Result<Core::ActorObject> InputBlueprint::Read()
+	{
+		Core::ActorObject Draft;
+
+		auto r_Size = Read<uint32_t>();
+		if(!r_Size)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read actor object size"));
+
+		uint32_t& Size = *r_Size;
+
+		auto r_ParentReference = Read<Core::ObjectReference>();
+		if(!r_ParentReference)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read actor object parent reference"));
+
+		Draft.ParentReference = *r_ParentReference;
+
+		auto r_ComponentCount = Read<uint32_t>();
+		if(!r_ComponentCount)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read actor object component count"));
+
+		for (size_t i = 0; i < *r_ComponentCount; i++)
+		{
+			auto r_Component = Read<Core::ObjectReference>();
+			if(!r_Component)
+				return std::unexpected(Eh::Error(Eh::Binary::BadRead, std::format("Could not read actor object component (index: {})", i)));
+			Draft.Components.push_back(std::move(*r_Component));
+		}
+
+		auto r_Properties = Read<Core::Property::PropertyList>();
+		if (!r_Properties)
+			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read actor object property list"));
+
+		SkipBytes(4); // Skip padding
+
+		return Draft;
+	}
+
 #pragma endregion Read() implementations of complex data types
 
 	// Property/PropertyList and every Payload type's Read<>() specialization live in
