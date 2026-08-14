@@ -241,16 +241,16 @@ namespace Parser
 			BENCH_SCOPE("Decompression");
 			r_UncompressedBody = Z.Decompress(std::move(CompressedBody), *UncompressedSize);
 			if (!r_UncompressedBody)
-				return std::unexpected(Eh::Error(Eh::Compression::Fail, r_UncompressedBody.error().GetLogMessage()));
+				return std::unexpected(Eh::Error(Eh::Compression::Fail, "Could not decompress the body"));
 		}
 
 		fs::path TempPath;
 		{
 			Core::ByteVector UncompressedBody = *r_UncompressedBody;
 			TempPath = FsUtils::GetTempFolder() / "Body.tmp";
-			BinaryOutput TempOutput(TempPath);
 			TempPath.replace_filename(std::format("Body-{}.tmp", *UncompressedSize));
-		
+			BinaryOutput TempOutput(TempPath);
+
 			BENCH_SCOPE("Cache uncompressed body");
 			if (!TempOutput.Write(UncompressedBody))
 				return std::unexpected(Eh::Error(Eh::Binary::BadWrite, "Could not write temporary body"));
@@ -262,31 +262,32 @@ namespace Parser
 
 		Input.close();
 		Input.open(TempPath);
+		BytesRead = 0;
 
 		if (!Input.is_open())
-			std::print("something went wrong\n");
+			return std::unexpected(Eh::Error(Eh::Binary::CantOpenFile, "Could not open temporary uncompressed body"));
 
-		BENCH_SCOPE("Object headers read");
 		{
 			UncompressedSize = Read<uint32_t>();
 			if (!UncompressedSize)
 				return std::unexpected(UncompressedSize.error());
 
+			BENCH_SCOPE("Object headers read");
 			auto ObjectHeadersSize = Read<uint32_t>();
 			if (!ObjectHeadersSize)
 				return std::unexpected(ObjectHeadersSize.error());
 
-			auto CountOfObjectHeaders = Read<uint32_t>();
-			if (!CountOfObjectHeaders)
-				return std::unexpected(CountOfObjectHeaders.error());
+			auto r_ObjectHeaderCount = Read<uint32_t>();
+			if (!r_ObjectHeaderCount)
+				return std::unexpected(r_ObjectHeaderCount.error());
 
-			for (size_t i = 0; i < *CountOfObjectHeaders; i++)
+			for (size_t i = 0; i < *r_ObjectHeaderCount; i++)
 			{
 				auto ObjectHeader = Read<Core::ObjectHeader>();
 				if (!ObjectHeader)
 					return std::unexpected(ObjectHeader.error());
 
-				Draft.ObjectHeaders.push_back(std::move(*ObjectHeader));
+				Draft.ObjectHeaders.emplace_back(std::move(*ObjectHeader));
 			}
 		}
 
