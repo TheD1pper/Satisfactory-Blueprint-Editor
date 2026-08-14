@@ -20,7 +20,11 @@ int main()
 	Benchmark::OverwriteSavePath(FsUtils::GetBenchmarkFolder());
 	auto r_Load = BpManager.Load(FsUtils::GetBlueprintsPath() / "Exp 1.2\\Loop.sbp");
 	if (!r_Load)
-		std::cerr << std::format("Could not load the blueprint ({})", r_Load.error().GetLogMessage());
+	{
+		auto& Error = r_Load.error();
+		auto Source = Error.GetSource();
+		std::cerr << std::format("Could not load the blueprint ({}, file: {}, line: {})", Error.GetLogMessage(), static_cast<fs::path>(Source.file_name()).filename().string(), Source.line());
+	}
 	else
 	{
 		Cli::PrintHeader(BpManager[*r_Load].Header);
