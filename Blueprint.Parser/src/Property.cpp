@@ -1,4 +1,8 @@
-  module;
+module;
+
+#include <cstdint>
+#include <expected>
+#include <utility>
 
 module Parser.BinaryIO;
 
@@ -392,17 +396,17 @@ namespace Parser
 		{
 		case Map::KeyType::Object:
 		{
-			auto v = _Input.Read<Core::ObjectReference>();
-			if (!v)
-				return std::unexpected(v.error());
-			return Map::KeyVariant{ Map::ObjectKey{ *v } };
+			auto r_Object = _Input.Read<Core::ObjectReference>();
+			if (!r_Object)
+				return std::unexpected(r_Object.error());
+			return Map::KeyVariant{ Map::ObjectKey{ *r_Object } };
 		}
 		case Map::KeyType::Int:
 		{
-			auto v = _Input.Read<int>();
-			if (!v)
+			auto r_Int = _Input.Read<int>();
+			if (!r_Int)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read map int key"));
-			return Map::KeyVariant{ Map::IntKey{ *v } };
+			return Map::KeyVariant{ Map::IntKey{ *r_Int } };
 		}
 		case Map::KeyType::Struct:
 		{
@@ -410,20 +414,20 @@ namespace Parser
 			// Value3), not a confirmed reference. Rare in practice (most Satisfactory maps key
 			// on ObjectProperty) -- flag if this turns out wrong.
 			Map::StructKey Key;
-			auto v0 = _Input.Read<int>();
-			if (!v0)
+			auto r_Value0 = _Input.Read<int>();
+			if (!r_Value0)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read map struct key"));
-			Key.Value0 = *v0;
+			Key.Value0 = *r_Value0;
 
-			auto v2 = _Input.Read<int>();
-			if (!v2)
+			auto r_Value2 = _Input.Read<int>();
+			if (!r_Value2)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read map struct key"));
-			Key.Value2 = *v2;
+			Key.Value2 = *r_Value2;
 
-			auto v3 = _Input.Read<int>();
-			if (!v3)
+			auto r_Value3 = _Input.Read<int>();
+			if (!r_Value3)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read map struct key"));
-			Key.Value3 = *v3;
+			Key.Value3 = *r_Value3;
 
 			return Map::KeyVariant{ Key };
 		}
@@ -438,34 +442,34 @@ namespace Parser
 		{
 		case Map::ValueType::Byte:
 		{
-			auto v = _Input.Read<uint8_t>();
-			if (!v)
+			auto r_Byte = _Input.Read<uint8_t>();
+			if (!r_Byte)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read map byte value"));
-			return Map::ValueVariant{ Map::ByteValue{ *v } };
+			return Map::ValueVariant{ Map::ByteValue{ *r_Byte } };
 		}
 		case Map::ValueType::Int:
 		{
-			auto v = _Input.Read<int>();
-			if (!v)
+			auto r_Int = _Input.Read<int>();
+			if (!r_Int)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read map int value"));
-			return Map::ValueVariant{ Map::IntValue{ *v } };
+			return Map::ValueVariant{ Map::IntValue{ *r_Int } };
 		}
 		case Map::ValueType::Int64:
 		{
-			auto v = _Input.Read<int64_t>();
-			if (!v)
+			auto r_Int64 = _Input.Read<int64_t>();
+			if (!r_Int64)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read map int64 value"));
-			return Map::ValueVariant{ Map::Int64Value{ *v } };
+			return Map::ValueVariant{ Map::Int64Value{ *r_Int64 } };
 		}
 		case Map::ValueType::Struct:
 		{
 			// A StructProperty map value is a whole nested PropertyList with no type-name/guid
 			// wrapper (unlike ArrayProperty's struct elements) -- see MapTypes.ixx.
 			Map::StructValue Value;
-			auto v = _Input.Read<PropertyList>();
-			if (!v)
-				return std::unexpected(v.error());
-			Value.Value = std::move(*v);
+			auto r_PropertyList = _Input.Read<PropertyList>();
+			if (!r_PropertyList)
+				return std::unexpected(r_PropertyList.error());
+			Value.Value = std::move(*r_PropertyList);
 			return Map::ValueVariant{ std::move(Value) };
 		}
 		}
@@ -525,29 +529,29 @@ namespace Parser
 		{
 		case Set::ElementType::UInt32:
 		{
-			auto v = _Input.Read<uint32_t>();
-			if (!v)
+			auto r_UInt32 = _Input.Read<uint32_t>();
+			if (!r_UInt32)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read set uint32 element"));
-			return Set::Type{ Set::UInt32Type{ *v } };
+			return Set::Type{ Set::UInt32Type{ *r_UInt32 } };
 		}
 		case Set::ElementType::Struct:
 		{
 			// Per the wiki: a "StructProperty" set element is just 2 uint64s, not a full nested
 			// PropertyList -- see SetTypes.ixx.
-			auto a = _Input.Read<uint64_t>();
-			if (!a)
+			auto r_ValueA = _Input.Read<uint64_t>();
+			if (!r_ValueA)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read set struct element"));
-			auto b = _Input.Read<uint64_t>();
-			if (!b)
+			auto r_ValueB = _Input.Read<uint64_t>();
+			if (!r_ValueB)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read set struct element"));
-			return Set::Type{ Set::StructType{ *a, *b } };
+			return Set::Type{ Set::StructType{ *r_ValueA, *r_ValueB } };
 		}
 		case Set::ElementType::Object:
 		{
-			auto v = _Input.Read<Core::ObjectReference>();
-			if (!v)
-				return std::unexpected(v.error());
-			return Set::Type{ Set::ObjectType{ *v } };
+			auto r_Object = _Input.Read<Core::ObjectReference>();
+			if (!r_Object)
+				return std::unexpected(r_Object.error());
+			return Set::Type{ Set::ObjectType{ *r_Object } };
 		}
 		}
 
@@ -597,68 +601,68 @@ namespace Parser
 		case Struct::ElementType::Vector:
 		{
 			Struct::Vector V;
-			auto x = _Input.Read<double>(); if (!x) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Vector.X")); V.X = *x;
-			auto y = _Input.Read<double>(); if (!y) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Vector.Y")); V.Y = *y;
-			auto z = _Input.Read<double>(); if (!z) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Vector.Z")); V.Z = *z;
+			auto r_X = _Input.Read<double>(); if (!r_X) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Vector.X")); V.X = *r_X;
+			auto r_Y = _Input.Read<double>(); if (!r_Y) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Vector.Y")); V.Y = *r_Y;
+			auto r_Z = _Input.Read<double>(); if (!r_Z) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Vector.Z")); V.Z = *r_Z;
 			return Struct::Type{ V };
 		}
 		case Struct::ElementType::LinearColor:
 		{
 			Struct::LinearColor V;
-			auto r = _Input.Read<float>(); if (!r) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read LinearColor.Red")); V.Red = *r;
-			auto g = _Input.Read<float>(); if (!g) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read LinearColor.Green")); V.Green = *g;
-			auto b = _Input.Read<float>(); if (!b) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read LinearColor.Blue")); V.Blue = *b;
-			auto a = _Input.Read<float>(); if (!a) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read LinearColor.Alpha")); V.Alpha = *a;
+			auto r_Red = _Input.Read<float>(); if (!r_Red) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read LinearColor.Red")); V.Red = *r_Red;
+			auto r_Green = _Input.Read<float>(); if (!r_Green) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read LinearColor.Green")); V.Green = *r_Green;
+			auto r_Blue = _Input.Read<float>(); if (!r_Blue) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read LinearColor.Blue")); V.Blue = *r_Blue;
+			auto r_Alpha = _Input.Read<float>(); if (!r_Alpha) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read LinearColor.Alpha")); V.Alpha = *r_Alpha;
 			return Struct::Type{ V };
 		}
 		case Struct::ElementType::Quat:
 		{
 			Struct::Quat V;
-			auto x = _Input.Read<double>(); if (!x) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Quat.X")); V.X = *x;
-			auto y = _Input.Read<double>(); if (!y) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Quat.Y")); V.Y = *y;
-			auto z = _Input.Read<double>(); if (!z) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Quat.Z")); V.Z = *z;
-			auto w = _Input.Read<double>(); if (!w) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Quat.W")); V.W = *w;
+			auto r_X = _Input.Read<double>(); if (!r_X) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Quat.X")); V.X = *r_X;
+			auto r_Y = _Input.Read<double>(); if (!r_Y) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Quat.Y")); V.Y = *r_Y;
+			auto r_Z = _Input.Read<double>(); if (!r_Z) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Quat.Z")); V.Z = *r_Z;
+			auto r_W = _Input.Read<double>(); if (!r_W) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Quat.W")); V.W = *r_W;
 			return Struct::Type{ V };
 		}
 		case Struct::ElementType::Box:
 		{
 			Struct::Box V;
-			auto maxx = _Input.Read<double>(); if (!maxx) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Box.MaxX")); V.MaxX = *maxx;
-			auto maxy = _Input.Read<double>(); if (!maxy) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Box.MaxY")); V.MaxY = *maxy;
-			auto maxz = _Input.Read<double>(); if (!maxz) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Box.MaxZ")); V.MaxZ = *maxz;
-			auto minx = _Input.Read<double>(); if (!minx) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Box.MinX")); V.MinX = *minx;
-			auto miny = _Input.Read<double>(); if (!miny) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Box.MinY")); V.MinY = *miny;
-			auto minz = _Input.Read<double>(); if (!minz) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Box.MinZ")); V.MinZ = *minz;
-			auto valid = _Input.Read<uint8_t>(); if (!valid) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Box.IsValid")); V.IsValid = *valid;
+			auto r_MaxX = _Input.Read<double>(); if (!r_MaxX) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Box.MaxX")); V.MaxX = *r_MaxX;
+			auto r_MaxY = _Input.Read<double>(); if (!r_MaxY) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Box.MaxY")); V.MaxY = *r_MaxY;
+			auto r_MaxZ = _Input.Read<double>(); if (!r_MaxZ) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Box.MaxZ")); V.MaxZ = *r_MaxZ;
+			auto r_MinX = _Input.Read<double>(); if (!r_MinX) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Box.MinX")); V.MinX = *r_MinX;
+			auto r_MinY = _Input.Read<double>(); if (!r_MinY) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Box.MinY")); V.MinY = *r_MinY;
+			auto r_MinZ = _Input.Read<double>(); if (!r_MinZ) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Box.MinZ")); V.MinZ = *r_MinZ;
+			auto r_IsValid = _Input.Read<uint8_t>(); if (!r_IsValid) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Box.IsValid")); V.IsValid = *r_IsValid;
 			return Struct::Type{ V };
 		}
 		case Struct::ElementType::FluidBox:
 		{
 			Struct::FluidBox V;
-			auto v = _Input.Read<float>(); if (!v) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read FluidBox.Value")); V.Value = *v;
+			auto r_Value = _Input.Read<float>(); if (!r_Value) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read FluidBox.Value")); V.Value = *r_Value;
 			return Struct::Type{ V };
 		}
 		case Struct::ElementType::InventoryItem:
 		{
 			Struct::InventoryItem V;
 
-			auto name = _Input.Read<Core::String>();
-			if (!name) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read InventoryItem.ItemName"));
-			V.ItemName = *name;
+			auto r_ItemName = _Input.Read<Core::String>();
+			if (!r_ItemName) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read InventoryItem.ItemName"));
+			V.ItemName = *r_ItemName;
 
-			auto hasProp = _Input.Read<uint32_t>();
-			if (!hasProp) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read InventoryItem.HasProperty"));
-			V.HasProperty = *hasProp;
+			auto r_HasProperty = _Input.Read<uint32_t>();
+			if (!r_HasProperty) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read InventoryItem.HasProperty"));
+			V.HasProperty = *r_HasProperty;
 
-			auto type = _Input.Read<Core::String>();
-			if (!type) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read InventoryItem.ItemType"));
-			V.ItemType = *type;
+			auto r_ItemType = _Input.Read<Core::String>();
+			if (!r_ItemType) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read InventoryItem.ItemType"));
+			V.ItemType = *r_ItemType;
 
 			if (V.HasProperty != 0)
 			{
-				auto props = _Input.Read<PropertyList>();
-				if (!props) return std::unexpected(props.error());
-				V.Properties = std::move(*props);
+				auto r_Properties = _Input.Read<PropertyList>();
+				if (!r_Properties) return std::unexpected(r_Properties.error());
+				V.Properties = std::move(*r_Properties);
 			}
 
 			return Struct::Type{ std::move(V) };
@@ -666,24 +670,24 @@ namespace Parser
 		case Struct::ElementType::RailroadTrackPosition:
 		{
 			Struct::RailroadTrackPosition V;
-			auto reference = _Input.Read<Core::ObjectReference>(); if (!reference) return std::unexpected(reference.error()); V.Reference = *reference;
-			auto offset = _Input.Read<float>(); if (!offset) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read RailroadTrackPosition.Offset")); V.Offset = *offset;
-			auto forward = _Input.Read<float>(); if (!forward) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read RailroadTrackPosition.Forward")); V.Forward = *forward;
+			auto r_Reference = _Input.Read<Core::ObjectReference>(); if (!r_Reference) return std::unexpected(r_Reference.error()); V.Reference = *r_Reference;
+			auto r_Offset = _Input.Read<float>(); if (!r_Offset) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read RailroadTrackPosition.Offset")); V.Offset = *r_Offset;
+			auto r_Forward = _Input.Read<float>(); if (!r_Forward) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read RailroadTrackPosition.Forward")); V.Forward = *r_Forward;
 			return Struct::Type{ V };
 		}
 		case Struct::ElementType::DateTime:
 		{
 			Struct::DateTime V;
-			auto v = _Input.Read<int64_t>(); if (!v) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read DateTime.Value")); V.Value = *v;
+			auto r_Value = _Input.Read<int64_t>(); if (!r_Value) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read DateTime.Value")); V.Value = *r_Value;
 			return Struct::Type{ V };
 		}
 		case Struct::ElementType::ClientIdentityInfo:
 		{
 			Struct::ClientIdentity V;
 
-			auto uuid = _Input.Read<Core::String>();
-			if (!uuid) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read ClientIdentity.UUID"));
-			V.UUID = *uuid;
+			auto r_UUID = _Input.Read<Core::String>();
+			if (!r_UUID) return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read ClientIdentity.UUID"));
+			V.UUID = *r_UUID;
 
 			uint64_t Consumed = _Input.GetBytesRead();
 			uint64_t Remaining = (Consumed < _PayloadEnd) ? (_PayloadEnd - Consumed) : 0;
@@ -699,10 +703,10 @@ namespace Parser
 			// Not one of the fixed types above (or the type name wasn't recognized at all):
 			// a plain, self-terminating nested PropertyList.
 			Struct::Generic V;
-			auto props = _Input.Read<PropertyList>();
-			if (!props)
-				return std::unexpected(props.error());
-			V.Value = std::move(*props);
+			auto r_Properties = _Input.Read<PropertyList>();
+			if (!r_Properties)
+				return std::unexpected(r_Properties.error());
+			V.Value = std::move(*r_Properties);
 			return Struct::Type{ std::move(V) };
 		}
 		}
@@ -782,10 +786,10 @@ namespace Parser
 		{
 		case PropertyType::Bool:
 		{
-			auto v = Read<uint8_t>();
-			if (!v)
+			auto r_Value = Read<uint8_t>();
+			if (!r_Value)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read bool property value"));
-			BoolValue = *v;
+			BoolValue = *r_Value;
 			break;
 		}
 		case PropertyType::Byte:
@@ -835,121 +839,121 @@ namespace Parser
 
 		case PropertyType::Byte:
 		{
-			auto v = ReadBytePayload(*this, ExtraTypeName);
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_Byte = ReadBytePayload(*this, ExtraTypeName);
+			if (!r_Byte) return std::unexpected(r_Byte.error());
+			Draft.Value = std::move(*r_Byte);
 			break;
 		}
 		case PropertyType::Enum:
 		{
-			auto v = ReadEnumPayload(*this);
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_Enum = ReadEnumPayload(*this);
+			if (!r_Enum) return std::unexpected(r_Enum.error());
+			Draft.Value = std::move(*r_Enum);
 			break;
 		}
 		case PropertyType::Float:
 		{
-			auto v = Read<FloatProperty>();
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_Float = Read<FloatProperty>();
+			if (!r_Float) return std::unexpected(r_Float.error());
+			Draft.Value = std::move(*r_Float);
 			break;
 		}
 		case PropertyType::Double:
 		{
-			auto v = Read<DoubleProperty>();
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_Double = Read<DoubleProperty>();
+			if (!r_Double) return std::unexpected(r_Double.error());
+			Draft.Value = std::move(*r_Double);
 			break;
 		}
 		case PropertyType::Int:
 		{
-			auto v = Read<IntProperty>();
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_Int = Read<IntProperty>();
+			if (!r_Int) return std::unexpected(r_Int.error());
+			Draft.Value = std::move(*r_Int);
 			break;
 		}
 		case PropertyType::Int8:
 		{
-			auto v = Read<Int8Property>();
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_Int8 = Read<Int8Property>();
+			if (!r_Int8) return std::unexpected(r_Int8.error());
+			Draft.Value = std::move(*r_Int8);
 			break;
 		}
 		case PropertyType::UInt32:
 		{
-			auto v = Read<Uint32Property>();
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_UInt32 = Read<Uint32Property>();
+			if (!r_UInt32) return std::unexpected(r_UInt32.error());
+			Draft.Value = std::move(*r_UInt32);
 			break;
 		}
 		case PropertyType::Int64:
 		{
-			auto v = Read<Int64Property>();
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_Int64 = Read<Int64Property>();
+			if (!r_Int64) return std::unexpected(r_Int64.error());
+			Draft.Value = std::move(*r_Int64);
 			break;
 		}
 		case PropertyType::Name:
 		{
-			auto v = Read<NameProperty>();
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_NameValue = Read<NameProperty>();
+			if (!r_NameValue) return std::unexpected(r_NameValue.error());
+			Draft.Value = std::move(*r_NameValue);
 			break;
 		}
 		case PropertyType::Object:
 		{
-			auto v = Read<ObjectProperty>();
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_Object = Read<ObjectProperty>();
+			if (!r_Object) return std::unexpected(r_Object.error());
+			Draft.Value = std::move(*r_Object);
 			break;
 		}
 		case PropertyType::SoftObject:
 		{
-			auto v = Read<SoftObjectProperty>();
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_SoftObject = Read<SoftObjectProperty>();
+			if (!r_SoftObject) return std::unexpected(r_SoftObject.error());
+			Draft.Value = std::move(*r_SoftObject);
 			break;
 		}
 		case PropertyType::Str:
 		{
-			auto v = Read<StrProperty>();
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_Str = Read<StrProperty>();
+			if (!r_Str) return std::unexpected(r_Str.error());
+			Draft.Value = std::move(*r_Str);
 			break;
 		}
 		case PropertyType::Text:
 		{
-			auto v = Read<TextProperty>();
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_Text = Read<TextProperty>();
+			if (!r_Text) return std::unexpected(r_Text.error());
+			Draft.Value = std::move(*r_Text);
 			break;
 		}
 		case PropertyType::Array:
 		{
-			auto v = ReadArrayPayload(*this, Draft.Name, ExtraTypeName);
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_Array = ReadArrayPayload(*this, Draft.Name, ExtraTypeName);
+			if (!r_Array) return std::unexpected(r_Array.error());
+			Draft.Value = std::move(*r_Array);
 			break;
 		}
 		case PropertyType::Map:
 		{
-			auto v = ReadMapPayload(*this, Draft.Name, ExtraTypeName, ExtraValueTypeName);
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_Map = ReadMapPayload(*this, Draft.Name, ExtraTypeName, ExtraValueTypeName);
+			if (!r_Map) return std::unexpected(r_Map.error());
+			Draft.Value = std::move(*r_Map);
 			break;
 		}
 		case PropertyType::Set:
 		{
-			auto v = ReadSetPayload(*this, Draft.Name, ExtraTypeName);
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_Set = ReadSetPayload(*this, Draft.Name, ExtraTypeName);
+			if (!r_Set) return std::unexpected(r_Set.error());
+			Draft.Value = std::move(*r_Set);
 			break;
 		}
 		case PropertyType::Struct:
 		{
-			auto v = ReadStructPayload(*this, Draft.Name, ExtraTypeName, PayloadEnd);
-			if (!v) return std::unexpected(v.error());
-			Draft.Value = std::move(*v);
+			auto r_Struct = ReadStructPayload(*this, Draft.Name, ExtraTypeName, PayloadEnd);
+			if (!r_Struct) return std::unexpected(r_Struct.error());
+			Draft.Value = std::move(*r_Struct);
 			break;
 		}
 		}
