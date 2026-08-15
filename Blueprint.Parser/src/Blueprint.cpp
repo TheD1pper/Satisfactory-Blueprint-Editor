@@ -163,11 +163,34 @@ namespace Parser
 	{
 		Core::BlueprintBody Draft;
 
-		std::streamoff AnchorAddress{}; 
-		{
+		// ========================== Body chunk ==========================
+		//  ┌────────┬─────────────────────────────────────┬───────────────────────┐
+		//	│  Type  │                Field                │        Example        │
+		//	├────────┼─────────────────────────────────────┼───────────────────────┤
+		//	│ uint32 │ UE package signature (constant)     │ 0x9E2A83C1            │
+		//	├────────┼─────────────────────────────────────┼───────────────────────┤
+		//	│ uint32 │ constant                            │ 0x22222222            │
+		//	├────────┼─────────────────────────────────────┼───────────────────────┤
+		//	│ uint32 │ max chunk size                      │ 0x00020000            │
+		//	├────────┼─────────────────────────────────────┼───────────────────────┤
+		//	│  int8  │ padding                             │ 0x00                  │
+		//	├────────┼─────────────────────────────────────┼───────────────────────┤
+		//	│ uint32 │ constant                            │ 0x03000000            │
+		//	├────────┼─────────────────────────────────────┼───────────────────────┤
+		//	│ uint64 │ compressed size                     │ 0xA90C0000            │
+		//	├────────┼─────────────────────────────────────┼───────────────────────┤
+		//	│ uint64 │ uncompressed size                   │ 0x00020000            │
+		//	├────────┼─────────────────────────────────────┼───────────────────────┤
+		//	│ uint64 │ compressed size (repeat)            │ 0xA90C0000            │
+		//	├────────┼─────────────────────────────────────┼───────────────────────┤
+		//	│ uint64 │ uncompressed size (repeat)          │ 0x00020000            │
+		//	├────────┼─────────────────────────────────────┼───────────────────────┤
+		//	│  N/A   │ bytes of uncompressed body          │ N/A                   │
+		//  └────────┴─────────────────────────────────────┴───────────────────────┘
+		// 
 			// Between every blueprint header and body there's metadata that doesn't have a variable describing the size of it
 			// Because of that you need to find a constant that you can "anchor" to to read the rest of the body
-			// Every blueprint file has a couple of constants like 0x22222222, 0x03000000, 0x00020100
+		// Every blueprint file has a couple of constants like 0x9E2A83C1, 0x22222222, 0x03000000, 0x00020100
 			// Only the first anchor is looked up, a failsafe can be added to limit the probability of the anchor recurring 
 
 			BENCH_SCOPE("Anchor lookup");
