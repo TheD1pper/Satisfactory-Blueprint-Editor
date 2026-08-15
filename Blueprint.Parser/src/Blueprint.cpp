@@ -24,17 +24,17 @@ namespace Parser
 	{
 		Core::BlueprintHeader Draft;
 		{
-			auto HeaderVersion = Read<uint32_t>();
-			if (!HeaderVersion)
+			auto r_HeaderVersion = Read<uint32_t>();
+			if (!r_HeaderVersion)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad header version read"));
-			if (*HeaderVersion != 2)
+			if (*r_HeaderVersion != 2)
 				return std::unexpected(Eh::Error(Eh::Blueprint::WrongHeaderVersion, "Blueprint format is outdated")); // This parser currently can read only version 2 blueprint file
-			Draft.HeaderVersion = *HeaderVersion;
+			Draft.HeaderVersion = *r_HeaderVersion;
 
-			auto SaveVersion = Read<uint32_t>();
-			if (!SaveVersion)
+			auto r_SaveVersion = Read<uint32_t>();
+			if (!r_SaveVersion)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad save version read"));
-			Draft.SaveVersion = *SaveVersion;
+			Draft.SaveVersion = *r_SaveVersion;
 
 			auto BuildVersion = Read<uint32_t>();
 			if (!BuildVersion)
@@ -100,6 +100,7 @@ namespace Parser
 				auto r_String = Read<Core::String>();
 				if (!r_String)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad content entry class name read"));
+				
 				Entry.ClassName = *r_String;
 				Draft.ContentEntries.emplace_back(Entry);
 				if (i != NumberOfContentEntries - 1)
@@ -108,50 +109,50 @@ namespace Parser
 
 			if (Draft.SaveVersion >= 53)
 			{
-				auto SaveObjectDataVersion = Read<uint32_t>();
-				if (!SaveObjectDataVersion)
+				auto r_SaveObjectDataVersion = Read<uint32_t>();
+				if (!r_SaveObjectDataVersion)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad save object data version read"));
-				Draft.SaveObjectDataVersion = *SaveObjectDataVersion;
+				Draft.SaveObjectDataVersion = *r_SaveObjectDataVersion;
 
-				auto UE4FileVersion = Read<int>();
-				if (!UE4FileVersion)
+				auto r_UE4FileVersion = Read<int>();
+				if (!r_UE4FileVersion)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad UE4 file version read"));
-				Draft.PackageFileVersion.FileVersionUE4 = *UE4FileVersion;
+				Draft.PackageFileVersion.FileVersionUE4 = *r_UE4FileVersion;
 
-				auto FileVersionUE5 = Read<int>();
-				if (!FileVersionUE5)
+				auto r_FileVersionUE5 = Read<int>();
+				if (!r_FileVersionUE5)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad UE5 file version read"));
-				Draft.PackageFileVersion.FileVersionUE5 = *FileVersionUE5;
+				Draft.PackageFileVersion.FileVersionUE5 = *r_FileVersionUE5;
 
-				auto LicenseeVersion = Read<int>();
-				if (!LicenseeVersion)
+				auto r_LicenseeVersion = Read<int>();
+				if (!r_LicenseeVersion)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad licensee version read"));
-				Draft.LicenseeVersion = *LicenseeVersion;
+				Draft.LicenseeVersion = *r_LicenseeVersion;
 
-				auto EngVerMajor = Read<uint16_t>();
-				if (!EngVerMajor)
+				auto r_EngVerMajor = Read<uint16_t>();
+				if (!r_EngVerMajor)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad major engine version read"));
-				Draft.EngineVersion.Major = *EngVerMajor;
+				Draft.EngineVersion.Major = *r_EngVerMajor;
 
-				auto EngVerMinor = Read<uint16_t>();
-				if (!EngVerMinor)
+				auto r_EngVerMinor = Read<uint16_t>();
+				if (!r_EngVerMinor)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad minor engine version read"));
-				Draft.EngineVersion.Minor = *EngVerMinor;
+				Draft.EngineVersion.Minor = *r_EngVerMinor;
 
-				auto EngVerPatch = Read<uint16_t>();
-				if (!EngVerPatch)
+				auto r_EngVerPatch = Read<uint16_t>();
+				if (!r_EngVerPatch)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad engine version patch read"));
-				Draft.EngineVersion.Patch = *EngVerPatch;
+				Draft.EngineVersion.Patch = *r_EngVerPatch;
 
-				auto EngVerChangeList = Read<uint32_t>();
-				if (!EngVerChangeList)
+				auto r_EngVerChangeList = Read<uint32_t>();
+				if (!r_EngVerChangeList)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad engine version change list read"));
-				Draft.EngineVersion.ChangeList = *EngVerChangeList;
+				Draft.EngineVersion.ChangeList = *r_EngVerChangeList;
 
-				auto EngVerBranch = Read<Core::String>();
-				if (!EngVerBranch)
+				auto r_EngVerBranch = Read<Core::String>();
+				if (!r_EngVerBranch)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad engine version branch read"));
-				Draft.EngineVersion.Branch = *EngVerBranch;
+				Draft.EngineVersion.Branch = *r_EngVerBranch;
 			}
 		}
 
@@ -176,16 +177,16 @@ namespace Parser
 
 			while (SlidingWindow != std::array<uint8_t, 4>{0x22, 0x22, 0x22, 0x22})
 			{
-				auto Next = Read<uint8_t>();
-
-				if (!Next)
+				auto r_Next = Read<uint8_t>();
+				if (!r_Next)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read byte when searching for body anchor"));
-				
-				Bytes.push(*Next);
+				uint8_t& Next = *r_Next;
+
+				Bytes.push(Next);
 				SlidingWindow[0] = SlidingWindow[1];
 				SlidingWindow[1] = SlidingWindow[2];
 				SlidingWindow[2] = SlidingWindow[3];
-				SlidingWindow[3] = *Next;
+				SlidingWindow[3] = Next;
 			}
 
 			if (SlidingWindow != std::array<uint8_t, 4>{0x22, 0x22, 0x22, 0x22})
@@ -201,32 +202,33 @@ namespace Parser
 			}
 			AnchorAddress = Input.tellg();
 		}
-		auto MaximumChunkSize = Read<uint32_t>();
-		if (!MaximumChunkSize || MaximumChunkSize != MaxChunkSize)
+
+		auto r_MaximumChunkSize = Read<uint32_t>();
+		if (!r_MaximumChunkSize || *r_MaximumChunkSize != MaxChunkSize)
 			return std::unexpected(Eh::Error(Eh::Binary::CheckFalied, "Bad maximum chunk size (value need to be exactly 131 072)"));
 
-		auto ValidityCheck2 = Read<uint8_t>();
-		if (!ValidityCheck2 || *ValidityCheck2 != 0)
+		auto r_ValidityCheck2 = Read<uint8_t>();
+		if (!r_ValidityCheck2 || *r_ValidityCheck2 != 0)
 			return std::unexpected(Eh::Error(Eh::Binary::CheckFalied, "Second check went unsuccessful"));
 
-		auto ValidityCheck3 = Read<uint32_t>();
-		if (!ValidityCheck3 || *ValidityCheck3 != 0x03000000)
+		auto r_ValidityCheck3 = Read<uint32_t>();
+		if (!r_ValidityCheck3 || *r_ValidityCheck3 != 0x03000000)
 			return std::unexpected(Eh::Error(Eh::Binary::CheckFalied, "Third check went unsuccessful"));
 
-		auto CompressedSize = Read<uint64_t>();
-		if (!CompressedSize)
+		auto r_CompressedSize = Read<uint64_t>();
+		if (!r_CompressedSize)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad compressed size read"));
 
-		auto UncompressedSize = Read<uint64_t>();
-		if (!UncompressedSize)
+		auto r_UncompressedSize = Read<uint64_t>();
+		if (!r_UncompressedSize)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad uncompressed size read"));
 
 		SkipBytes(16); // Skip data that repeats
 
-		Core::ByteVector CompressedBody(*CompressedSize);
+		Core::ByteVector CompressedBody(*r_CompressedSize);
 		{
 			BENCH_SCOPE("Compressed body read");
-			for (uint64_t i = 0; i < *CompressedSize; i++)
+			for (uint64_t i = 0; i < *r_CompressedSize; i++)
 			{
 				auto byte = Read<uint8_t>();
 				if (!byte)
@@ -239,7 +241,7 @@ namespace Parser
 		{
 			Zlib Z;
 			BENCH_SCOPE("Decompression");
-			r_UncompressedBody = Z.Decompress(std::move(CompressedBody), *UncompressedSize);
+			r_UncompressedBody = Z.Decompress(std::move(CompressedBody), *r_UncompressedSize);
 			if (!r_UncompressedBody)
 				return std::unexpected(Eh::Error(Eh::Compression::Fail, "Could not decompress the body"));
 		}
@@ -248,7 +250,7 @@ namespace Parser
 		{
 			Core::ByteVector UncompressedBody = *r_UncompressedBody;
 			TempPath = FsUtils::GetTempFolder() / "Body.tmp";
-			TempPath.replace_filename(std::format("Body-{}.tmp", *UncompressedSize));
+			TempPath.replace_filename(std::format("Body-{}.tmp", *r_UncompressedSize));
 			BinaryOutput TempOutput(TempPath);
 
 			BENCH_SCOPE("Cache uncompressed body");
@@ -268,14 +270,14 @@ namespace Parser
 			return std::unexpected(Eh::Error(Eh::Binary::CantOpenFile, "Could not open temporary uncompressed body"));
 
 		{
-			UncompressedSize = Read<uint32_t>();
-			if (!UncompressedSize)
-				return std::unexpected(UncompressedSize.error());
+			r_UncompressedSize = Read<uint32_t>();
+			if (!r_UncompressedSize)
+				return std::unexpected(r_UncompressedSize.error());
 
 			BENCH_SCOPE("Object headers read");
-			auto ObjectHeadersSize = Read<uint32_t>();
-			if (!ObjectHeadersSize)
-				return std::unexpected(ObjectHeadersSize.error());
+			auto r_ObjectHeadersSize = Read<uint32_t>();
+			if (!r_ObjectHeadersSize)
+				return std::unexpected(r_ObjectHeadersSize.error());
 
 			auto r_ObjectHeaderCount = Read<uint32_t>();
 			if (!r_ObjectHeaderCount)
@@ -283,11 +285,11 @@ namespace Parser
 
 			for (size_t i = 0; i < *r_ObjectHeaderCount; i++)
 			{
-				auto ObjectHeader = Read<Core::ObjectHeader>();
-				if (!ObjectHeader)
-					return std::unexpected(ObjectHeader.error());
+				auto r_ObjectHeader = Read<Core::ObjectHeader>();
+				if (!r_ObjectHeader)
+					return std::unexpected(r_ObjectHeader.error());
 
-				Draft.ObjectHeaders.emplace_back(std::move(*ObjectHeader));
+				Draft.ObjectHeaders.emplace_back(std::move(*r_ObjectHeader));
 			}
 		}
 
