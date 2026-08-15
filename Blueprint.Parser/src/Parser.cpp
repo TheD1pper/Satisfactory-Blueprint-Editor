@@ -432,13 +432,27 @@ namespace Parser
 		BytesRead += Input.gcount();
 		return Input;
 	}
-#pragma endregion class funcions implementations
 
-#pragma region OutputBlueprint
 	fs::path InputBlueprint::GetPath()
 	{
 		return Path;
 	}
+
+	std::istream& InputBlueprint::ReadBytes(Core::ByteVector& _Vector, size_t _Count)
+	{
+		Input.read(reinterpret_cast<char*>(_Vector.data()), _Count);
+		BytesRead += Input.gcount();
+		return Input;
+	}
+
+	InputBlueprint::InputBlueprint(const fs::path& _Path)
+	{
+		Path = _Path;
+		Input = std::move(std::ifstream(Path, std::ios::binary));
+	}
+#pragma endregion class funcions implementations
+
+#pragma region OutputBlueprint
 
 	bool BinaryOutput::Write(std::string& _Data)
 	{
@@ -449,7 +463,7 @@ namespace Parser
 		return true;
 	}
 
-	bool BinaryOutput::Write(Core::ByteVector _Data)
+	bool BinaryOutput::Write(Core::ByteVector& _Data)
 	{
 		if(!Output.write(std::string(_Data.begin(), _Data.end()).c_str(), _Data.size()))
 			return false;
@@ -463,15 +477,28 @@ namespace Parser
 		return BytesWritten;
 	}
 
-	InputBlueprint::InputBlueprint(const fs::path& _Path)
-	{
-		Path = _Path;
-		Input = std::move(std::ifstream(Path, std::ios::binary));
-	}
-
 	BinaryOutput::BinaryOutput(fs::path _Path)
 	{
 		Output = std::ofstream(_Path, std::ios::binary);
 	}
+
+	bool BinaryOutput::Open(fs::path _Path)
+	{
+		Output.close();
+		Output.open(_Path);
+		return Output.is_open();
+	}
+
+	bool BinaryOutput::Close()
+	{
+		Output.close();
+		return Output.is_open();
+	}
+
+	bool BinaryOutput::IsOpen()
+	{
+		return Output.is_open();
+	}
+
 #pragma endregion class function implementations
 }

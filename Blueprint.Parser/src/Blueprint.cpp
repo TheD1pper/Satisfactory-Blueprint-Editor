@@ -188,132 +188,101 @@ namespace Parser
 		//	│  N/A   │ bytes of uncompressed body          │ N/A                   │
 		//  └────────┴─────────────────────────────────────┴───────────────────────┘
 		// 
-			// Between every blueprint header and body there's metadata that doesn't have a variable describing the size of it
-			// Because of that you need to find a constant that you can "anchor" to to read the rest of the body
+		// Between every blueprint header and body there's metadata that doesn't have a variable describing the size of it
+		// Because of that you need to find a constant that you can "anchor" to to read the rest of the body
 		// Every blueprint file has a couple of constants like 0x9E2A83C1, 0x22222222, 0x03000000, 0x00020100
-			// Only the first anchor is looked up, a failsafe can be added to limit the probability of the anchor recurring 
-
+		
+		{
 			BENCH_SCOPE("Anchor lookup");
 			std::array<uint8_t, 4> SlidingWindow{ {0,0,0,0} };
 			std::queue<uint8_t> Bytes;
 			Result<uint8_t> Next{};
 
-			while (SlidingWindow != std::array<uint8_t, 4>{0x22, 0x22, 0x22, 0x22})
+			while (true)
 			{
 				auto r_Next = Read<uint8_t>();
 				if (!r_Next)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read byte when searching for body anchor"));
+
 				uint8_t& Next = *r_Next;
 
 				Bytes.push(Next);
-				SlidingWindow[0] = SlidingWindow[1];
-				SlidingWindow[1] = SlidingWindow[2];
-				SlidingWindow[2] = SlidingWindow[3];
-				SlidingWindow[3] = Next;
+
+				SlidingWindow[3] = SlidingWindow[2];
+				SlidingWindow[2] = SlidingWindow[1];
+				SlidingWindow[1] = SlidingWindow[0];
+				SlidingWindow[0] = Next;
+
+				if (SlidingWindow == std::array<uint8_t, 4>{0x9E, 0x2A, 0x83, 0xC1})
+					break; 
 			}
 
-			if (SlidingWindow != std::array<uint8_t, 4>{0x22, 0x22, 0x22, 0x22})
+			if(SlidingWindow != std::array<uint8_t, 4>{0x9E, 0x2A, 0x83, 0xC1})
 				return std::unexpected(Eh::Error(Eh::Blueprint::MissingBodyAnchor, "Could not find body anchor"));
-
-			for (int i = 0; i < SlidingWindow.size() + 4; i++) // Pop the constant bytes in the queue, they are not needed for saving
-				Bytes.pop();
-
-			for (int i = 0; i < 4; i++) // cast the array into one variable
-			{
-				Draft.UEPackageSignature |= static_cast<uint32_t>(Bytes.front()) << (8 * i);
-				Bytes.pop();
-			}
-			AnchorAddress = Input.tellg();
 		}
 
-		auto r_MaximumChunkSize = Read<uint32_t>();
-		if (!r_MaximumChunkSize || *r_MaximumChunkSize != MaxChunkSize)
-			return std::unexpected(Eh::Error(Eh::Binary::CheckFalied, "Bad maximum chunk size (value need to be exactly 131 072)"));
 
-		auto r_ValidityCheck2 = Read<uint8_t>();
-		if (!r_ValidityCheck2 || *r_ValidityCheck2 != 0)
-			return std::unexpected(Eh::Error(Eh::Binary::CheckFalied, "Second check went unsuccessful"));
-
-		auto r_ValidityCheck3 = Read<uint32_t>();
-		if (!r_ValidityCheck3 || *r_ValidityCheck3 != 0x03000000)
-			return std::unexpected(Eh::Error(Eh::Binary::CheckFalied, "Third check went unsuccessful"));
-
-		auto r_CompressedSize = Read<uint64_t>();
-		if (!r_CompressedSize)
-			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad compressed size read"));
-
-		auto r_UncompressedSize = Read<uint64_t>();
-		if (!r_UncompressedSize)
-			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad uncompressed size read"));
-
-		SkipBytes(16); // Skip data that repeats
-
-		Core::ByteVector CompressedBody(*r_CompressedSize);
-		{
-			BENCH_SCOPE("Compressed body read");
-			for (uint64_t i = 0; i < *r_CompressedSize; i++)
-			{
-				auto byte = Read<uint8_t>();
-				if (!byte)
-					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read one of the compressed body bytes " + GetBytesRead()));
-				CompressedBody[i] = *byte;
-			}
-		}
-
-		Result<Core::ByteVector> r_UncompressedBody;
-		{
-			Zlib Z;
-			BENCH_SCOPE("Decompression");
-			r_UncompressedBody = Z.Decompress(std::move(CompressedBody), *r_UncompressedSize);
-			if (!r_UncompressedBody)
-				return std::unexpected(Eh::Error(Eh::Compression::Fail, "Could not decompress the body"));
-		}
-
+		Zlib ZCompressor;
 		fs::path TempPath;
+		BinaryOutput Temp;
+		uint8_t ChunkCount = 0;
+
+		Temp.Close();
+
+		while (true)
 		{
-			Core::ByteVector UncompressedBody = *r_UncompressedBody;
-			TempPath = FsUtils::GetTempFolder() / "Body.tmp";
-			TempPath.replace_filename(std::format("Body-{}.tmp", *r_UncompressedSize));
-			BinaryOutput TempOutput(TempPath);
-
-			BENCH_SCOPE("Cache uncompressed body");
-			if (!TempOutput.Write(UncompressedBody))
-				return std::unexpected(Eh::Error(Eh::Binary::BadWrite, "Could not write temporary body"));
-		}
-
-		// Switch the files
-		// Stop reading the finished file
-		// Start reading the cached uncompressed body
-
-		Input.close();
-		Input.open(TempPath);
-		BytesRead = 0;
-
-		if (!Input.is_open())
-			return std::unexpected(Eh::Error(Eh::Binary::CantOpenFile, "Could not open temporary uncompressed body"));
-
-		{
-			r_UncompressedSize = Read<uint32_t>();
-			if (!r_UncompressedSize)
-				return std::unexpected(r_UncompressedSize.error());
-
-			BENCH_SCOPE("Object headers read");
-			auto r_ObjectHeadersSize = Read<uint32_t>();
-			if (!r_ObjectHeadersSize)
-				return std::unexpected(r_ObjectHeadersSize.error());
-
-			auto r_ObjectHeaderCount = Read<uint32_t>();
-			if (!r_ObjectHeaderCount)
-				return std::unexpected(r_ObjectHeaderCount.error());
-
-			for (size_t i = 0; i < *r_ObjectHeaderCount; i++)
+			if (ChunkCount > 0)
 			{
-				auto r_ObjectHeader = Read<Core::ObjectHeader>();
-				if (!r_ObjectHeader)
-					return std::unexpected(r_ObjectHeader.error());
-
-				Draft.ObjectHeaders.emplace_back(std::move(*r_ObjectHeader));
+				auto r_SignatureCheck = Read<uint32_t>();
+				if (!r_SignatureCheck or *r_SignatureCheck != UEPackageSignature)
+					return std::unexpected(Eh::Error(Eh::Binary::CheckFailed, "Signature check went unsuccessful"));
 			}
+
+			auto r_ValidityCheck = Read<uint32_t>();
+			if(!r_ValidityCheck or *r_ValidityCheck != FirstCheckValue)
+				return std::unexpected(Eh::Error(Eh::Binary::CheckFailed, "First check went unsuccessful"));
+
+			auto r_MaxChunkSize = Read<uint32_t>();
+			if (!r_MaxChunkSize or *r_MaxChunkSize != MaxChunkSize)
+				return std::unexpected(Eh::Error(Eh::Binary::CheckFailed, "Bad maximum chunk size (value need to be exactly 131 072)"));
+
+			auto r_ValidityCheck2 = Read<uint8_t>();
+			if (!r_ValidityCheck2 or *r_ValidityCheck2 != SecondCheckValue)
+				return std::unexpected(Eh::Error(Eh::Binary::CheckFailed, "Second check went unsuccessful"));
+
+			auto r_ValidityCheck3 = Read<uint32_t>();
+			if (!r_ValidityCheck3 or *r_ValidityCheck3 != ThirdCheckValue)
+				return std::unexpected(Eh::Error(Eh::Binary::CheckFailed, "Third check went unsuccessful"));
+
+			auto r_CompressedSize = Read<uint64_t>();
+			if (!r_CompressedSize)
+				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad compressed size read"));
+
+			auto r_UncompressedSize = Read<uint64_t>();
+			if (!r_UncompressedSize)
+				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad uncompressed size read"));
+
+			SkipBytes(16); // Skip repeating sizes (16 bytes in total)
+
+			Core::ByteVector Buffer(*r_CompressedSize);
+
+			if (!ReadBytes(Buffer, *r_CompressedSize))
+				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read compressed body"));
+			Buffer.resize(*r_UncompressedSize);
+
+			auto r_DecompressedBody = ZCompressor.Decompress(Buffer, *r_UncompressedSize);
+			if (!r_DecompressedBody)
+				return std::unexpected(Eh::Error(Eh::Compression::Fail, "Could not decompress body"));
+			Buffer = std::move(*r_DecompressedBody);
+
+			TempPath = FsUtils::GetTempFolder() / std::format("Body-{}.tmp", *r_CompressedSize);
+			Temp.Open(TempPath);
+			Temp.Write(Buffer);
+
+			if (*r_UncompressedSize != MaxChunkSize) // Check if the chunk is full (if chunk equals max chunk size it problably isn't the last)
+				break;
+
+			ChunkCount++;
 		}
 
 		return Draft;

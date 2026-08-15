@@ -27,7 +27,7 @@ namespace ErrorHandling
         CantOpenFile,
         QuantityCantBeZero,
         EmptyString,
-        CheckFalied
+        CheckFailed
     };
 
     export enum class Blueprint

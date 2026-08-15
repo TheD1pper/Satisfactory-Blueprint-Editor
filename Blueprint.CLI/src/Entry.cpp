@@ -18,7 +18,7 @@ int main()
 	Services::BlueprintManager BpManager;
 	FsUtils::DirectoryCreateR(FsUtils::GetBenchmarkFolder());
 	Benchmark::OverwriteSavePath(FsUtils::GetBenchmarkFolder());
-	auto r_Load = BpManager.Load(FsUtils::GetBlueprintsPath() / "Exp 1.2\\Loop.sbp");
+	auto r_Load = BpManager.Load(FsUtils::GetBlueprintsPath() / "Exp 1.2\\Iron Ingot - Normal.sbp");
 	if (!r_Load)
 	{
 		auto& Error = r_Load.error();
