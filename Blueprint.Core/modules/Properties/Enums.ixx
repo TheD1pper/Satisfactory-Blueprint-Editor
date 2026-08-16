@@ -2,14 +2,15 @@ module;
 
 export module Core.Property:Enums;
 
-import <cstdint>;
 import <string_view>;
 import <array>;
 import <concepts>;
 
+import Core.Data;
+
 export namespace Core::Property
 {
-	enum class PropertyType : uint8_t
+	enum class PropertyType : uint8
 	{
 		Array,
 		Bool,
@@ -33,7 +34,7 @@ export namespace Core::Property
 
 	namespace Array
 	{
-		enum class ElementType : uint8_t
+		enum class ElementType : uint8
 		{
 			Vector,
 			LinearColor,
@@ -50,14 +51,14 @@ export namespace Core::Property
 
 	namespace Map
 	{
-		enum class KeyType : uint8_t
+		enum class KeyType : uint8
 		{
 			Object,
 			Int,
 			Struct
 		};
 
-		enum class ValueType : uint8_t
+		enum class ValueType : uint8
 		{
 			Byte,
 			Int,
@@ -68,7 +69,7 @@ export namespace Core::Property
 
 	namespace Set
 	{
-		enum class ElementType : uint8_t
+		enum class ElementType : uint8
 		{
 			UInt32,
 			Struct,
@@ -78,7 +79,7 @@ export namespace Core::Property
 
 	namespace Struct
 	{
-		enum class ElementType : uint8_t
+		enum class ElementType : uint8
 		{
 			Vector,
 			LinearColor,

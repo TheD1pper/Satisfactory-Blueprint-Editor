@@ -2,7 +2,6 @@ module;
 
 export module Core.Property:Payloads;
 
-import <cstdint>;
 import <vector>;
 
 import Core.Data;
@@ -15,13 +14,13 @@ export namespace Core::Property
 {
 	struct BoolProperty
 	{	
-		uint8_t Value{};
+		uint8 Value{};
 	};
 
 	struct ByteProperty
 	{
 		bool HasValue{};
-		uint8_t Value;
+		uint8 Value;
 	};
 
 	struct EnumProperty
@@ -47,17 +46,17 @@ export namespace Core::Property
 
 	struct Int8Property
 	{
-		uint8_t Value{};
+		uint8 Value{};
 	};
 
 	struct Uint32Property
 	{
-		uint32_t Value{};
+		uint32 Value{};
 	};
 
 	struct Int64Property
 	{
-		int64_t Value{};
+		int64 Value{};
 	};
 
 	struct NameProperty
@@ -73,7 +72,7 @@ export namespace Core::Property
 	struct SoftObjectProperty
 	{
 		Core::ObjectReference Path;
-		uint32_t Value;
+		uint32 Value;
 	};
 
 	struct StrProperty
@@ -83,8 +82,8 @@ export namespace Core::Property
 
 	struct TextProperty
 	{
-		uint32_t Flags{};
-		int8_t HistoryType{ -1 };
+		uint32 Flags{};
+		byte HistoryType{ -1 };
 		bool IsCultureInvariant{};
 		Core::String Value;
 	};

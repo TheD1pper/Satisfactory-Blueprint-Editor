@@ -3,7 +3,6 @@ module;
 export module Core.Property:StructTypes;
 
 import <variant>;
-import <cstdint>;
 
 import Core.Data;
 import :List;
@@ -19,7 +18,7 @@ export namespace Core::Property::Struct
 		double MinX{};
 		double MinY{};
 		double MinZ{};
-		uint8_t IsValid{};
+		uint8 IsValid{};
 	};
 
 	struct FluidBox
@@ -31,7 +30,7 @@ export namespace Core::Property::Struct
 	struct InventoryItem
 	{
 		Core::String ItemName;
-		uint32_t HasProperty{};
+		uint32 HasProperty{};
 		Core::String ItemType;
 		PropertyList Properties;
 
@@ -83,7 +82,7 @@ export namespace Core::Property::Struct
 
 	struct DateTime
 	{
-		int64_t Value{};
+		int64 Value{};
 	};
 
 	struct ClientIdentity

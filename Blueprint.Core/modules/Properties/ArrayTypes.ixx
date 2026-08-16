@@ -2,7 +2,6 @@ module;
 
 export module Core.Property:ArrayTypes;
 
-import <cstdint>;
 import <variant>;
 
 import Core.Data;
@@ -12,7 +11,7 @@ export namespace Core::Property::Array
 {
 	struct ByteType
 	{
-		uint8_t Value{};
+		uint8 Value{};
 	};
 
 	struct EnumType
@@ -44,7 +43,7 @@ export namespace Core::Property::Array
 
 	struct Int64Type
 	{
-		int64_t Value{};
+		int64 Value{};
 	};
 
 	struct FloatType
@@ -55,7 +54,7 @@ export namespace Core::Property::Array
 	struct SoftObjectType
 	{
 		Core::ObjectReference Reference;
-		uint32_t Number{};
+		uint32 Number{};
 	};
 
 	// Per element type name (see StructTypes.ixx); a generic array element is a

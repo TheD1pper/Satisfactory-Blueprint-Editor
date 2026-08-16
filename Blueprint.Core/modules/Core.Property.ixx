@@ -2,7 +2,6 @@ module;
 
 export module Core.Property;
 
-import <cstdint>;
 import <concepts>;
 import <string_view>;
 import <vector>;
@@ -34,7 +33,7 @@ export namespace Core::Property
 	public:
 		Core::String Name;
 		PropertyType Type{};
-		uint32_t Index{};
+		uint32 Index{};
 
 		Payload Value;
 	};

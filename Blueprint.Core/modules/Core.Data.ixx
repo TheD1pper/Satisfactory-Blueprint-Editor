@@ -7,6 +7,15 @@ import <cstdint>;
 import <string_view>;
 import <string>;
 
+export using byte = std::int8_t;
+export using uint8 = std::uint8_t;
+export using int16 = std::int16_t;
+export using uint16 = std::uint16_t;
+export using int32 = std::int32_t;
+export using uint32 = std::uint32_t;
+export using int64 = std::int64_t;
+export using uint64 = std::uint64_t;
+
 export namespace Core
 {
 	enum class Encoding 
@@ -24,13 +33,13 @@ export namespace Core
 	};
 
 	using String = BinaryString;
-	using ByteVector = std::vector<uint8_t>;
+	using ByteVector = std::vector<uint8>;
 
 	struct Size3D
 	{
-		uint32_t X{};
-		uint32_t Y{};
-		uint32_t Z{};
+		uint32 X{};
+		uint32 Y{};
+		uint32 Z{};
 	};
 
 	struct Rotation3D
@@ -70,10 +79,10 @@ export namespace Core
 
 	struct FEngineVersion
 	{
-		uint16_t Major{};
-		uint16_t Minor{};
-		uint16_t Patch{};
-		uint32_t ChangeList{};
+		uint16 Major{};
+		uint16 Minor{};
+		uint16 Patch{};
+		uint32 ChangeList{};
 		String Branch{};
 	};
 
@@ -91,7 +100,7 @@ export namespace Core
 	struct CostEntry
 	{
 		String ClassName{};
-		uint32_t Quantity{};
+		uint32 Quantity{};
 	};
 
 	struct ActorHeader
@@ -99,7 +108,7 @@ export namespace Core
 		String TypePath;
 		String RootObject;
 		String InstanceName;
-		uint32_t Unknown{};
+		uint32 Unknown{};
 		Rotation4D Rotation;
 		Position3D Position;
 		Scale3D Scale;
@@ -113,7 +122,7 @@ export namespace Core
 		String RootObject;
 		String InstanceName;
 		String ParentActorName;
-		uint32_t Unknown;
+		uint32 Unknown;
 	};
 
 	enum class ObjectHeaderType

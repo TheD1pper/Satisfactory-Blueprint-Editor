@@ -2,7 +2,6 @@ module;
 
 export module Core.Property:SetTypes;
 
-import <cstdint>;
 import <variant>;
 
 import Core.Data;
@@ -11,7 +10,7 @@ export namespace Core::Property::Set
 {
 	struct UInt32Type
 	{
-		uint32_t Value{};
+		uint32 Value{};
 	};
 
 	// Per the wiki: a "StructProperty" set element is just 2 Uint64s, not a full
@@ -19,8 +18,8 @@ export namespace Core::Property::Set
 
 	struct StructType
 	{
-		uint64_t ValueA{};
-		uint64_t ValueB{};
+		uint64 ValueA{};
+		uint64 ValueB{};
 	};
 
 	struct ObjectType

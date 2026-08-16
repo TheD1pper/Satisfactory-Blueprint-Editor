@@ -2,7 +2,6 @@ module;
 
 export module Core.Property:MapTypes;
 
-import <cstdint>;
 import <variant>;
 
 import Core.Data;
@@ -29,7 +28,7 @@ export namespace Core::Property::Map
 
 	struct ByteValue
 	{
-		uint8_t Value{};
+		uint8 Value{};
 	};
 
 	struct IntValue
@@ -39,7 +38,7 @@ export namespace Core::Property::Map
 
 	struct Int64Value
 	{
-		int64_t Value{};
+		int64 Value{};
 	};
 
 	// A "StructProperty" map value is a whole nested PropertyList (see PropertyList

@@ -5,7 +5,6 @@ export module Core.Complex;
 import <string>;
 import <vector>;
 import <variant>;
-import <cstdint>;
 
 import Core.Data;
 import Core.Property;
@@ -43,21 +42,21 @@ export namespace Core
 
 	struct BlueprintBody
 	{
-		uint32_t UEPackageSignature{};
+		uint32 UEPackageSignature{};
 		std::vector<ObjectHeader> ObjectHeaders;
 		std::vector<Object> Objects;
 	};
 
 	struct BlueprintHeader
 	{
-		uint32_t HeaderVersion{};
-		uint32_t SaveVersion{};
-		uint32_t BuildVersion{};
+		uint32 HeaderVersion{};
+		uint32 SaveVersion{};
+		uint32 BuildVersion{};
 		Core::Size3D Size{};
 		std::vector<Core::CostEntry> CostEntries;
 		std::vector<Core::ContentEntry> ContentEntries;
 
-		uint32_t SaveObjectDataVersion{};
+		uint32 SaveObjectDataVersion{};
 		Core::FPackageFileVersion PackageFileVersion{};
 		int LicenseeVersion{};
 		Core::FEngineVersion EngineVersion{};
