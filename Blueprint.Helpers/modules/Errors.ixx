@@ -15,6 +15,11 @@ namespace ErrorHandling
 
     using Sl = std::source_location;
 
+	export enum class FileIO
+	{
+		DeletionFail
+	};
+
     export enum class Property
     {
         NotFound
@@ -41,7 +46,7 @@ namespace ErrorHandling
         Fail
     };
 
-    export using ErrorCode = std::variant<Binary, Blueprint, Compression, Property>;
+    export using ErrorCode = std::variant<Binary, Blueprint, Compression, Property, FileIO>;
 
     export class Error
     {

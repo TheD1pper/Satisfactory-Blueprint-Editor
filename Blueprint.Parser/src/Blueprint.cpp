@@ -325,8 +325,12 @@ namespace Parser
 				return std::unexpected(Eh::Error(Eh::Compression::Fail, "Could not decompress body"));
 			Buffer = std::move(*r_DecompressedBody);
 
-			TempPath = FsUtils::GetTempFolder() / std::format("Body-{}.tmp", *r_CompressedSize);
-			Temp.Open(TempPath);
+			if (ChunkCount == 0)
+			{
+				TempPath = FsUtils::GetTempFolder() / std::format("Body-{}.tmp", *r_CompressedSize);
+				Temp.Open(TempPath);
+			}
+
 			Temp.Write(Buffer);
 
 			if (*r_UncompressedSize != MaxChunkSize) // Check if the chunk is full (if chunk equals max chunk size it problably isn't the last)
@@ -334,6 +338,10 @@ namespace Parser
 
 			ChunkCount++;
 		}
+
+		Temp.Close();
+		if (!FsUtils::Destroy(TempPath))
+			return std::unexpected(Eh::Error(Eh::FileIO::DeletionFail, "Could not delete temporary body"));
 
 		return Draft;
 	}	
