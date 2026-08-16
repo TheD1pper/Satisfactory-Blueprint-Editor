@@ -1,12 +1,10 @@
 module;
 
-#include <cstdint>
 #include <expected>
 #include <utility>
 
 module Parser.BinaryIO;
 
-import <cstdint>;
 import <string>;
 
 import Helpers.Errors;
@@ -47,7 +45,7 @@ namespace Parser
 	template<>
 	Result<BoolProperty> InputBlueprint::Read()
 	{
-		auto r_Value = Read<uint8_t>();
+		auto r_Value = Read<uint8>();
 		if (!r_Value)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read bool property value"));
 		return BoolProperty{ *r_Value };
@@ -83,7 +81,7 @@ namespace Parser
 	template<>
 	Result<Int8Property> InputBlueprint::Read()
 	{
-		auto r_Value = Read<uint8_t>();
+		auto r_Value = Read<uint8>();
 		if (!r_Value)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read int8 property value"));
 		return Int8Property{ *r_Value };
@@ -92,7 +90,7 @@ namespace Parser
 	template<>
 	Result<Uint32Property> InputBlueprint::Read()
 	{
-		auto r_Value = Read<uint32_t>();
+		auto r_Value = Read<uint32>();
 		if (!r_Value)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read uint32 property value"));
 		return Uint32Property{ *r_Value };
@@ -101,7 +99,7 @@ namespace Parser
 	template<>
 	Result<Int64Property> InputBlueprint::Read()
 	{
-		auto r_Value = Read<int64_t>();
+		auto r_Value = Read<int64>();
 		if (!r_Value)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read int64 property value"));
 		return Int64Property{ *r_Value };
@@ -141,7 +139,7 @@ namespace Parser
 		if (!r_Path)
 			return std::unexpected(r_Path.error());
 
-		auto r_Value = Read<uint32_t>();
+		auto r_Value = Read<uint32>();
 		if (!r_Value)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read soft object property extra value"));
 
@@ -162,17 +160,17 @@ namespace Parser
 
 		TextProperty Draft;
 
-		auto r_Flags = Read<uint32_t>();
+		auto r_Flags = Read<uint32>();
 		if (!r_Flags)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read text property flags"));
 		Draft.Flags = *r_Flags;
 
-		auto r_History = Read<uint8_t>();
+		auto r_History = Read<uint8>();
 		if (!r_History)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read text property history type"));
-		Draft.HistoryType = static_cast<int8_t>(*r_History);
+		Draft.HistoryType = static_cast<byte>(*r_History);
 
-		auto r_CultureInvariant = Read<uint32_t>();
+		auto r_CultureInvariant = Read<uint32>();
 		if (!r_CultureInvariant)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read text property culture-invariant flag"));
 		Draft.IsCultureInvariant = (*r_CultureInvariant != 0);
@@ -201,7 +199,7 @@ namespace Parser
 		if (_EnumName.Content.empty() or _EnumName.Content == "None")
 		{
 			Draft.HasValue = false;
-			auto r_Value = _Input.Read<uint8_t>();
+			auto r_Value = _Input.Read<uint8>();
 			if (!r_Value)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read byte property value"));
 			Draft.Value = *r_Value;
@@ -241,7 +239,7 @@ namespace Parser
 	{
 		if (_InnerTypeName == "ByteProperty")
 		{
-			auto r_Value = _Input.Read<uint8_t>();
+			auto r_Value = _Input.Read<uint8>();
 			if (!r_Value)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read array byte element"));
 			return Array::Type{ Array::ByteType{ *r_Value } };
@@ -283,7 +281,7 @@ namespace Parser
 		}
 		if (_InnerTypeName == "Int64Property")
 		{
-			auto r_Value = _Input.Read<int64_t>();
+			auto r_Value = _Input.Read<int64>();
 			if (!r_Value)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read array int64 element"));
 			return Array::Type{ Array::Int64Type{ *r_Value } };
@@ -300,7 +298,7 @@ namespace Parser
 			auto r_Ref = _Input.Read<Core::ObjectReference>();
 			if (!r_Ref)
 				return std::unexpected(r_Ref.error());
-			auto r_Num = _Input.Read<uint32_t>();
+			auto r_Num = _Input.Read<uint32>();
 			if (!r_Num)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read array soft object element number"));
 			return Array::Type{ Array::SoftObjectType{ *r_Ref, *r_Num } };
@@ -309,7 +307,7 @@ namespace Parser
 		return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Unsupported array element type: " + _InnerTypeName));
 	}
 
-	static Result<Struct::Type> ReadStructBody(InputBlueprint& _Input, Struct::ElementType _Type, uint64_t _PayloadEnd);
+	static Result<Struct::Type> ReadStructBody(InputBlueprint& _Input, Struct::ElementType _Type, uint64 _PayloadEnd);
 
 	static Result<ArrayProperty> ReadArrayPayload(InputBlueprint& _Input, const Core::String& _Name, const Core::String& _InnerTypeName)
 	{
@@ -318,7 +316,7 @@ namespace Parser
 		Draft.OriginalTypeName = _InnerTypeName;
 		Draft.Type = Array::ElementType::Generic; // only meaningful when the inner type is a struct
 
-		auto r_Count = _Input.Read<uint32_t>();
+		auto r_Count = _Input.Read<uint32>();
 		if (!r_Count)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read array element count"));
 
@@ -340,11 +338,11 @@ namespace Parser
 			if (!r_TypeName)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read array struct-tag type name"));
 
-			auto r_PayloadSize = _Input.Read<uint32_t>();
+			auto r_PayloadSize = _Input.Read<uint32>();
 			if (!r_PayloadSize)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read array struct-tag payload size"));
 
-			auto r_Padding = _Input.Read<uint32_t>();
+			auto r_Padding = _Input.Read<uint32>();
 			if (!r_Padding)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read array struct-tag padding"));
 
@@ -354,7 +352,7 @@ namespace Parser
 
 			_Input.SkipBytes(16); // UUID, always zero
 
-			auto r_PadByte = _Input.Read<uint8_t>();
+			auto r_PadByte = _Input.Read<uint8>();
 			if (!r_PadByte)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read array struct-tag pad byte"));
 
@@ -367,7 +365,7 @@ namespace Parser
 
 			auto StructType = static_cast<Struct::ElementType>(Draft.Type);
 
-			for (uint32_t i = 0; i < *r_Count; i++)
+			for (uint32 i = 0; i < *r_Count; i++)
 			{
 				// Fixed struct types have a statically known size; Generic is self-terminating
 				// via its nested PropertyList's "None" sentinel, so no end offset is needed here.
@@ -381,7 +379,7 @@ namespace Parser
 			return Draft;
 		}
 
-		for (uint32_t i = 0; i < *r_Count; i++)
+		for (uint32 i = 0; i < *r_Count; i++)
 		{
 			auto r_Element = ReadArrayElement(_Input, _InnerTypeName.Content);
 			if (!r_Element)
@@ -448,7 +446,7 @@ namespace Parser
 		{
 		case Map::ValueType::Byte:
 		{
-			auto r_Byte = _Input.Read<uint8_t>();
+			auto r_Byte = _Input.Read<uint8>();
 			if (!r_Byte)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read map byte value"));
 			return Map::ValueVariant{ Map::ByteValue{ *r_Byte } };
@@ -462,7 +460,7 @@ namespace Parser
 		}
 		case Map::ValueType::Int64:
 		{
-			auto r_Int64 = _Input.Read<int64_t>();
+			auto r_Int64 = _Input.Read<int64>();
 			if (!r_Int64)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read map int64 value"));
 			return Map::ValueVariant{ Map::Int64Value{ *r_Int64 } };
@@ -500,13 +498,13 @@ namespace Parser
 
 		_Input.SkipBytes(4); // Unused "removed items" count, always 0 in practice
 
-		auto r_Count = _Input.Read<uint32_t>();
+		auto r_Count = _Input.Read<uint32>();
 		if (!r_Count)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read map entry count"));
 
 		Draft.Value.reserve(*r_Count);
 
-		for (uint32_t i = 0; i < *r_Count; i++)
+		for (uint32 i = 0; i < *r_Count; i++)
 		{
 			Map::Entry Entry;
 
@@ -535,7 +533,7 @@ namespace Parser
 		{
 		case Set::ElementType::UInt32:
 		{
-			auto r_UInt32 = _Input.Read<uint32_t>();
+			auto r_UInt32 = _Input.Read<uint32>();
 			if (!r_UInt32)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read set uint32 element"));
 
@@ -545,11 +543,11 @@ namespace Parser
 		{
 			// Per the wiki: a "StructProperty" set element is just 2 uint64s, not a full nested
 			// PropertyList -- see SetTypes.ixx.
-			auto r_ValueA = _Input.Read<uint64_t>();
+			auto r_ValueA = _Input.Read<uint64>();
 			if (!r_ValueA)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read set struct element"));
 
-			auto r_ValueB = _Input.Read<uint64_t>();
+			auto r_ValueB = _Input.Read<uint64>();
 			if (!r_ValueB)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read set struct element"));
 
@@ -580,13 +578,13 @@ namespace Parser
 
 		_Input.SkipBytes(4); // Unused "removed items" count, always 0 in practice
 
-		auto r_Count = _Input.Read<uint32_t>();
+		auto r_Count = _Input.Read<uint32>();
 		if (!r_Count)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read set element count"));
 
 		Draft.Value.reserve(*r_Count);
 
-		for (uint32_t i = 0; i < *r_Count; i++)
+		for (uint32 i = 0; i < *r_Count; i++)
 		{
 			auto r_Element = ReadSetElement(_Input, Draft.Type);
 			if (!r_Element)
@@ -605,7 +603,7 @@ namespace Parser
 	// StructTypes.ixx definition, since that's the clearest record of the wire order that was
 	// already reverse-engineered when those structs were written (e.g. Box is Max* then Min*
 	// then IsValid, not the more conventional Min-then-Max order).
-	static Result<Struct::Type> ReadStructBody(InputBlueprint& _Input, Struct::ElementType _Type, uint64_t _PayloadEnd)
+	static Result<Struct::Type> ReadStructBody(InputBlueprint& _Input, Struct::ElementType _Type, uint64 _PayloadEnd)
 	{
 		switch (_Type)
 		{
@@ -712,7 +710,7 @@ namespace Parser
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Box.MinZ"));
 			Draft.MinZ = *r_MinZ;
 
-			auto r_IsValid = _Input.Read<uint8_t>();
+			auto r_IsValid = _Input.Read<uint8>();
 			if (!r_IsValid)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read Box.IsValid"));
 			Draft.IsValid = *r_IsValid;
@@ -738,7 +736,7 @@ namespace Parser
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read InventoryItem.ItemName"));
 			Draft.ItemName = *r_ItemName;
 
-			auto r_HasProperty = _Input.Read<uint32_t>();
+			auto r_HasProperty = _Input.Read<uint32>();
 			if (!r_HasProperty)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read InventoryItem.HasProperty"));
 			Draft.HasProperty = *r_HasProperty;
@@ -780,7 +778,7 @@ namespace Parser
 		case Struct::ElementType::DateTime:
 		{
 			Struct::DateTime Draft;
-			auto r_Value = _Input.Read<int64_t>();
+			auto r_Value = _Input.Read<int64>();
 			if (!r_Value)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read DateTime.Value"));
 			Draft.Value = *r_Value;
@@ -796,8 +794,8 @@ namespace Parser
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read ClientIdentity.UUID"));
 			Draft.UUID = *r_UUID;
 
-			uint64_t Consumed = _Input.GetBytesRead();
-			uint64_t Remaining = (Consumed < _PayloadEnd) ? (_PayloadEnd - Consumed) : 0;
+			uint64 Consumed = _Input.GetBytesRead();
+			uint64 Remaining = (Consumed < _PayloadEnd) ? (_PayloadEnd - Consumed) : 0;
 			Draft.Unused.resize(Remaining);
 			if (Remaining > 0 and !_Input.ReadBytes(reinterpret_cast<char*>(Draft.Unused.data()), Remaining))
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read ClientIdentity.Unused"));
@@ -819,7 +817,7 @@ namespace Parser
 		}
 	}
 
-	static Result<StructProperty> ReadStructPayload(InputBlueprint& _Input, const Core::String& _Name, const Core::String& _TypeName, uint64_t _PayloadEnd)
+	static Result<StructProperty> ReadStructPayload(InputBlueprint& _Input, const Core::String& _Name, const Core::String& _TypeName, uint64 _PayloadEnd)
 	{
 		StructProperty Draft;
 		Draft.Name = _Name;
@@ -871,11 +869,11 @@ namespace Parser
 			return std::unexpected(r_Type.error());
 		Draft.Type = *r_Type;
 
-		auto r_Length = Read<uint32_t>();
+		auto r_Length = Read<uint32>();
 		if (!r_Length)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read property length"));
 
-		auto r_Index = Read<uint32_t>();
+		auto r_Index = Read<uint32>();
 		if (!r_Index)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read property index"));
 		Draft.Index = *r_Index;
@@ -885,7 +883,7 @@ namespace Parser
 		// carry an enum type name, Array/Set carry their element type name, Struct carries its
 		// struct type name, Map carries both a key and a value type name.
 
-		uint8_t BoolValue{};
+		uint8 BoolValue{};
 		Core::String ExtraTypeName{};
 		Core::String ExtraValueTypeName{};
 
@@ -893,7 +891,7 @@ namespace Parser
 		{
 		case PropertyType::Bool:
 		{
-			auto r_Value = Read<uint8_t>();
+			auto r_Value = Read<uint8>();
 			if (!r_Value)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read bool property value"));
 			BoolValue = *r_Value;
@@ -931,12 +929,12 @@ namespace Parser
 		if (Draft.Type == PropertyType::Struct)
 			SkipBytes(16); // Struct GUID: two Longs, always zero, per the wiki's StructProperty table
 
-		auto r_PadByte = Read<uint8_t>();
+		auto r_PadByte = Read<uint8>();
 		if (!r_PadByte)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read property pad byte"));
 
-		uint64_t PayloadStart = GetBytesRead();
-		uint64_t PayloadEnd = PayloadStart + *r_Length;
+		uint64 PayloadStart = GetBytesRead();
+		uint64 PayloadEnd = PayloadStart + *r_Length;
 
 		switch (Draft.Type)
 		{
@@ -1069,7 +1067,7 @@ namespace Parser
 		// number of bytes than advertised, snap back into alignment for the next property
 		// instead of letting the mistake cascade into everything that follows.
 
-		uint64_t Consumed = GetBytesRead() - PayloadStart;
+		uint64 Consumed = GetBytesRead() - PayloadStart;
 		if (Consumed < *r_Length)
 			SkipBytes(*r_Length - Consumed);
 

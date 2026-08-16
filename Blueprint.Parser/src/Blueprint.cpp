@@ -9,7 +9,6 @@ module;
 module Parser.BinaryIO;
 
 import <array>;
-import <cstdint>;
 
 import Helpers.Benchmark;
 import Helpers.Errors;
@@ -50,48 +49,48 @@ namespace Parser
 
 		Core::BlueprintHeader Draft;
 		{
-			auto r_HeaderVersion = Read<uint32_t>();
+			auto r_HeaderVersion = Read<uint32>();
 			if (!r_HeaderVersion)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad header version read"));
 			if (*r_HeaderVersion != 2)
 				return std::unexpected(Eh::Error(Eh::Blueprint::WrongHeaderVersion, "Blueprint format is outdated")); // This parser currently can read only version 2 blueprint file
 			Draft.HeaderVersion = *r_HeaderVersion;
 
-			auto r_SaveVersion = Read<uint32_t>();
+			auto r_SaveVersion = Read<uint32>();
 			if (!r_SaveVersion)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad save version read"));
 			Draft.SaveVersion = *r_SaveVersion;
 
-			auto BuildVersion = Read<uint32_t>();
+			auto BuildVersion = Read<uint32>();
 			if (!BuildVersion)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad build version read"));
 			Draft.BuildVersion = *BuildVersion;
 
-			auto X = Read<uint32_t>();
+			auto X = Read<uint32>();
 			if (!X)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad size X read"));
 			Draft.Size.X = *X;
 
-			auto Y = Read<uint32_t>();
+			auto Y = Read<uint32>();
 			if (!Y)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad size X read"));
 			Draft.Size.Y = *Y;
 
-			auto Z = Read<uint32_t>();
+			auto Z = Read<uint32>();
 			if (!Z)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad size X read"));
 			Draft.Size.Z = *Z;
 
-			auto r_NumberOfCostEntries = Read<uint32_t>();
+			auto r_NumberOfCostEntries = Read<uint32>();
 			if (!r_NumberOfCostEntries)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad number of cost entries read"));
-			uint32_t NumberOfCostEntries = *r_NumberOfCostEntries;
+			uint32 NumberOfCostEntries = *r_NumberOfCostEntries;
 			if (NumberOfCostEntries <= 0)
 				return std::unexpected(Eh::Error(Eh::Binary::QuantityCantBeZero, "Number of cost entries can't be zero"));
 			SkipBytes(4); // Ignore 4 empty bytes
 
 			Draft.CostEntries.reserve(NumberOfCostEntries);
-			for (uint32_t i = 0; i < NumberOfCostEntries; i++)
+			for (uint32 i = 0; i < NumberOfCostEntries; i++)
 			{
 				auto r_String = Read<Core::String>();
 				if (!r_String)
@@ -100,7 +99,7 @@ namespace Parser
 				Core::CostEntry Entry;
 				Entry.ClassName = *r_String;
 
-				auto r_Quantity = Read<uint32_t>();
+				auto r_Quantity = Read<uint32>();
 				if (!r_Quantity)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad cost entry quantity read"));
 				Entry.Quantity = *r_Quantity;
@@ -110,17 +109,17 @@ namespace Parser
 				Draft.CostEntries.emplace_back(Entry);
 			}
 
-			auto r_NumberOfContentEntries = Read<uint32_t>();
+			auto r_NumberOfContentEntries = Read<uint32>();
 			if (!r_NumberOfContentEntries)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad number of content entries read"));
 
-			uint32_t NumberOfContentEntries = *r_NumberOfContentEntries;
+			uint32 NumberOfContentEntries = *r_NumberOfContentEntries;
 			if (NumberOfContentEntries <= 0)
 				return std::unexpected(Eh::Error(Eh::Binary::QuantityCantBeZero, "Number of content entries can't be zero"));
 			SkipBytes(4); // Ignore 4 empty bytes
 
 			Draft.ContentEntries.reserve(NumberOfContentEntries);
-			for (uint32_t i = 0; i < NumberOfContentEntries; i++)
+			for (uint32 i = 0; i < NumberOfContentEntries; i++)
 			{
 				Core::ContentEntry Entry;
 				auto r_String = Read<Core::String>();
@@ -160,7 +159,7 @@ namespace Parser
 
 			if (Draft.SaveVersion >= 53)
 			{
-				auto r_SaveObjectDataVersion = Read<uint32_t>();
+				auto r_SaveObjectDataVersion = Read<uint32>();
 				if (!r_SaveObjectDataVersion)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad save object data version read"));
 				Draft.SaveObjectDataVersion = *r_SaveObjectDataVersion;
@@ -180,22 +179,22 @@ namespace Parser
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad licensee version read"));
 				Draft.LicenseeVersion = *r_LicenseeVersion;
 
-				auto r_EngVerMajor = Read<uint16_t>();
+				auto r_EngVerMajor = Read<uint16>();
 				if (!r_EngVerMajor)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad major engine version read"));
 				Draft.EngineVersion.Major = *r_EngVerMajor;
 
-				auto r_EngVerMinor = Read<uint16_t>();
+				auto r_EngVerMinor = Read<uint16>();
 				if (!r_EngVerMinor)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad minor engine version read"));
 				Draft.EngineVersion.Minor = *r_EngVerMinor;
 
-				auto r_EngVerPatch = Read<uint16_t>();
+				auto r_EngVerPatch = Read<uint16>();
 				if (!r_EngVerPatch)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad engine version patch read"));
 				Draft.EngineVersion.Patch = *r_EngVerPatch;
 
-				auto r_EngVerChangeList = Read<uint32_t>();
+				auto r_EngVerChangeList = Read<uint32>();
 				if (!r_EngVerChangeList)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad engine version change list read"));
 				Draft.EngineVersion.ChangeList = *r_EngVerChangeList;
@@ -245,17 +244,17 @@ namespace Parser
 		
 		{
 			BENCH_SCOPE("Anchor lookup");
-			std::array<uint8_t, 4> SlidingWindow{ {0,0,0,0} };
-			std::queue<uint8_t> Bytes;
-			Result<uint8_t> Next{};
+			std::array<uint8, 4> SlidingWindow{ {0,0,0,0} };
+			std::queue<uint8> Bytes;
+			Result<uint8> Next{};
 
 			while (true)
 			{
-				auto r_Next = Read<uint8_t>();
+				auto r_Next = Read<uint8>();
 				if (!r_Next)
 					return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read byte when searching for body anchor"));
 
-				uint8_t& Next = *r_Next;
+				uint8& Next = *r_Next;
 
 				Bytes.push(Next);
 
@@ -264,11 +263,11 @@ namespace Parser
 				SlidingWindow[1] = SlidingWindow[0];
 				SlidingWindow[0] = Next;
 
-				if (SlidingWindow == std::array<uint8_t, 4>{0x9E, 0x2A, 0x83, 0xC1})
+				if (SlidingWindow == std::array<uint8, 4>{0x9E, 0x2A, 0x83, 0xC1})
 					break; 
 			}
 
-			if(SlidingWindow != std::array<uint8_t, 4>{0x9E, 0x2A, 0x83, 0xC1})
+			if(SlidingWindow != std::array<uint8, 4>{0x9E, 0x2A, 0x83, 0xC1})
 				return std::unexpected(Eh::Error(Eh::Blueprint::MissingBodyAnchor, "Could not find body anchor"));
 		}
 
@@ -276,7 +275,7 @@ namespace Parser
 		Zlib ZCompressor;
 		fs::path TempPath;
 		BinaryOutput Temp;
-		uint8_t ChunkCount = 0;
+		uint8 ChunkCount = 0;
 
 		Temp.Close();
 
@@ -284,32 +283,32 @@ namespace Parser
 		{
 			if (ChunkCount > 0)
 			{
-				auto r_SignatureCheck = Read<uint32_t>();
+				auto r_SignatureCheck = Read<uint32>();
 				if (!r_SignatureCheck or *r_SignatureCheck != UEPackageSignature)
 					return std::unexpected(Eh::Error(Eh::Binary::CheckFailed, "Signature check went unsuccessful"));
 			}
 
-			auto r_ValidityCheck = Read<uint32_t>();
+			auto r_ValidityCheck = Read<uint32>();
 			if(!r_ValidityCheck or *r_ValidityCheck != FirstCheckValue)
 				return std::unexpected(Eh::Error(Eh::Binary::CheckFailed, "First check went unsuccessful"));
 
-			auto r_MaxChunkSize = Read<uint32_t>();
+			auto r_MaxChunkSize = Read<uint32>();
 			if (!r_MaxChunkSize or *r_MaxChunkSize != MaxChunkSize)
 				return std::unexpected(Eh::Error(Eh::Binary::CheckFailed, "Bad maximum chunk size (value need to be exactly 131 072)"));
 
-			auto r_ValidityCheck2 = Read<uint8_t>();
+			auto r_ValidityCheck2 = Read<uint8>();
 			if (!r_ValidityCheck2 or *r_ValidityCheck2 != SecondCheckValue)
 				return std::unexpected(Eh::Error(Eh::Binary::CheckFailed, "Second check went unsuccessful"));
 
-			auto r_ValidityCheck3 = Read<uint32_t>();
+			auto r_ValidityCheck3 = Read<uint32>();
 			if (!r_ValidityCheck3 or *r_ValidityCheck3 != ThirdCheckValue)
 				return std::unexpected(Eh::Error(Eh::Binary::CheckFailed, "Third check went unsuccessful"));
 
-			auto r_CompressedSize = Read<uint64_t>();
+			auto r_CompressedSize = Read<uint64>();
 			if (!r_CompressedSize)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad compressed size read"));
 
-			auto r_UncompressedSize = Read<uint64_t>();
+			auto r_UncompressedSize = Read<uint64>();
 			if (!r_UncompressedSize)
 				return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad uncompressed size read"));
 

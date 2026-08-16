@@ -22,7 +22,7 @@ export namespace Parser
 	export class InputBlueprint
 	{
 	private:
-		uint64_t BytesRead = 0;
+		uint64 BytesRead = 0;
 		fs::path Path{};
 		std::ifstream Input;
 
@@ -30,10 +30,10 @@ export namespace Parser
 		Result<Core::BlueprintHeader> ReadHeader();
 		Result<Core::BlueprintBody> ReadBody();
 
-		uint64_t GetBytesRead() const;
+		uint64 GetBytesRead() const;
 		template <typename T> Result<T> Read();
 		void SkipBytes(std::streamsize _Bytes);
-		std::istream& ReadBytes(char* _String, uint64_t _Count);
+		std::istream& ReadBytes(char* _String, uint64 _Count);
 		std::istream& ReadBytes(Core::ByteVector& _Vector, size_t _Count);
 		fs::path GetPath();
 

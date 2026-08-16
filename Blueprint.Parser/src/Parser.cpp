@@ -13,9 +13,9 @@ namespace Parser
 #pragma region Read implementations
 
 	template <>
-	Result<uint8_t> InputBlueprint::Read()
+	Result<uint8> InputBlueprint::Read()
 	{
-		uint8_t Value{};
+		uint8 Value{};
 
 		if (!ReadBytes(reinterpret_cast<char*>(&Value), 1))
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad Byte read"));
@@ -23,9 +23,9 @@ namespace Parser
 	}
 
 	template <>
-	Result<uint16_t> InputBlueprint::Read()
+	Result<uint16> InputBlueprint::Read()
 	{
-		uint16_t Value{};
+		uint16 Value{};
 
 		if (!ReadBytes(reinterpret_cast<char*>(&Value), 2))
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad Uint16 read"));
@@ -53,9 +53,9 @@ namespace Parser
 	}
 	
 	template <>
-	Result<uint32_t> InputBlueprint::Read()
+	Result<uint32> InputBlueprint::Read()
 	{
-		uint32_t Value{};
+		uint32 Value{};
 
 		if (!ReadBytes(reinterpret_cast<char*>(&Value), 4))
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad Uint32 read"));
@@ -63,9 +63,9 @@ namespace Parser
 	}
 
 	template <>
-	Result<uint64_t> InputBlueprint::Read()
+	Result<uint64> InputBlueprint::Read()
 	{
-		uint64_t Value{};
+		uint64 Value{};
 
 		if (!ReadBytes(reinterpret_cast<char*>(&Value), 8))
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad Uint64 read"));
@@ -73,9 +73,9 @@ namespace Parser
 	}
 
 	template <>
-	Result<int64_t> InputBlueprint::Read()
+	Result<int64> InputBlueprint::Read()
 	{
-		int64_t Value{};
+		int64 Value{};
 
 		if (!ReadBytes(reinterpret_cast<char*>(&Value), 8))
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Bad Int64 read"));
@@ -108,7 +108,7 @@ namespace Parser
 		if (SignedLength > 0) // UTF-8
 		{
 			Value.Utf = Core::Encoding::Utf8;
-			uint32_t Length = static_cast<uint32_t>(SignedLength);
+			uint32 Length = static_cast<uint32>(SignedLength);
 
 			Value.Content = std::string(Length - 1, '\0');
 
@@ -121,7 +121,7 @@ namespace Parser
 		else if (SignedLength < 0) // UTF-16
 		{
 			Value.Utf = Core::Encoding::Utf16;
-			uint32_t ByteLength = static_cast<uint32_t>(-SignedLength);
+			uint32 ByteLength = static_cast<uint32>(-SignedLength);
 
 			Value.Content = std::string(ByteLength - 2, '\0');
 
@@ -283,7 +283,7 @@ namespace Parser
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header instance name"));
 		Draft.InstanceName = *r_InstanceName;
 
-		auto r_Unknown = Read<uint32_t>();
+		auto r_Unknown = Read<uint32>();
 		if (!r_Unknown)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header unknown"));
 		Draft.Unknown = *r_Unknown;
@@ -303,12 +303,12 @@ namespace Parser
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header scale"));
 		Draft.Scale = *r_Scale;
 		
-		auto r_NeedTransform = Read<uint32_t>();
+		auto r_NeedTransform = Read<uint32>();
 		if (!r_NeedTransform)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header transform flag"));
 		Draft.NeedTransform = *r_NeedTransform;
 
-		auto r_IsPlaced = Read<uint32_t>();
+		auto r_IsPlaced = Read<uint32>();
 		if (!r_IsPlaced)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header placed flag"));
 		Draft.IsPlaced = *r_IsPlaced;
@@ -351,7 +351,7 @@ namespace Parser
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header type path"));
 		Draft.InstanceName = *r_InstanceName;
 
-		auto r_Unknown = Read<uint32_t>();
+		auto r_Unknown = Read<uint32>();
 		if (!r_Unknown)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "could not read actor header type path"));
 		Draft.Unknown = *r_Unknown;
@@ -378,7 +378,7 @@ namespace Parser
 
 		Core::ObjectHeader Draft;
 
-		auto r_Type = Read<uint32_t>();
+		auto r_Type = Read<uint32>();
 		if (!r_Type)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read object type"));
 		Draft.Type = static_cast<Core::ObjectHeaderType>(*r_Type);
@@ -461,11 +461,11 @@ namespace Parser
 
 		Core::ActorObject Draft;
 
-		auto r_Size = Read<uint32_t>();
+		auto r_Size = Read<uint32>();
 		if(!r_Size)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read actor object size"));
 
-		uint32_t& Size = *r_Size;
+		uint32& Size = *r_Size;
 
 		auto r_ParentReference = Read<Core::ObjectReference>();
 		if(!r_ParentReference)
@@ -473,7 +473,7 @@ namespace Parser
 
 		Draft.ParentReference = *r_ParentReference;
 
-		auto r_ComponentCount = Read<uint32_t>();
+		auto r_ComponentCount = Read<uint32>();
 		if(!r_ComponentCount)
 			return std::unexpected(Eh::Error(Eh::Binary::BadRead, "Could not read actor object component count"));
 
@@ -500,7 +500,7 @@ namespace Parser
 	// Property.cpp instead of here, to keep this file scoped to everything but property
 
 #pragma region InputBlueprint
-	uint64_t InputBlueprint::GetBytesRead() const
+	uint64 InputBlueprint::GetBytesRead() const
 	{
 		return BytesRead;
 	}
@@ -511,7 +511,7 @@ namespace Parser
 		Input.ignore(_Bytes);
 	}
 
-	std::istream& InputBlueprint::ReadBytes(char* _String, uint64_t _Count)
+	std::istream& InputBlueprint::ReadBytes(char* _String, uint64 _Count)
 	{
 		Input.read(_String, _Count);
 		BytesRead += Input.gcount();
