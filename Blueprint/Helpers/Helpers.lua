@@ -1,20 +1,18 @@
-project "Blueprint.Helpers"
+project "Helpers"
     kind "StaticLib"
     language "C++"
 
-    targetdir ("../bin/%{cfg.buildcfg}/%{prj.name}")
-    objdir ("../bin-int/%{cfg.buildcfg}/%{prj.name}")
+    targetdir ("../../bin/%{cfg.buildcfg}/Blueprint/%{prj.name}")
+    objdir ("../../bin-int/%{cfg.buildcfg}/Blueprint/%{prj.name}")
 
-    files
-    {
+    files {
         "modules/**.ixx",
         "src/**.cpp",
         "include/**.hpp",
         "Helpers.lua"
     }
 
-    includedirs
-    {
+    includedirs {
         "modules",
         "include"
     }
