@@ -16,8 +16,8 @@ workspace "Satisfactory-Blueprint-Editor"
 
     filter {}
 
-include "Blueprint.Helpers/premake5.lua"
-include "Blueprint.Core/premake5.lua"
-include "Blueprint.Parser/premake5.lua"
-include "Blueprint.Services/premake5.lua"
-include "Blueprint.CLI/premake5.lua"
+include "Blueprint.CLI/CLI.lua"
+include "Blueprint.Services/Services.lua"
+include "Blueprint.Parser/Parser.lua"
+include "Blueprint.Core/Core.lua"
+include "Blueprint.Helpers/Helpers.lua"

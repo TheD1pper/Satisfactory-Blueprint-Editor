@@ -9,7 +9,7 @@ project "Blueprint.CLI"
     {
         "modules/**.ixx",
         "src/**.cpp",
-        "other/premake5.lua"
+        "CLI.lua"
     }
 
     includedirs

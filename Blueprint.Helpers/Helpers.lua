@@ -1,4 +1,4 @@
-project "Blueprint.Parser"
+project "Blueprint.Helpers"
     kind "StaticLib"
     language "C++"
 
@@ -9,19 +9,12 @@ project "Blueprint.Parser"
     {
         "modules/**.ixx",
         "src/**.cpp",
-        "other/premake5.lua"
+        "include/**.hpp",
+        "Helpers.lua"
     }
 
     includedirs
     {
         "modules",
-        "../Blueprint.Core/modules",
-        "../Blueprint.Helpers/modules",
-        "../Blueprint.Helpers/include"
-    }
-
-    links
-    {
-        "Blueprint.Core",
-        "Blueprint.Helpers"
+        "include"
     }
