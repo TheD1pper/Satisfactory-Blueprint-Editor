@@ -7,7 +7,6 @@ project "Catch2"
 
     files
     {
-        "modules/**.ixx",
         "src/**.cpp",
         "include/*.hpp",
         "include/*.h",
