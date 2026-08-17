@@ -8,7 +8,8 @@ project "Blueprint.CLI"
     files
     {
         "modules/**.ixx",
-        "src/**.cpp"
+        "src/**.cpp",
+        "premake5.lua"
     }
 
     includedirs
