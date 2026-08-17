@@ -9,7 +9,8 @@ project "Blueprint.Helpers"
     {
         "modules/**.ixx",
         "src/**.cpp",
-        "include/**.hpp"
+        "include/**.hpp",
+        "other/premake5.lua"
     }
 
     includedirs
