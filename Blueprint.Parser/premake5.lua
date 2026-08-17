@@ -9,7 +9,7 @@ project "Blueprint.Parser"
     {
         "modules/**.ixx",
         "src/**.cpp",
-        "premake5.lua"
+        "other/premake5.lua"
     }
 
     includedirs
