@@ -1,5 +1,6 @@
 module;
 
+#include <iostream>
 #include <Windows.h>
 #include <print>
 
@@ -36,6 +37,45 @@ namespace Cli
 				std::print("{}\n", Entry.filename().string());
 		}
 	}
+
+
+	fs::path GetBlueprintPath()
+	{
+		std::vector<fs::path> BlueprintFolders =  FsUtils::ScanDirectory(FsUtils::GetBlueprintsPath());
+		int Index = 0;
+
+		for (const auto& Entry : BlueprintFolders)
+		{
+			if (FsUtils::isDirectory(Entry))
+			{
+				Index++;
+				std::print("{}) {}\n", Index, Entry.filename().string());
+			}
+		}
+
+		Index = 0;
+		std::cin >> Index;
+		ClearTerminal();
+
+		std::vector<fs::path> Blueprints = FsUtils::ScanDirectory(BlueprintFolders[Index - 1]);
+
+		Index = 0;
+		for (const auto& Entry : Blueprints)
+		{
+			if (FsUtils::IsFile(Entry))
+			{
+				Index++;
+				std::print("{}) {}\n", Index, Entry.filename().string());
+			}
+		}
+
+		Index = 0;
+		std::cin >> Index;
+		ClearTerminal();
+
+		return Blueprints[Index - 1];
+	}
+
 
 	void PrintHeader(const Core::BlueprintHeader& _Header)
 	{
