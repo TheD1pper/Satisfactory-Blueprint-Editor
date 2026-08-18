@@ -1,9 +1,10 @@
 module;
 
+#include "zlib.h"
+
 export module Parser.Compression;
 
 import <vector>;
-import <zlib.h>;
 
 import Core.Data;
 import Helpers.Errors;

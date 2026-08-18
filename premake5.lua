@@ -51,4 +51,5 @@ group ""
 
 group "Vendor"
     include "Vendor/Catch2/Catch2.lua"
+    include "Vendor/Zlib/Zlib.lua"
 group ""

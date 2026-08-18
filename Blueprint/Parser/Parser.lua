@@ -15,10 +15,12 @@ project "Parser"
         "modules",
         "../Core/modules",
         "../Helpers/modules",
-        "../Helpers/include"
+        "../Helpers/include",
+        "../../Vendor/Zlib"
     }
 
     links {
+        "Zlib",
         "Core",
         "Helpers"
     }
