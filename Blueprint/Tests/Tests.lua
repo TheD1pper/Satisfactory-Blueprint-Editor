@@ -10,6 +10,7 @@ project "Tests"
         "*.hpp",
         "**/*.cpp",
         "**/.hpp",
+        "README.md",
         "Tests.lua"
     }
 
