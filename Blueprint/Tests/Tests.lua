@@ -6,10 +6,11 @@ project "Tests"
     objdir ("../../bin-int/%{cfg.buildcfg}/Blueprint/%{prj.name}")
 
     files {
-        "*.cpp",
-        "*.hpp",
+        "Entry.cpp",
+        "Data/**/*.sbp",
+        "Data/**/*.sbpcfg",
         "**/*.cpp",
-        "**/.hpp",
+        "**/*.hpp",
         "README.md",
         "Tests.lua"
     }
