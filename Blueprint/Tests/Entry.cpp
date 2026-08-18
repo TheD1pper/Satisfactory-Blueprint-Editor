@@ -1,6 +1,5 @@
 #include "catch_amalgamated.hpp"
 
-
 int main(int argc, char* argv[])
 {
 	Catch::Session Test;
