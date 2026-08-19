@@ -1,0 +1,77 @@
+module;
+
+#include <utility>
+
+module Core.Complex;
+
+import <type_traits>;
+
+namespace Core
+{
+	BlueprintHeader::BlueprintHeader() // Constructor
+	{
+
+	}
+
+	BlueprintHeader::BlueprintHeader(const BlueprintHeader& _Header) // Copy constructor
+	{
+		HeaderVersion = _Header.HeaderVersion;
+		SaveVersion = _Header.SaveVersion;
+		BuildVersion = _Header.BuildVersion;
+		Size = _Header.Size;
+		CostEntries = _Header.CostEntries;
+		ContentEntries = _Header.ContentEntries;
+		SaveObjectDataVersion = _Header.SaveObjectDataVersion;
+		PackageFileVersion = _Header.PackageFileVersion;
+		LicenseeVersion = _Header.LicenseeVersion;
+		EngineVersion = _Header.EngineVersion;
+	}
+
+	BlueprintHeader::BlueprintHeader(BlueprintHeader&& _Header) noexcept // Move constructor
+	{
+		HeaderVersion = std::move(_Header.HeaderVersion);
+		SaveVersion = std::move(_Header.SaveVersion);
+		BuildVersion = std::move(_Header.BuildVersion);
+		Size = std::move(_Header.Size);
+		CostEntries = std::move(_Header.CostEntries);
+		ContentEntries = std::move(_Header.ContentEntries);
+		SaveObjectDataVersion = std::move(_Header.SaveObjectDataVersion);
+		PackageFileVersion = std::move(_Header.PackageFileVersion);
+		LicenseeVersion = std::move(_Header.LicenseeVersion);
+		EngineVersion = std::move(_Header.EngineVersion);
+	}
+
+	BlueprintHeader::~BlueprintHeader() // Default destructor
+	{
+		CostEntries = {};
+		ContentEntries = {};
+	}
+
+	void BlueprintHeader::operator=(const BlueprintHeader& _Header) // Copy assigment operator
+	{
+		HeaderVersion = _Header.HeaderVersion;
+		SaveVersion = _Header.SaveVersion;
+		BuildVersion = _Header.BuildVersion;
+		Size = _Header.Size;
+		CostEntries = _Header.CostEntries;
+		ContentEntries = _Header.ContentEntries;
+		SaveObjectDataVersion = _Header.SaveObjectDataVersion;
+		PackageFileVersion = _Header.PackageFileVersion;
+		LicenseeVersion = _Header.LicenseeVersion;
+		EngineVersion = _Header.EngineVersion;
+	}
+
+	void BlueprintHeader::operator=(BlueprintHeader& _Header) noexcept // Move operator
+	{
+		HeaderVersion = std::move(_Header.HeaderVersion);
+		SaveVersion = std::move(_Header.SaveVersion);
+		BuildVersion = std::move(_Header.BuildVersion);
+		Size = std::move(_Header.Size);
+		CostEntries = std::move(_Header.CostEntries);
+		ContentEntries = std::move(_Header.ContentEntries);
+		SaveObjectDataVersion = std::move(_Header.SaveObjectDataVersion);
+		PackageFileVersion = std::move(_Header.PackageFileVersion);
+		LicenseeVersion = std::move(_Header.LicenseeVersion);
+		EngineVersion = std::move(_Header.EngineVersion);
+	}
+}
