@@ -1,0 +1,8 @@
+# build items
+build/
+
+# compile items
+bin
+bin-int
+
+build*.bat
