@@ -46,7 +46,15 @@ namespace ErrorHandling
         Fail
     };
 
-    export using ErrorCode = std::variant<Binary, Blueprint, Compression, Property, FileIO>;
+    export enum class Init
+    {
+        Glfw,
+        Glad,
+        ImGui,
+        Glm
+    };
+
+    export using ErrorCode = std::variant<Binary, Blueprint, Compression, Property, FileIO, Init>;
 
     export class Error
     {
@@ -62,6 +70,13 @@ namespace ErrorHandling
         template<EnumType T>
         explicit Error(T _ErrorCode, std::string _Message = "", Sl _Source = Sl::current())
             : Code(_ErrorCode),
+            Message(std::move(_Message)),
+            Source(_Source)
+        {
+        }
+
+        explicit Error(ErrorCode _ErrorCode, std::string _Message = "", Sl _Source = Sl::current())
+            : Code(std::move(_ErrorCode)),
             Message(std::move(_Message)),
             Source(_Source)
         {
@@ -87,6 +102,11 @@ namespace ErrorHandling
 
         Sl GetSource() const { return Source; }
     };
+
+    export std::unexpected<Error> MakeError(ErrorCode _Error, std::string _Message = "", Sl _Source = Sl::current())
+    {
+        return std::unexpected(Error(std::move(_Error), std::move(_Message), _Source));
+    }
 }
 
 export template<typename T>
