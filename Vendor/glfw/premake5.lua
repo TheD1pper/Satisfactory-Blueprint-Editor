@@ -5,8 +5,8 @@ project "GLFW"
     targetdir ("../../build/bin/%{cfg.buildcfg}/%{prj.name}")
     objdir ("../../build/bin-int/%{cfg.buildcfg}/%{prj.name}")
 
-    files
-    {
+    files {
+        "premake5.lua",
         "include/GLFW/glfw3.h",
         "include/GLFW/glfw3native.h",
         "src/internal.h",
@@ -34,8 +34,7 @@ project "GLFW"
     filter "system:windows"
         systemversion "latest"
 
-        files
-        {
+        files {
             "src/win32_platform.h",
             "src/win32_joystick.h",
             "src/win32_time.h",
@@ -50,8 +49,7 @@ project "GLFW"
             "src/wgl_context.c"
         }
 
-        defines
-        {
+        defines {
             "_GLFW_WIN32",
             "UNICODE",
             "_UNICODE",

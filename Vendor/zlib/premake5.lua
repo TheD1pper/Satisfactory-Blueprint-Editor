@@ -5,8 +5,8 @@ project "zlib"
     targetdir ("../../build/bin/%{cfg.buildcfg}/%{prj.name}")
     objdir ("../../build/bin-int/%{cfg.buildcfg}/%{prj.name}")
 
-    files
-    {
+    files {
+        "premake5.lua",
         "zconf.h",
         "zlib.h",
         "crc32.h",
