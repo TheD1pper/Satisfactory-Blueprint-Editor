@@ -3,6 +3,11 @@ project "Blueprint Editor"
     language "C++"
     cppdialect "C++23"
 
+    filter "system:windows"
+        enablemodules "On"
+        buildstlmodules "On"
+    filter {}
+
     targetdir ("../../bin/%{cfg.buildcfg}/%{cfg.architecture}/%{prj.name}")
     objdir ("../../bin-int/%{cfg.buildcfg}/%{cfg.architecture}/%{prj.name}")
 
@@ -27,6 +32,7 @@ project "Blueprint Editor"
         "../../Vendor/glfw/include",
         "../../Vendor/glm",
         "../../Vendor/imgui",
+        "../../Vendor/imgui/backends"
     }
 
     links {
