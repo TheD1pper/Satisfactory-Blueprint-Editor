@@ -28,6 +28,7 @@ workspace "Satisfactory-Blueprint-Editor"
 
     filter "system:windows"
         systemversion "latest"
+        entrypoint "mainCRTStartup"
         defines "SBE_PLATFORM_WINDOWS"
 
     filter {}
@@ -54,7 +55,7 @@ group "Solution Items"
             ".gitignore",
             "premake5.lua",
             "README.md",
-            "LICENSE"
+            "LICENSE",
         }
 
 
