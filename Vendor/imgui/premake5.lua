@@ -5,8 +5,8 @@ project "ImGui"
     targetdir ("../../build/bin/%{cfg.buildcfg}/%{prj.name}")
     objdir ("../../build/bin-int/%{cfg.buildcfg}/%{prj.name}")
 
-    files
-    {
+    files {
+        "premake5.lua",
         "imconfig.h",
         "imgui.h",
         "imgui.cpp",
@@ -26,10 +26,10 @@ project "ImGui"
         "backends/imgui_impl_opengl3_loader.h"
     }
 
-    includedirs
-    {
+    includedirs {
         ".",
         "../glfw/include"
+
     }
 
     filter "system:windows"
