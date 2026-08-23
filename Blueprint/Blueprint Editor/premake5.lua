@@ -20,6 +20,8 @@ project "Blueprint Editor"
     includedirs {
         -- Internal modules
         "modules",
+        "modules/ImGui",
+        "modules/Application",
 
         -- External modules
         "../Services/modules",
