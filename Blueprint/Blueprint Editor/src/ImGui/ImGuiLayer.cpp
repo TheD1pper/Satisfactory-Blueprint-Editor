@@ -49,7 +49,7 @@ namespace Editor
 
 	void ImGuiLayer::Shutdown()
 	{
-		if (!m_Initialized)
+		if (!IsInitialized())
 			return;
 
 		ImGui_ImplOpenGL3_Shutdown();
@@ -57,6 +57,13 @@ namespace Editor
 		ImGui::DestroyContext();
 
 		m_Initialized = false;
+	}
+
+	void ImGuiLayer::OnRender()
+	{
+		Begin();
+		ImGui::ShowDemoWindow();
+		End();
 	}
 
 	void ImGuiLayer::Begin()

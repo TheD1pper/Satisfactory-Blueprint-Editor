@@ -6,10 +6,11 @@ import std;
 
 import Helpers.Errors;
 import Editor.Window;
+import Editor.Layers;
 
 namespace Editor
 {
-	export class ImGuiLayer
+	export class ImGuiLayer : public Layer
 	{
 	public:
 		~ImGuiLayer();
@@ -17,10 +18,9 @@ namespace Editor
 		Result<void> Init(Window& _Window);
 		void Shutdown();
 
+		void OnRender() override;
+
 		void Begin();
 		void End();
-
-	private:
-		bool m_Initialized = false;
 	};
 }
