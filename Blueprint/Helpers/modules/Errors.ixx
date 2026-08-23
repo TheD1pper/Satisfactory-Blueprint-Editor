@@ -46,15 +46,24 @@ namespace ErrorHandling
         Fail
     };
 
-    export enum class Init
+    export enum class Glfw
     {
-        Glfw,
-        Glad,
-        ImGui,
-        Glm
+        Initialization,
+        WindowCreation
     };
 
-    export using ErrorCode = std::variant<Binary, Blueprint, Compression, Property, FileIO, Init>;
+    export enum class Glad
+    {
+        Initialization
+    };
+
+    export enum class ImGui
+    {
+        GlfwImpl,
+        OpenGL3Impl
+    };
+
+    export using ErrorCode = std::variant<Binary, Blueprint, Compression, Property, FileIO, Glfw, Glad, ImGui>;
 
     export class Error
     {
