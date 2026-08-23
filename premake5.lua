@@ -56,6 +56,8 @@ group "Solution Items"
             "premake5.lua",
             "README.md",
             "LICENSE",
+            "docs/**",
+            "Community Items/**"
         }
 
 
