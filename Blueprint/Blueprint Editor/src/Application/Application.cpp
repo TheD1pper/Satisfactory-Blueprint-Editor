@@ -1,7 +1,5 @@
 module;
 
-#include "imgui.h"
-
 module Editor.Application;
 
 import std;
@@ -9,6 +7,7 @@ import std;
 import Helpers.Errors;
 import Editor.Window;
 import Editor.ImGuiLayer;
+import Editor.Layers;
 
 namespace Editor
 {
@@ -33,9 +32,8 @@ namespace Editor
 		{
 			m_Window.PollEvents();
 
-			m_UiLayer.Begin();
-			ImGui::ShowDemoWindow();
-			m_UiLayer.End();
+			m_LayerStack.OnUpdate(0.0f);
+			m_LayerStack.OnRender();
 
 			m_Window.SwapBuffers();
 		}
@@ -45,18 +43,19 @@ namespace Editor
 	{
 		m_Window.OpenDebugConsole();
 
-		if (auto r = m_Window.Init(); !r)
-			return r;
+		if (auto r_Init = m_Window.Init(); !r_Init)
+			return r_Init;
 
-		if (auto r = m_UiLayer.Init(m_Window); !r)
-			return r;
+		ImGuiLayer& UiLayer = PushLayer<ImGuiLayer>();
+		if (auto r_Init = UiLayer.Init(m_Window); !r_Init)
+			return r_Init;
 
 		return {};
 	}
 
 	void Application::Clean()
 	{
-		m_UiLayer.Shutdown();
+		m_LayerStack.Clear();
 		m_Window.Shutdown();
 	}
 }
