@@ -56,7 +56,7 @@ namespace Core
 	export struct String
 	{
 		StrEncoding Encoding;
-		std::string Data;
+		std::variant<std::string, std::wstring> Data;
 	};
 
 	export struct ObjectReference
