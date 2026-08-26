@@ -111,12 +111,12 @@ namespace ErrorHandling
 
         Sl GetSource() const { return Source; }
     };
-
-    export std::unexpected<Error> MakeError(ErrorCode _Error, std::string _Message = "", Sl _Source = Sl::current())
-    {
-        return std::unexpected(Error(std::move(_Error), std::move(_Message), _Source));
-    }
 }
 
 export template<typename T>
 using Result = std::expected<T, ErrorHandling::Error>;
+
+export std::unexpected<ErrorHandling::Error> MakeError(ErrorHandling::ErrorCode _Error, std::string _Message = "", std::source_location _Source = std::source_location::current())
+{
+    return std::unexpected(ErrorHandling::Error(std::move(_Error), std::move(_Message), _Source));
+}

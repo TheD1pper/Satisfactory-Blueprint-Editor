@@ -33,14 +33,14 @@ namespace Editor
 		if (!ImGui_ImplGlfw_InitForOpenGL(_Window.GetHandle(), true))
 		{
 			ImGui::DestroyContext();
-			return Eh::MakeError(Eh::ImGui::GlfwImpl, "Could not initialize ImGui GLFW implementation");
+			return MakeError(Eh::ImGui::GlfwImpl, "Could not initialize ImGui GLFW implementation");
 		}
 
 		if (!ImGui_ImplOpenGL3_Init())
 		{
 			ImGui_ImplGlfw_Shutdown();
 			ImGui::DestroyContext();
-			return Eh::MakeError(Eh::ImGui::OpenGL3Impl, "Could not initialize ImGui OpenGL3 implementation");
+			return MakeError(Eh::ImGui::OpenGL3Impl, "Could not initialize ImGui OpenGL3 implementation");
 		}
 
 		m_Initialized = true;

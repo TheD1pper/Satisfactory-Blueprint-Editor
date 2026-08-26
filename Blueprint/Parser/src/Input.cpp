@@ -47,18 +47,16 @@ namespace Parser
 
 		auto r_Length = Read<int32>();
 		if (!r_Length)
-			return Eh::MakeError(Eh::Binary::BadRead, "Could not read string length");
+			return MakeError(Eh::Binary::BadRead, "Could not read string length");
 
-		if (*r_Length == 0)
-			return Eh::MakeError(Eh::Binary::EmptyString, "Empty string");
+			if (*r_Length == 0)
+				return MakeError(Eh::Binary::EmptyString, "Empty string");
 
 		if (*r_Length > 0)
 		{
 			std::string Data;
 			Data.resize(*r_Length);
 
-			if (!ReadBytes(Data.data(), *r_Length))
-				return Eh::MakeError(Eh::Binary::BadRead, "Could not read UTF-8 string data");
 
 			SkipBytes(1); // Skip null-terminator
 

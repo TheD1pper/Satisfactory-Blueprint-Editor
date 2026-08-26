@@ -32,7 +32,7 @@ namespace Editor
 		if (!glfwInit())
 		{
 			glfwTerminate();
-			return Eh::MakeError(Eh::Glfw::Initialization, "Could not initialize glfw");
+			return MakeError(Eh::Glfw::Initialization, "Could not initialize glfw");
 		}
 		m_GlfwInitialized = true;
 
@@ -44,7 +44,7 @@ namespace Editor
 		if (!m_Handle)
 		{
 			Shutdown();
-			return Eh::MakeError(Eh::Glfw::WindowCreation, "Could not create a window");
+			return MakeError(Eh::Glfw::WindowCreation, "Could not create a window");
 		}
 
 		glfwSetWindowUserPointer(m_Handle, this);
@@ -54,7 +54,7 @@ namespace Editor
 		if (!gladLoadGL(glfwGetProcAddress))
 		{
 			Shutdown();
-			return Eh::MakeError(Eh::Glad::Initialization, "Could not initialize glad");
+			return MakeError(Eh::Glad::Initialization, "Could not initialize glad");
 		}
 
 		glViewport(0, 0, m_Width, m_Height);
