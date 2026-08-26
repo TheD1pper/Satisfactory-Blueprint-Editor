@@ -37,6 +37,12 @@ project "zlib"
 
     includedirs { "../../zlib" }
 
+    vpaths {
+        ["Header Files"] = { "../../**.h" },
+        ["Source Files"] = { "../../**.c" },
+        ["Premake Scripts"] = { "**.lua" }
+    }
+
     filter "system:windows"
         systemversion "latest"
         defines { "_CRT_SECURE_NO_WARNINGS" }

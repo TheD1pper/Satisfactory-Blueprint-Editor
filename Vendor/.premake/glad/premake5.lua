@@ -14,6 +14,12 @@ project "GLAD"
 
     includedirs { "../../glad/include" }
 
+    vpaths {
+        ["Header Files"] = { "../../**.h" },
+        ["Source Files"] = { "../../**.c" },
+        ["Premake Scripts"] = { "premake5.lua" }
+    }
+
     filter "system:windows"
         systemversion "latest"
         defines { "_CRT_SECURE_NO_WARNINGS" }

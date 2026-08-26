@@ -31,6 +31,12 @@ project "GLFW"
 
     includedirs { "../../glfw/include" }
 
+    vpaths {
+        ["Header Files"] = { "../../**.h" },
+        ["Source Files"] = { "../../**.c" },   
+        ["Premake Scripts"] = { "**.lua" }
+    }
+
     filter "system:windows"
         systemversion "latest"
 

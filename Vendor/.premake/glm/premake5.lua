@@ -10,3 +10,8 @@ project "glm"
     }
 
     includedirs { "../../glm" }
+
+    vpaths {
+        ["Header Files"] = { "../../**.hpp", "../../**.h", "../../**.inl" },
+        ["Premake Scripts"] = { "**.lua" }
+    }

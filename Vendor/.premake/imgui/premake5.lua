@@ -32,6 +32,12 @@ project "ImGui"
 
     }
 
+    vpaths {
+        ["Header Files"] = { "../../**.h" },
+        ["Source Files"] = { "../../**.cpp" },
+        ["Premake Scripts"] = { "**.lua" }
+    }
+
     filter "system:windows"
         systemversion "latest"
 
