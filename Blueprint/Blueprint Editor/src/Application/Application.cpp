@@ -5,6 +5,8 @@ module Editor.Application;
 import std;
 
 import Helpers.Errors;
+import Helpers.FsUtils;
+import Services.Manager;
 import Editor.Window;
 import Editor.ImGuiLayer;
 import Editor.Layers;
@@ -49,6 +51,14 @@ namespace Editor
 		ImGuiLayer& UiLayer = PushLayer<ImGuiLayer>();
 		if (auto r_Init = UiLayer.Init(m_Window); !r_Init)
 			return r_Init;
+
+		Services::BlueprintManager Manager;
+		auto r_Load = Manager.LoadHeader(FsUtils::GetBlueprintsPath() / "Exp 1.2/Loop.sbp");
+		if (!r_Load)
+		{
+			std::print("{}\n", r_Load.error().GetLogMessage());
+			return std::unexpected(r_Load.error());
+		}
 
 		return {};
 	}

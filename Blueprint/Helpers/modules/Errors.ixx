@@ -15,9 +15,13 @@ namespace ErrorHandling
 
     using Sl = std::source_location;
 
-    export enum class FileIO
+    export enum class File
     {
-        DeletionFail
+        DeleteFail,
+        IsNotFile,
+        IsNotDirectory,
+        DoesNotExist,
+        WrongExtension
     };
 
     export enum class Property
@@ -63,7 +67,7 @@ namespace ErrorHandling
         OpenGL3Impl
     };
 
-    export using ErrorCode = std::variant<Binary, Blueprint, Compression, Property, FileIO, Glfw, Glad, ImGui>;
+    export using ErrorCode = std::variant<Binary, Blueprint, Compression, Property, File, Glfw, Glad, ImGui>;
 
     export class Error
     {

@@ -49,7 +49,9 @@ namespace Services
 		*/
 
 		std::string Name = _Path.filename().replace_extension("").string();
-		m_Data.emplace(Name, Core::Blueprint(std::move(*r_Header), {}));
+		m_Data.emplace(Name, Core::Blueprint(std::move(*r_Header), std::move(Core::BlueprintBody{})));
+
+		return Name;
 	}
 
 	void BlueprintManager::Unload(const std::string& _Key)
@@ -57,7 +59,12 @@ namespace Services
 		m_Data.erase(_Key);
 	}
 
-	constexpr Result<void> BlueprintManager::CheckFile(const fs::path& _Path) const
+	Core::Blueprint& BlueprintManager::operator[](const std::string& _Key)
+	{
+		return m_Data[_Key];
+	}
+
+	Result<void> BlueprintManager::CheckFile(const fs::path& _Path) const 
 	{
 		if (!FsUtils::Exists(_Path))
 			return MakeError(Eh::File::DoesNotExist);
@@ -65,7 +72,7 @@ namespace Services
 		if (!FsUtils::IsFile(_Path))
 			return MakeError(Eh::File::IsNotFile);
 
-		if (_Path.extension() != "sbp") // Check if the file is of a satisfactory blueprint format
+		if (_Path.extension() != ".sbp") // Check if the file is of a satisfactory blueprint format
 			return MakeError(Eh::File::WrongExtension);
 
 		return {};

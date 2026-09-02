@@ -5,6 +5,7 @@ export module Parser.Blueprint:Input;
 import std;
 
 import Helpers.Errors;
+import Helpers.FsUtils;
 import Core.Types;
 
 namespace Parser
@@ -12,15 +13,17 @@ namespace Parser
 	export class BlueprintInput
 	{
 	public:
-		template<typename T>
-		Result<T> Read();
+		BlueprintInput(const fs::path& _Path);
+
+		Result<Core::BlueprintHeader> ReadHeader();
 
 	private:
 		std::ifstream m_Input;
 
 	private:
-		uint64 GetBytesRead();
+		template<typename T> Result<T> Read();
+		uint64 GetPtrPos();
 		std::istream& ReadBytes(char* _Ptr, uint64 _Count);
-		void SkipBytes(uint64 _Count);
+		inline void SkipBytes(uint64 _Count);
 	};
 }

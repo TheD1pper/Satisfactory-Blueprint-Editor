@@ -23,6 +23,6 @@ namespace Services
 		std::unordered_map<std::string, Core::Blueprint> m_Data;
 
 	private:
-		constexpr Result<void> CheckFile(const fs::path& _Path) const;
+		Result<void> CheckFile(const fs::path& _Path) const;
 	};
 }

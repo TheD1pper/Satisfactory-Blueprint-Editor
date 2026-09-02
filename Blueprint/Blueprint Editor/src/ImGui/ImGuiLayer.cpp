@@ -62,7 +62,7 @@ namespace Editor
 	void ImGuiLayer::OnRender()
 	{
 		Begin();
-		ImGui::ShowDemoWindow();
+		ImGui::Button("nigga", { 200, 200 });
 		End();
 	}
 
@@ -71,6 +71,7 @@ namespace Editor
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+		ImGui::DockSpaceOverViewport();
 	}
 
 	void ImGuiLayer::End()

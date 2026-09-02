@@ -82,6 +82,12 @@ namespace Core
 		uint32 D;
 		int32 Version;
 	};
+
+	export struct CostEntry
+	{
+		ObjectReference Class;
+		uint32 Amount;
+	};
 	
 	export struct SaveObjectVersionData
 	{
@@ -125,7 +131,7 @@ namespace Core
 		int32 SaveVersion;
 		int32 BuildVersion;
 		std::array<int32, 3> Dimensions;
-		std::vector<ObjectReference> Cost;
+		std::vector<CostEntry> Cost;
 		std::vector<ObjectReference> Recipes;
 		SaveObjectVersionData SaveObjectData;
 	};
