@@ -10,6 +10,7 @@ module Editor.ImGuiLayer;
 
 import std;
 
+import Helpers.FileDialog;
 import Helpers.Errors;
 import Editor.Window;
 
@@ -43,6 +44,7 @@ namespace Editor
 			return MakeError(Eh::ImGui::OpenGL3Impl, "Could not initialize ImGui OpenGL3 implementation");
 		}
 
+		m_Window = &_Window;
 		m_Initialized = true;
 		return {};
 	}

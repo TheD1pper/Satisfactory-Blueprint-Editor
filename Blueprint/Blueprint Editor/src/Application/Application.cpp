@@ -1,5 +1,6 @@
 module;
-
+#include <Windows.h>
+#include "GLFW/glfw3.h"
 module Editor.Application;
 
 import std;
@@ -34,15 +35,22 @@ namespace Editor
 		{
 			m_Window.PollEvents();
 
+			static bool s_PrevF1 = false;
+			bool f9 = m_Window.IsKeyPressed(GLFW_KEY_F9);
+			if (f9 && !s_PrevF1)
+				m_Window.ToggleDebugConsole();
+			s_PrevF1 = f9;
+
 			m_LayerStack.OnUpdate(0.0f);
 			m_LayerStack.OnRender();
-
 			m_Window.SwapBuffers();
 		}
 	}
 
 	Result<void> Application::Init()
 	{
+		CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+
 		m_Window.OpenDebugConsole();
 
 		if (auto r_Init = m_Window.Init(); !r_Init)
@@ -52,14 +60,6 @@ namespace Editor
 		if (auto r_Init = UiLayer.Init(m_Window); !r_Init)
 			return r_Init;
 
-		Services::BlueprintManager Manager;
-		auto r_Load = Manager.LoadHeader(FsUtils::GetBlueprintsPath() / "Exp 1.2/Loop.sbp");
-		if (!r_Load)
-		{
-			std::print("{}\n", r_Load.error().GetLogMessage());
-			return std::unexpected(r_Load.error());
-		}
-
 		return {};
 	}
 
@@ -67,5 +67,6 @@ namespace Editor
 	{
 		m_LayerStack.Clear();
 		m_Window.Shutdown();
+		CoUninitialize();
 	}
 }

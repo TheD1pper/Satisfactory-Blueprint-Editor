@@ -27,6 +27,9 @@ namespace Editor
 		bool IsKeyPressed(int _Key) const;
 
 		void OpenDebugConsole();
+		void CloseDebugConsole();
+		void ToggleDebugConsole();
+		bool IsDebugConsoleOpen() const;
 
 		int Width() const;
 		int Height() const;
@@ -38,7 +41,9 @@ namespace Editor
 		int m_Width = 0;
 		int m_Height = 0;
 		GLFWwindow* m_Handle = nullptr;
+
 		bool m_GlfwInitialized = false;
+		bool m_ConsoleOpen = false;
 
 		void OnResize(int _Width, int _Height);
 

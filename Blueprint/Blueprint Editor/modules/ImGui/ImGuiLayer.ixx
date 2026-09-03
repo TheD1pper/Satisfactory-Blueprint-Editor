@@ -22,5 +22,8 @@ namespace Editor
 
 		void Begin();
 		void End();
+
+	private:
+		Window* m_Window = nullptr;
 	};
 }

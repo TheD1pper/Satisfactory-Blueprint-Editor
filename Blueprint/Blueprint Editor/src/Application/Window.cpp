@@ -103,15 +103,50 @@ namespace Editor
 	void Window::OpenDebugConsole()
 	{
 #ifdef SBE_PLATFORM_WINDOWS
-		AllocConsole();
+		if (m_ConsoleOpen)
+			return;
 
-		FILE* fp;
-		freopen_s(&fp, "CONOUT$", "w", stdout);
-		freopen_s(&fp, "CONOUT$", "w", stderr);
-		freopen_s(&fp, "CONIN$", "r", stdin);
+		if (!AllocConsole())
+			return;
+
+		FILE* Stream = nullptr;
+		freopen_s(&Stream, "CONOUT$", "w", stdout);
+		freopen_s(&Stream, "CONOUT$", "w", stderr);
+		freopen_s(&Stream, "CONIN$", "r", stdin);
 
 		std::ios::sync_with_stdio(true);
-		SetConsoleTitleA("Blueprint Editor - Debug Console");
+		SetConsoleTitleA("Satisfactory Blueprint Editor - Debug Console");
+		m_ConsoleOpen = true;
+#endif
+	}
+
+	void Window::CloseDebugConsole()
+	{
+#ifdef SBE_PLATFORM_WINDOWS
+		if (!m_ConsoleOpen)
+			return;
+
+		FILE* Stream;
+		freopen_s(&Stream, "NUL", "w", stdout);
+		freopen_s(&Stream, "NUL", "w", stderr);
+		freopen_s(&Stream, "NUL", "r", stdin);
+
+		FreeConsole();
+		m_ConsoleOpen = false;
+#endif
+	}
+
+	void Window::ToggleDebugConsole()
+	{
+#ifdef SBE_PLATFORM_WINDOWS
+		m_ConsoleOpen ? CloseDebugConsole() : OpenDebugConsole();
+#endif
+	}
+
+	bool Window::IsDebugConsoleOpen() const
+	{
+#ifdef SBE_PLATFORM_WINDOWS
+		return m_ConsoleOpen;
 #endif
 	}
 
