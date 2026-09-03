@@ -30,6 +30,8 @@ workspace "Satisfactory-Blueprint-Editor"
         systemversion "latest"
         entrypoint "mainCRTStartup"
         defines "SBE_PLATFORM_WINDOWS"
+        enablemodules "On"
+        buildstlmodules "On"
 
     filter {}
 

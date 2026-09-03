@@ -1,12 +1,7 @@
 module;
-
 export module Helpers.Errors;
 
-import <string>;
-import <expected>;
-import <variant>;
-import <source_location>;
-import <type_traits>;
+import std;
 
 namespace ErrorHandling
 {
@@ -120,7 +115,4 @@ namespace ErrorHandling
 export template<typename T>
 using Result = std::expected<T, ErrorHandling::Error>;
 
-export std::unexpected<ErrorHandling::Error> MakeError(ErrorHandling::ErrorCode _Error, std::string _Message = "", std::source_location _Source = std::source_location::current())
-{
-    return std::unexpected(ErrorHandling::Error(std::move(_Error), std::move(_Message), _Source));
-}
+export std::unexpected<ErrorHandling::Error> MakeError(ErrorHandling::ErrorCode _Error, std::string _Message = "", std::source_location _Source = std::source_location::current());
