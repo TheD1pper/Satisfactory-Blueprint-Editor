@@ -62,7 +62,21 @@ namespace Editor
 	void ImGuiLayer::OnRender()
 	{
 		Begin();
-		ImGui::Button("nigga", { 200, 200 });
+		if (ImGui::Button("Load blueprint", { 120, 40 }))
+		{
+			auto o_Path = FileDialog::OpenBlueprintFile();
+			if (o_Path)
+				std::println("{}", o_Path->string());
+
+
+		}
+
+		if (m_Window)
+		{
+			bool ConsoleOpen = m_Window->IsDebugConsoleOpen();
+			if (ImGui::Checkbox("Debug console", &ConsoleOpen))
+				m_Window->ToggleDebugConsole();
+		}
 		End();
 	}
 
