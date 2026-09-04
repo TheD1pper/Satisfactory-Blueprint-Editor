@@ -37,7 +37,7 @@ namespace Editor
 
 			static bool s_PrevF1 = false;
 			bool f9 = m_Window.IsKeyPressed(GLFW_KEY_F9);
-			if (f9 && !s_PrevF1)
+			if (f9 and !s_PrevF1)
 				m_Window.ToggleDebugConsole();
 			s_PrevF1 = f9;
 
