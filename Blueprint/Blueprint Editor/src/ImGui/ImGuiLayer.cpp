@@ -2,6 +2,7 @@ module;
 
 #include "glad/gl.h"
 #include "GLFW/glfw3.h"
+#include "glm/glm.hpp"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -64,13 +65,38 @@ namespace Editor
 	void ImGuiLayer::OnRender()
 	{
 		Begin();
+
+		// Rysuj "Object Browser" jako pierwsze (bêdzie w tle)
+		{
+			ImGuiWindowFlags browserFlags =
+      ImGuiWindowFlags_NoResize
+				| ImGuiWindowFlags_NoMove
+				| ImGuiWindowFlags_NoCollapse
+				| ImGuiWindowFlags_NoBringToFrontOnFocus
+				| ImGuiWindowFlags_NoFocusOnAppearing;
+
+			if (m_Window)
+			{
+				glm::vec2 Size = m_Window->GetWindowSize();
+				ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
+				ImGui::SetNextWindowSize(ImVec2(Size.x / 6.0f, Size.y), ImGuiCond_Always);
+			}
+			else
+			{
+				ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
+				ImGui::SetNextWindowSize(ImVec2(1980 / 6.0f, 1440.0f), ImGuiCond_Always);
+			}
+
+			ImGui::Begin("Object Browser", nullptr, browserFlags);
+			ImGui::End();
+		}
+
+		// Pozosta³e kontrolki rysujemy po "Object Browser" — bêd¹ nad nim
 		if (ImGui::Button("Load blueprint", { 120, 40 }))
 		{
 			auto o_Path = FileDialog::OpenBlueprintFile();
 			if (o_Path)
 				std::println("{}", o_Path->string());
-
-
 		}
 
 		if (m_Window)
@@ -79,6 +105,7 @@ namespace Editor
 			if (ImGui::Checkbox("Debug console", &ConsoleOpen))
 				m_Window->ToggleDebugConsole();
 		}
+
 		End();
 	}
 
