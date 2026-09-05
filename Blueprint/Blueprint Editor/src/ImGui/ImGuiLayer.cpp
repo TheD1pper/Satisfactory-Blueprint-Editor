@@ -61,19 +61,18 @@ namespace Editor
 
 		m_Initialized = false;
 	}
-
+		
 	void ImGuiLayer::OnRender()
 	{
 		Begin();
 
-		// Rysuj "Object Browser" jako pierwsze (bêdzie w tle)
 		{
 			ImGuiWindowFlags browserFlags =
-      ImGuiWindowFlags_NoResize
-				| ImGuiWindowFlags_NoMove
-				| ImGuiWindowFlags_NoCollapse
-				| ImGuiWindowFlags_NoBringToFrontOnFocus
-				| ImGuiWindowFlags_NoFocusOnAppearing;
+			  ImGuiWindowFlags_NoResize
+			| ImGuiWindowFlags_NoMove
+			| ImGuiWindowFlags_NoCollapse
+			| ImGuiWindowFlags_NoBringToFrontOnFocus
+			| ImGuiWindowFlags_NoFocusOnAppearing;
 
 			if (m_Window)
 			{
@@ -91,7 +90,6 @@ namespace Editor
 			ImGui::End();
 		}
 
-		// Pozosta³e kontrolki rysujemy po "Object Browser" — bêd¹ nad nim
 		if (ImGui::Button("Load blueprint", { 120, 40 }))
 		{
 			auto o_Path = FileDialog::OpenBlueprintFile();
@@ -102,7 +100,7 @@ namespace Editor
 		if (m_Window)
 		{
 			bool ConsoleOpen = m_Window->IsDebugConsoleOpen();
-			if (ImGui::Checkbox("Debug console", &ConsoleOpen))
+			if (ImGui::Checkbox("Show debug console", &ConsoleOpen))
 				m_Window->ToggleDebugConsole();
 		}
 
