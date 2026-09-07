@@ -10,10 +10,18 @@ import Helpers.Errors;
 
 namespace Editor
 {
+	export struct WindowSpecification
+	{
+		std::string Title;
+		int Width;
+		int Height;
+	};
+
 	export class Window
 	{
 	public:
 		Window(const std::string& _Title, int _Width, int _Height);
+		Window(const WindowSpecification& _Specification);
 		~Window();
 
 		Result<void> Init();

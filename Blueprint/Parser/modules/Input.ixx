@@ -8,6 +8,8 @@ import Helpers.Errors;
 import Helpers.FsUtils;
 import Core.Types;
 
+import :Constants;
+
 namespace Parser
 {
 	export class BlueprintInput

@@ -7,12 +7,15 @@ module;
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+#define DOCKING_ENABLED 0
+
 module Editor.ImGuiLayer;
 
 import std;
 
 import Helpers.FileDialog;
 import Helpers.Errors;
+import Services.Manager;
 import Editor.Window;
 
 namespace Eh = ErrorHandling;
@@ -29,8 +32,12 @@ namespace Editor
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& Io = ImGui::GetIO();
+
 		Io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+#if DOCKING_ENABLED
 		Io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+#endif
+
 
 		if (!ImGui_ImplGlfw_InitForOpenGL(_Window.GetHandle(), true))
 		{
@@ -66,42 +73,67 @@ namespace Editor
 	{
 		Begin();
 
+		Services::BlueprintManager Manager;
+		ImVec2 VpSize = ImGui::GetMainViewport()->Size;
+
+		// Object Browser
 		{
-			ImGuiWindowFlags browserFlags =
-			  ImGuiWindowFlags_NoResize
-			| ImGuiWindowFlags_NoMove
+			ImGuiWindowFlags BrowserFlags =
+			  ImGuiWindowFlags_NoMove
 			| ImGuiWindowFlags_NoCollapse
-			| ImGuiWindowFlags_NoBringToFrontOnFocus
 			| ImGuiWindowFlags_NoFocusOnAppearing;
 
-			if (m_Window)
-			{
-				glm::vec2 Size = m_Window->GetWindowSize();
-				ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
-				ImGui::SetNextWindowSize(ImVec2(Size.x / 6.0f, Size.y), ImGuiCond_Always);
-			}
-			else
-			{
-				ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
-				ImGui::SetNextWindowSize(ImVec2(1980 / 6.0f, 1440.0f), ImGuiCond_Always);
-			}
+			ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_FirstUseEver);
+			ImGui::SetNextWindowSizeConstraints(ImVec2(VpSize.x / 6, VpSize.y), ImVec2(VpSize.x / 4, VpSize.y));
 
-			ImGui::Begin("Object Browser", nullptr, browserFlags);
+			ImGui::Begin("Object Browser", nullptr, BrowserFlags);
+			ImGui::End();
+		}
+		
+		// Object Editor
+		{
+			ImGuiWindowFlags EditorFlags =
+				  ImGuiWindowFlags_NoMove
+				| ImGuiWindowFlags_NoCollapse
+				| ImGuiWindowFlags_NoFocusOnAppearing;
+
+			ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_FirstUseEver);
+			ImGui::SetNextWindowSizeConstraints(ImVec2(VpSize.x, VpSize.y * 0.2f), ImVec2(VpSize.x, VpSize.y * 0.4f));
+
+			ImGui::Begin("Object Editor", nullptr, EditorFlags);
 			ImGui::End();
 		}
 
-		if (ImGui::Button("Load blueprint", { 120, 40 }))
+		// Debug Window
 		{
-			auto o_Path = FileDialog::OpenBlueprintFile();
-			if (o_Path)
-				std::println("{}", o_Path->string());
-		}
+			ImGui::Begin("Debug Window", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 
-		if (m_Window)
-		{
-			bool ConsoleOpen = m_Window->IsDebugConsoleOpen();
-			if (ImGui::Checkbox("Show debug console", &ConsoleOpen))
-				m_Window->ToggleDebugConsole();
+			if (ImGui::Button("Load blueprint", { 120, 40 }))
+			{
+				auto o_Path = FileDialog::OpenBlueprintFile();
+				if (o_Path)
+				{
+					auto r_Load = Manager.LoadHeader(*o_Path);
+					if (!r_Load)
+						m_LoadMessage = r_Load.error().GetLogMessage();
+					else
+						m_LoadMessage = "Loaded: " + o_Path->string();
+				}
+			}
+
+			if (m_Window)
+			{
+				bool ConsoleOpen = m_Window->IsDebugConsoleOpen();
+				if (ImGui::Checkbox("Show debug console", &ConsoleOpen))
+					m_Window->ToggleDebugConsole();
+			}
+
+			if (!m_LoadMessage.empty())
+			{
+				ImGui::TextWrapped("%s", m_LoadMessage.c_str());
+			}
+
+			ImGui::End();
 		}
 
 		End();
@@ -112,7 +144,9 @@ namespace Editor
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+#if DOCKING_ENABLED
 		ImGui::DockSpaceOverViewport();
+#endif 
 	}
 
 	void ImGuiLayer::End()

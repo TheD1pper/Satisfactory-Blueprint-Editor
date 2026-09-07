@@ -107,7 +107,7 @@ The remaining sections below detail each of these types field-by-field, includin
 | `Dimensions` | `int32[3]` | Blueprint bounding box size (X, Y, Z). |
 | `Cost` | `ObjectReference[]` | Items/quantities required to build (added in a later header version). |
 | `Recipes` | `ObjectReference[]` | Recipes used by buildings in the blueprint (added in a later header version). |
-| `SaveObjectData` | `SaveObjectVersionData` | Engine/package/custom version block written ahead of object data in newer versions. |
+| `SaveObjectData` | `SaveObjectVersionData` | Engine/package/custom version block written ahead of object data in newer versions. **Only present for newer save versions** (observed: absent at `SaveVersion` 52, present from 59). Older blueprints jump straight from `Recipes` to the packaged body; the parser detects this by peeking for the UE package signature (`0x9E2A83C1`) and skips the block when it is found. |
 
 ### `SaveObjectVersionData`
 

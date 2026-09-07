@@ -25,5 +25,8 @@ namespace Editor
 
 	private:
 		Window* m_Window = nullptr;
+
+		// Persists between frames so the load result stays visible
+		std::string m_LoadMessage;
 	};
 }

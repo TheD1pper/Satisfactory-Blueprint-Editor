@@ -15,7 +15,16 @@ namespace Eh = ErrorHandling;
 namespace Editor
 {
 	Window::Window(const std::string& _Title, int _Width, int _Height)
-		: m_Title(_Title), m_Width(_Width), m_Height(_Height)
+		: m_Title(_Title),
+		m_Width(_Width),
+		m_Height(_Height)
+	{
+	}
+
+	Window::Window(const WindowSpecification& _Specification)
+		: m_Title(_Specification.Title),
+		m_Width(_Specification.Width), 
+		m_Height(_Specification.Height)
 	{
 	}
 
